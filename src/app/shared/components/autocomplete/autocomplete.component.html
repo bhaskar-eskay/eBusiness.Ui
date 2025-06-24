@@ -1,0 +1,50 @@
+<mat-form-field appearance="outline" [ngStyle]="(definition.label === 'Mode' || definition.label === 'Discount' || definition.label === 'Batch'
+|| definition.label === 'Tran.Qty.Status' || definition.label === 'Discount Type' || definition.label === 'Discount Type 1' 
+|| definition.label === 'Manufacture Name') ? {'display': ''} : definition.label === 'Transport' ? {'display': ''} : {'display': 'inline-block'} ">
+    <mat-label>{{definition.label}}</mat-label>
+    <input #trigger matInput [id]="elementId" [matAutocomplete]="autoCompleteRef" [formControl]="control" [required]="definition.isRequired" #MatAutocompleteTrigger>
+    <mat-spinner matSuffix diameter="15" *ngIf="isLoading"></mat-spinner>
+    <mat-icon matSuffix *ngIf="!isLoading && !control.disabled" (click)="togglePanel($event)"class="clickable drop-down-icon">arrow_drop_down</mat-icon>
+    <mat-error *ngIf="control">
+      <ng-template [ngIf]="definition.isRequired && control.hasError('required')">
+        {{definition.label}} is <strong>required</strong>
+      </ng-template>
+      <ng-template [ngIf]="control.hasError('invalidValue')">
+        {{definition.label}} is <strong>not valid</strong>
+      </ng-template>
+      <ng-template [ngIf]="control.hasError('duplicateItems')">
+        <strong>Duplicate</strong>  {{definition.label}} exists. Select Value from Options
+      </ng-template>
+    </mat-error>
+</mat-form-field>
+
+
+<mat-autocomplete #autoCompleteRef="matAutocomplete" [panelWidth]="x?optionsTableDefinition.panelWidth:''" [displayWith]="displayFn.bind(this)" [autoActiveFirstOption]="true" 
+id="MatAutocompleteTrigger"  autoActiveFirstOption class="product_mat tab_mat">
+  <ng-template [ngIf]="!isLoading && !optionsTableDefinition">
+    <mat-option *ngFor="let item of items" [value]="item">
+        <div [innerHTML]="(definition.keyString ? item[definition.keyString] :item) | highlight:control.value:definition.keyString">
+        </div>
+    </mat-option>
+  </ng-template>
+  <ng-template [ngIf]="!isLoading && optionsTableDefinition"><!-- [ngClass]="definition.label === 'Batch' ? 'batch_cls' : '' "-->
+
+    
+    <div class="mat_main">
+      <div fxLayout="row" fxLayout.xs="row" fxLayoutWrap class="master-auto-heading">
+        <div [fxFlex]="column.fxFlex" class=" "  *ngFor="let column of optionsTableDefinition.columns">
+          {{column.name}}
+        </div> 
+      </div>
+      
+      <mat-option class="master-option-text" *ngFor="let item of items" [value]="item">
+      <div fxLayout="row" fxLayout.xs="row" fxLayoutWrap>
+        <div [fxFlex]="column.fxFlex1" class="auto-border text-truncate"  *ngFor="let column of optionsTableDefinition.columns">
+          <p class="mb-0 mx-1 text-truncate" title="{{column.value(item)}}" [innerHTML]="column.isKeyColumn ? (column.value(item)| highlight: control.value:definition.keyString):column.value(item)"></p>
+        </div> 
+      </div>
+      </mat-option>
+    </div>
+  </ng-template>
+</mat-autocomplete>
+

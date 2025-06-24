@@ -1,0 +1,112 @@
+
+@import '../../../../../assets/styles/mixin.scss';
+
+
+.action-button:disabled {
+    cursor: not-allowed;
+}
+
+.col-drag-icon {
+    cursor: move;
+    opacity:0.3;
+}
+
+.col-drag-icon:hover {
+    opacity:1;
+}
+
+.table-header {
+    display:flex;
+}
+
+.table-icons .delete{
+    color: brown;
+} 
+
+.edit {
+    color: #1f1f98;;
+}
+
+.delete {
+    color: #ef0000;
+}
+
+.table-popover {
+    color:teal;
+    margin-top: 5px;
+    font-size: 22px;
+}
+
+.table-action:hover {
+    transform: scale(1.2);
+}
+
+.col-drag-icon:not(.action) {
+    margin-left:-15px;
+}
+
+.action-separator {
+    font-size: 22px;
+    font-weight: 500;
+    position: relative;
+    top: 2px;
+    color: #80808075;
+}
+.master-table .mat-icon-button {
+   width: 30px !important;
+}
+
+.action-col {
+    padding-left: 15px !important;
+}
+
+ ::ng-deep .table-form {
+    mat-form-field {
+      width: 180px;
+  }
+  @include user-form;
+   } 
+
+   @media screen and (max-width:1430px) {
+    .master-table{
+        overflow: auto;
+        th{
+            white-space: nowrap !important;
+        }
+    }
+   }
+
+   .master-table td:last-of-type{
+    padding-right: 0px !important;
+   }
+
+//    @media screen and (max-width:780px) {
+//        ::ng-deep .mat-paginator-container {
+//            justify-content: unset !important;
+//            flex-wrap: unset !important;
+//        }
+
+//        ::ng-deep .mat-paginator-range-label {
+//            margin: 0 !important;
+//        }
+//    }
+
+::ng-deep .mat-paginator {
+    margin-bottom: 50px !important;
+   }   
+
+
+.reg_table {
+ th{
+    padding: 11px !important;
+ }
+ td {
+    padding: 8px !important;
+    border: 1px solid #0000001f;
+    font-size: 12px;
+ }
+}
+
+.reg_table td:nth-child(1){
+    white-space: nowrap;
+}

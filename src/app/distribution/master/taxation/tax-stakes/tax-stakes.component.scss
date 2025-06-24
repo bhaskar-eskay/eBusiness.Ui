@@ -1,0 +1,11 @@
+.tax-stake-form mat-icon {
+    cursor: pointer;
+}
+
+
+@import '../../../../../assets/styles/mixin.scss';
+
+
+::ng-deep .tax-stake-form {
+    @include user-form;
+  }

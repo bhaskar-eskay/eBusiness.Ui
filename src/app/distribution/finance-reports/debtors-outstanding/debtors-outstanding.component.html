@@ -1,0 +1,59 @@
+<div class="pharma-finance">
+    <div class="heading-container">
+      <h4 class="pharmacyHeading">Debtors Outstanding</h4>
+    </div>
+    <br>
+  
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+        <form [formGroup]="debtorsOutstandingReportFormGroup">
+          <div fxLayout="row wrap" fxLayoutGap="16px" class="CashReceiptControls">
+            <!-- Area Option (Multi Select Dropdown) -->
+            <mat-form-field fxFlex="20" appearance="outline">
+              <mat-label>Area Option *</mat-label>
+              <mat-select formControlName="areas" multiple>
+                <!-- <mat-option *ngFor="let area of areasList" [value]="area">{{ area }}</mat-option> -->
+                <mat-option value="area">Detailed</mat-option>
+                <mat-option value="area">Abstract</mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+            <!-- Customer Option (Multi Selection Dropdown) -->
+            <mat-form-field fxFlex="20" appearance="outline">
+              <mat-label>Customer Option *</mat-label>
+              <mat-select formControlName="customers" multiple>
+                <!-- <mat-option *ngFor="let customer of customersList" [value]="customer">{{ customer }}</mat-option> -->
+                <mat-option value="customer">Detailed</mat-option>
+                <mat-option value="customer">Abstract</mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+            <!-- Report Date (Current Date) -->
+            <mat-form-field fxFlex="20" appearance="outline">
+              <mat-label>Report Date *</mat-label>
+              <input matInput [matDatepicker]="reportDatePicker" formControlName="reportDate" [value]="currentDate" readonly>
+              <mat-datepicker-toggle matSuffix [for]="reportDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #reportDatePicker></mat-datepicker>
+            </mat-form-field>
+  
+            <!-- Report Option (Detailed/Abstract) -->
+            <mat-form-field fxFlex="20" appearance="outline">
+              <mat-label>Report Option </mat-label>
+              <mat-select formControlName="reportOption">
+                <mat-option value="detailed">Detailed</mat-option>
+                <mat-option value="abstract">Abstract</mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+            <!-- Buttons -->
+            <div fxLayout="row wrap" fxLayoutGap="16px" class="button-group">
+              <button type="button" mat-raised-button color="primary" (click)="generateReport()">Generate</button>
+              <button type="button" mat-raised-button color="warn" (click)="resetForm()">Reset</button>
+              <button type="button" mat-raised-button color="primary" class="my-1" (click)="goback()">Back</button>
+            </div>
+          </div>
+        </form>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  

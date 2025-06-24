@@ -1,0 +1,39 @@
+<ng-template [ngIf]="showMenu">
+    <mat-card class="side-nav-expand" [@slideInOut]>
+        <ng-container *ngTemplateOutlet="menuTemplate; context:{items: menuItems, index: 0, pItem:null}"></ng-container>
+    </mat-card>
+</ng-template>
+
+<ng-template #menuTemplate let-items="items" let-index="index" let-pItem="pItem" >
+    <ng-template [ngIf]="items">
+    <div [@listAnimation]="items.length" [ngClass]="'items-container items-container-index-'+index" *ngIf="index<maxLevel">
+        <ng-container *ngFor="let item of items">
+            <ng-template [ngIf]="item.displayInd == 1">
+            <mat-card class="item-menus" [ngClass]=" (!hideMenu && routeItem && routeItem.menuId === item.menuId)? 'selected-route': (hideMenu && selectedPItem && selectedPItem.menuId === item.menuId) ? 'selected-parent':'' ">
+                <mat-card [class]="'left-menu item item-index-'+index" *ngIf="(hideMenu && index === 0) || !hideMenu"
+                (click)="doSelectMenu(pItem,item,index)">
+                    <span class="label">
+                        <mat-icon [ngClass]="hideMenu? 'label-icon': 'expand'">
+                            {{index===0 ? item.menuIcon : 'arrow_right'}}
+                        </mat-icon>
+                        <ng-template [ngIf]="!hideMenu">
+                            {{item.menuName}}
+                        </ng-template>
+                       
+                    </span>
+                    <span class="expand-icon" *ngIf="!hideMenu">
+                        <mat-icon *ngIf="item.menus && index<maxLevel-1">
+                            {{item.selected?'expand_less':'keyboard_arrow_right'}}
+                       </mat-icon>
+                    </span>
+                </mat-card>
+    
+            <ng-template [ngIf]="item['selected']">
+                <ng-container *ngTemplateOutlet="menuTemplate; context:{items: item.menus, index: index+1, pItem: pItem===null?item:pItem}"></ng-container>
+            </ng-template>
+            </mat-card>
+        </ng-template>
+        </ng-container>
+    </div>
+</ng-template>
+</ng-template>

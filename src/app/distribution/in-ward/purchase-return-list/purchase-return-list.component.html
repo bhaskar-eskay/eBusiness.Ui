@@ -1,0 +1,104 @@
+<div class="m-3">
+
+  <div class="m-3">
+    <div fxLayout="row" fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column" fxLayoutWrap
+      fxLayoutGap="10px" class="md_flex">
+      <div fxFlex="80" fxFlex.xl="80" fxFlex.sm="80" fxFlex.md="80">
+        <h5 class="inward-pharma-head">Purchase Return (PRET) List </h5>
+      </div>
+      <div fxFlex="20" fxFlex.xl="20" fxFlex.sm="20" fxFlex.md="20"  class="master-btn text-right">
+        <!-- <button mat-raised-button  [routerLink]="['../purchases']">Back</button> -->
+  
+        <div >
+          <button mat-raised-button color="primary" class="my-1" (click)="addInvoice()">Add Purchase Return</button>
+        </div>
+      </div>
+  
+    </div>
+
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap>
+    <div fxFlex="100" class="invList-form">
+      <form [formGroup]="saleHeadListFormGroup" fxLayoutGap="5px">
+        <mat-form-field appearance="outline" class="e_mat_date w_116">
+          <mat-label>From Date</mat-label>
+          <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" formControlName="fromDate" >
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="e_mat_date w_116">
+          <mat-label>To Date</mat-label>
+          <input matInput [matDatepicker]="picker1" [min]="minDate" [max]="maxDate" formControlName="toDate" >
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w_224">
+          <mat-label>Inv.No</mat-label>
+          <input matInput formControlName="invNo">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w_224">
+          <mat-label>Customer Name</mat-label>
+          <input matInput formControlName="accName">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class=" w_116">
+          <mat-label>Sh.Name</mat-label>
+          <input matInput formControlName="accShName">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w_224">
+          <mat-label>City Name</mat-label>
+          <input matInput formControlName="cityId">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w_224">
+          <mat-label>GSTIN</mat-label>
+          <input matInput formControlName="accGSTIn">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="e_mat_date  w_116">
+          <mat-label>Inv. Date</mat-label>
+          <input matInput [matDatepicker]="picker2" formControlName="invDate" #finTranDate>
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w_224">
+          <mat-label>Mode</mat-label>
+          <input matInput formControlName="mode">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class=" w_116">
+          <mat-label>Inv.Value</mat-label>
+          <input matInput formControlName="invValue">
+        </mat-form-field>
+
+
+        <button mat-raised-button color="primary" (click)="getsalesDataList()">Search</button>
+        <button mat-raised-button (click)="reset()">Reset</button>
+        <button mat-raised-button [routerLink]="['../InwardTransaction']" >Back</button>
+      </form>
+
+
+
+    </div>
+  </div>
+
+
+
+
+  <div class="master-table mt-2" id="table-scroll">
+    <app-alert [id]="'dataTableAlertId'"></app-alert>
+    <app-table [definition]="tableDefinition" [data]="dataList" [tableAlertId]="'dataTableAlertId'"
+      [isDataLoading]="isDataLoading" [disableActions]="disableActions"></app-table>
+  </div>
+
+
+
+
+</div>
+
+<ng-template #deleteSalesHeadTemplate let-salesHead="data">
+  Are you sure to delete <strong></strong> pur return Head?
+</ng-template>

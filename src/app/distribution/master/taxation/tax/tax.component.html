@@ -1,0 +1,54 @@
+
+
+
+
+
+
+        
+<div class="m-3">
+  <div fxLayout="row"  fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column" fxLayoutWrap
+    fxLayoutGap="10px">
+    <div fxFlex="50" fxFlex.xl="55" fxFlex.sm="57" fxFlex.md="46">
+      <h4 class="masters-pharma-head">Tax                </h4>
+    </div>
+    <div fxFlex="27" fxFlex.xl="12" fxFlex.sm="12" fxFlex.md="20" class="master-btn">
+      <!-- <button mat-raised-button color="primary">Add Tax                </button> -->
+    </div>
+    <div fxFlex="23">  
+    </div>
+  </div>  
+  
+  <div class="mt-2">
+    <!-- <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+      <div fxFlex="60" class="tax-form">                
+          <form fxLayoutGap="20px">
+          <mat-form-field appearance="outline">
+            <mat-label>Country</mat-label>
+            <input matInput   required>                    
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+              <mat-label>Tax Name</mat-label>
+              <input matInput   >
+            </mat-form-field>    
+          <div class="float-right">
+            <button mat-raised-button color="primary">Save</button> &nbsp;
+            <button mat-raised-button>Reset</button>
+          </div>
+        </form>     
+      </div>  
+      <div fxFlex="40">
+        <div class="master-img" >
+          <img src="assets/images/schedule.jpg" alt="" class="mx-auto d-block img-fluid img-thumbnail">
+        </div>
+      </div>
+    </div> -->
+
+    <div class="master-table" id="table-scroll">
+     
+      <app-table [definition]="tableDefinition" [data]="dataList" [tableAlertId]="'dataTableAlertId'"
+      [isDataLoading]="isDataLoading" [disableActions]="disableActions"></app-table>  
+      </div>
+  </div>
+  
+  <app-alert [id]="'CompanyTableId'"></app-alert>  
+  </div>  

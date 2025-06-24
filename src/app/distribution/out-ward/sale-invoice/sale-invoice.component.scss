@@ -1,0 +1,97 @@
+
+
+::ng-deep {
+  .invoice2-form {
+    // display: flex;
+    // flex-wrap: wrap;
+    // gap: 15px;
+
+    .mat-form-field, app-autocomplete {
+      width: 100%;
+      // max-width: 300px;
+    }
+  }
+
+  // .user-form {
+  //   display: flex;
+  //   flex-direction: column;
+  //   gap: 20px;
+  // }
+
+  #t01 tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  #t01 tr:nth-child(odd) {
+    background-color: #fff;
+  }
+}
+.custom-autocomplete {
+  width: 100%; /* Makes the component responsive */
+}
+
+.custom-autocomplete .options-table {
+  min-width: 400px; /* Set the minimum width for the table */
+  max-width: 800px; /* Optionally set a maximum width */
+  overflow-x: auto; /* Allows horizontal scrolling if needed */
+}
+
+@media screen and (min-width:950px) and (max-width:1280px) {
+  .d_md_flex {
+    display: flex;
+  }
+}
+
+@media screen and (min-width:700px) and (max-width:1280px) {
+  
+  .fieldCntrl
+   mat-form-field{
+    min-width: 120px !important;
+  }
+}
+
+@media screen and (max-width:600px) {
+  .w_116, .w_224{
+    min-width: 100%;
+   }
+  .invoice2-form{
+    max-height: 400px;
+    overflow: auto;
+  }
+}
+
+// .fieldCntrl mat-form-field{
+//   margin: 0.5rem 0;
+//   min-width: 224px !important;
+// }
+
+.w_116{
+  width: 110px !important;
+  margin: 0.5rem 0;
+}
+
+.w_224{
+  width: 224px;
+  margin: 0.5rem 0;
+}
+
+
+.mb_50{
+  margin-bottom: 50px;;
+}
+
+@media screen and (min-width: 700px) and (max-width: 1200px) {
+  .tab_md{
+    min-width: 50% !important;
+  }
+}
+
+@media screen and (min-width:610px) and (max-width:1010px) {
+  .tab_width{
+    width: 100% !important;
+  }
+
+  .pur-values-form{
+    place-items: center;
+  }
+}

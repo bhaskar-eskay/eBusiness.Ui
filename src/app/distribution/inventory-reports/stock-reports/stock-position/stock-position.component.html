@@ -1,0 +1,183 @@
+
+<div class="pharma-finance">
+  <div class="heading-container">
+    <h4 class="pharmacyHeading" style="text-align: center;">Stock Statement</h4>
+  </div>
+  <br>
+  <!-- Stock Statement code is in stock position component and stock position code is in stock statement component. components are inter changed. -->
+
+  <mat-accordion>
+    <mat-expansion-panel class="account_mat" [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+      <!-- [expanded]="step === 0" -->
+      <form [formGroup]="stockStatementRepost">
+        <div fxLayout="row wrap" fxLayoutGap="16px" class="CashReceiptControls">
+          <mat-form-field fxFlex="20" fxFlex.sm="24" fxFlex.xs="30" class="e_mat_date" appearance="outline">
+              <mat-label>From Date</mat-label>
+              <input matInput [matDatepicker]="fromDatePicker" formControlName="fromDate" [matDatepickerFilter]="dateFilter">
+              <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #fromDatePicker></mat-datepicker>
+              <mat-error class="error-msg">
+                <span >From Date is Required...!</span>
+              </mat-error>
+            </mat-form-field>
+
+          <mat-form-field fxFlex="20" fxFlex.sm="24" fxFlex.xs="30" class="e_mat_date" appearance="outline">
+              <mat-label>To Date</mat-label>
+              <input matInput [matDatepicker]="toDatePicker" formControlName="toDate" [matDatepickerFilter]="dateFilter">
+              <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #toDatePicker></mat-datepicker>
+              <mat-error class="error-msg">
+                <span >To Date is Required...!</span>
+              </mat-error>
+          </mat-form-field>
+
+          <mat-form-field fxFlex="20" fxFlex.xs="30" fxFlex.sm="30" appearance="outline">
+            <mat-label>Report Option</mat-label>
+            <mat-select formControlName="accopyType" (selectionChange)="typeChange($event.value)">
+              <mat-option value=1>Companywise</mat-option>
+              <mat-option value=2>CompanyGroupwise</mat-option>
+            </mat-select>
+            <mat-error class="error-msg">
+              <span >Type is Required...!</span>
+            </mat-error>
+          </mat-form-field>
+
+          <!-- <mat-form-field fxFlex="100" class="mt-2" appearance="outline" *ngIf="stockStatementRepost.get('accopyType')?.value === '1'">
+            <mat-label>Company Option</mat-label>
+          
+            <mat-select (selectionChange)="comp($event)" formControlName="accId" panelClass="account_select" multiple>
+              <mat-select-trigger>
+                <ng-container *ngIf="selectedAccounts?.length > 0">
+                  {{ selectedAccounts[0]?.compName }}
+                  <span *ngIf="selectedAccounts.length > 1" class="example-additional-selection">
+                    (+{{ selectedAccounts.length - 1 }} {{ selectedAccounts.length === 2 ? 'other' : 'others' }})
+                  </span>
+                </ng-container>
+              </mat-select-trigger>
+              <div class="search-container">
+                <mat-form-field appearance="fill" class="search-field mat_date account_search">
+                  <mat-label>Search</mat-label>
+                  <input matInput (input)="filterOptions($event.target.value)" placeholder="Type to search">
+                </mat-form-field>
+              </div>
+              <mat-checkbox class="d-block ml-2 mb-0" [checked]="isAllSelected" [indeterminate]="isIndeterminate"
+                (change)="toggleSelectAll($event.checked)">
+                Select All
+              </mat-checkbox>
+          
+              <div class="row mx-0">
+                <div class="col-md-12 col-xl-8 pr-0" style="max-height: 250px;overflow: auto;">
+                  <mat-option class="mat_header">
+                    <div fxLayout="row" class="dropdown-table">
+                      <div fxFlex="20" class="header">Company Name</div>
+                      <div fxFlex="12" class="header">Shot Name</div>
+                      <div fxFlex="20" class="header">Address1</div>
+                      <div fxFlex="20" class="header">Address2</div>
+                      <div fxFlex="20" class="header">Group Name</div>
+                    </div>
+                  </mat-option>
+              
+                  <mat-option class="mat_opt" *ngFor="let option of filteredOptions" [value]="option">
+                    <div fxLayout="row">
+                      <div fxFlex="20" class="mat_option" title="{{ option.compName }}">{{ option.compName }}</div>
+                      <div fxFlex="12" class="mat_option">{{ option.compShName }}</div>
+                      <div fxFlex="20" class="mat_option" title="{{ option.address1 }}">{{ option.address1 }}</div>
+                      <div fxFlex="20" class="mat_option" title="{{ option.address2}}">{{ option.address2 }}</div>
+                      <div fxFlex="20" class="mat_option">{{ option.compGroupName }}</div>
+                    </div>
+                  </mat-option>
+                </div>
+                <div class="col-md-12 col-xl-4 pr-0" style="max-height: 250px;overflow: auto;">
+                  <div class="m-0 mat_header text-white font-weight-bold p-2">
+                    <span>Selected List</span>
+                    <mat-checkbox class="ml-3 mat_checkbox" (change)="clearSelectedItems($event.checked)" [checked]="false"
+                      style="pointer-events: auto;">Unselect All</mat-checkbox>
+                  </div>
+                  <ul class="mb-0" *ngIf="stockStatementRepost.get('accId')?.value.length > 0" >
+                    <li *ngFor="let account of stockStatementRepost.get('accId')?.value">{{ account.compName }} ({{ account.accShName }} - {{
+                      account.cityName
+                      }})</li>
+                  </ul>
+                  <div class="text-danger font-weight-bold" *ngIf="stockStatementRepost.get('accId')?.value.length == 0" >
+                    No company is selected.
+                  </div>
+                </div>
+              </div>
+            </mat-select>
+            <mat-error class="error-msg">
+              <span >Company option is Required...!</span>
+            </mat-error>
+          </mat-form-field> -->
+          <div fxFlex="100" class="mt-1" *ngIf="stockStatementRepost.get('accopyType')?.value === '1'" >
+            <app-auto-select (outPutEmitter)="receiveData($event)" [optionsTableDefinition]="customAccountsOptsTable" [filterKeys]="filterKeys" [dataSource]="dropdownOptions"></app-auto-select>
+          </div>
+
+          <!-- <mat-form-field fxFlex="100" appearance="outline" *ngIf="stockStatementRepost.get('accopyType')?.value === '2'">
+              <mat-label>Company Group Option</mat-label>
+            
+              <mat-select formControlName="accId" multiple>
+                <div class="search-container">
+                  <mat-form-field appearance="fill" class="search-field mat_date">
+                    <mat-label>Search</mat-label>
+                    <input matInput (keyup)="GroupfilterOptions($event.target.value)" placeholder="Type to search">
+                  </mat-form-field>
+                </div>
+                <mat-checkbox [checked]="isAllSelected" [indeterminate]="isIndeterminate"
+                  (change)="toggleSelectAllgroups($event.checked)">
+                  Select All
+                </mat-checkbox>
+            
+                <div class="mat_header">
+                  <div class="header text-white p-2">CompanyGroup Name</div>
+        
+                </div>
+            
+                <mat-option class="mat_option" *ngFor="let option of groupFilteredOptions" [value]="option">
+                  <div fxLayout=" row">
+                    <span class="mat_opt">{{ option.compGroupName }}</span>
+                   
+                  </div>
+                </mat-option>
+              </mat-select>
+              <mat-error class="error-msg">
+                <span >Account option is Required...!</span>
+              </mat-error>
+            </mat-form-field> -->
+            <div fxFlex="100" class="mt-1" *ngIf="stockStatementRepost.get('accopyType')?.value === '2'" >
+              <app-auto-select (outPutEmitter)="receiveGroupData($event)" [optionsTableDefinition]="customCmpGroupsOptsTable" [filterKeys]="groupfilterKeys" [dataSource]="groupdropdown"></app-auto-select>
+            </div>
+          </div>
+        <!-- Buttons -->
+        <div fxLayout="row" fxLayoutGap="16px" class="button-group">
+          <div fxFlex="100" class="d-sm-flex justify-content-end">
+            <button type="button" mat-raised-button color="primary"
+              (click)="generateReport()">Get</button>
+            <button type="button" mat-raised-button color="warn" (click)="resetForm()">Reset</button>
+            <button type="button" mat-raised-button color="primary" class="my-1" (click)="goback()">Back</button>
+            <div class="action-icons" *ngIf="isshowExcel">
+              <!-- Excel Export Button -->
+              <button mat-icon-button  (click)="exportToExcel(stockStatementRepost.value)">
+                <img src="assets/new_xl.png" alt="Excel" class="icon-img" />
+              </button>
+              
+        
+              <!-- PDF Export Button -->
+              <button mat-icon-button >
+                <img src="assets/new_pdf.png" alt="PDF" class="icon-img" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+
+
+<div class="mt-2">
+<div class="master-table" id="table-scroll" *ngIf="showTable">
+  <!-- <app-alert [id]="'dataTableAlertId'"></app-alert> -->
+  <app-registers-table [dataSource]="dataSource"></app-registers-table>
+</div>
+</div>
+

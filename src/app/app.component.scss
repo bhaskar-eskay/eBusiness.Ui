@@ -1,0 +1,94 @@
+@import '../variables.scss';
+.app-alert {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    app-alert {
+        min-width: 50%;
+    }
+}
+
+.app {
+    position:fixed;
+    top:0px;
+    bottom:0px;
+    width:100%;  
+            .content {
+                height:calc(100vh - 50px);
+                width:100%;
+                display:flex;
+            }
+            .login.content {
+                height:calc(100vh - 80px) !important;
+            }
+            .sub-content {
+                width:100%;
+                overflow:auto;  
+            }
+            .side-nav-content {
+                width:50px;
+            }
+            .menu-content {
+                padding-top:2px;
+                padding-bottom:2px;
+                height:100%;
+                overflow:auto;
+            }
+            .showMenu {
+                animation: showMenuKeyFrames 500ms;
+                animation-fill-mode: forwards;
+            }
+            .hideMenu {
+                animation: hideMenuKeyFrames 500ms;
+                animation-fill-mode: forwards;
+            }
+
+            footer {
+                height: 40px;
+                padding: 8px;
+                width:100%;
+                position: absolute;
+                bottom: 0px;
+                text-align: center;    
+                background: $topnav-background-color;
+                span{
+                    margin: 0 auto;
+                    color:  $theme-white !important;
+                } 
+            }
+    }
+
+
+    @keyframes showMenuKeyFrames {
+        from {
+            width:50px;
+        }
+        to {
+            width:350px;
+        }
+    }
+
+    @keyframes hideMenuKeyFrames {
+        from {
+            width:350px;
+        }
+        to {
+            width:50px;
+        }
+    }
+
+    .pointer-view {
+        cursor: pointer;
+    }
+
+    .menu-button {
+        height: 25px;
+        width: 28px;
+        padding-left: 1px;
+     //   border: white solid 1px;
+        margin-left: 15px;
+        //margin-left:-5px;
+        border-radius: 5px;
+    }
+

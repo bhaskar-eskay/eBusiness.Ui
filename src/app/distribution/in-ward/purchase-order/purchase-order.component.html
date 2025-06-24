@@ -1,0 +1,255 @@
+<div class="m-3">
+  <div fxLayout="row" fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column" fxLayoutWrap
+    fxLayoutGap="10px">
+    <div fxFlex="70" fxFlex.xl="55" fxFlex.sm="100" fxFlex.md="46">
+      <h5 class="inward-pharma-head">Purchase Order Entry </h5>
+    </div>
+    <div fxFlex="30" fxFlex.xl="12" fxFlex.sm="100" fxFlex.md="40" class="master-btn text-right" fxLayoutGap="10px">
+      <div fxLayoutAlign="end" fxLayoutGap="10px">
+        <button mat-raised-button color="primary" (click)="clikRegisters()">Purchase Order Register</button>
+
+        <button mat-raised-button [routerLink]="['../purchaseOrderList']" color="primary">Order List</button>
+        <button type="button" mat-raised-button color="primary" [disabled]="!purchaseOrderHeadFormGroup.valid"
+          (click)="showPurchaseDetailTemplate()">Add Item</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+    <form [formGroup]="purchaseOrderHeadFormGroup" fxLayoutGap="10px">
+      <mat-form-field appearance="outline" class="e_mat_date w_116">
+        <mat-label>PUR Date</mat-label>
+        <input matInput [autofocus]="true" formControlName="purDate" [matDatepicker]="purchaseDate" [min]="minDate"
+          [max]="maxDate">
+        <mat-datepicker-toggle matSuffix [for]="purchaseDate"></mat-datepicker-toggle>
+        <mat-datepicker #purchaseDate></mat-datepicker>
+      </mat-form-field>
+
+      <app-autocomplete [definition]="customAccountAutoCompleteDef" [control]="purchaseOrderHeadFormGroup.get('accName')"
+        [optionsTableDefinition]="customAccountsOptsTable"></app-autocomplete>
+
+      <mat-form-field appearance="outline" class="w_116">
+        <mat-label>Sh.Name</mat-label>
+        <input matInput formControlName="accShName">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w_224">
+        <mat-label>City Name</mat-label>
+        <input matInput formControlName="cityId">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w_116">
+        <mat-label>Mobile</mat-label>
+        <input matInput formControlName="accMobile">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w_224">
+        <mat-label>GSTIN</mat-label>
+        <input matInput formControlName="accGstIn">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w_224">
+        <mat-label>Company</mat-label>
+        <mat-select formControlName="compId" appMatSelect placeholder="--Select--" #companyfocus #CompanyTab
+          #singleSelect>
+          <mat-option>
+            <ngx-mat-select-search placeholderLabel="Find Company Type..." (keydown)="companyTab($event)"
+              noEntriesFoundLabel="'no matching Company found'"
+              [formControl]="CompanyTabMultiFilterCtrl"></ngx-mat-select-search>
+          </mat-option>
+
+          <mat-option value='0'>--Select--</mat-option>
+          <mat-option *ngFor="let bank of filteredCompanyMulti | async" [value]="bank.compId">
+            {{bank.compName}}
+          </mat-option>
+        </mat-select>
+
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w_224">
+        <mat-label>Remarks</mat-label>
+        <input matInput formControlName="remarks">
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" (click)="onSaveOrUpdateOrderHead()" [disabled]="!purchaseOrderHeadFormGroup.valid">{{outwardHeadBtnText}}</button>
+      <button mat-raised-button>Reset</button>
+      <button mat-raised-button [routerLink]="['../purchaseOrders']">Back</button>
+    </form>
+
+  </div>
+
+    <div class="mt-2">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+      <div fxFlex="100">
+        <!-- <app-alert [id]="'preturnDetailItemList'"></app-alert> -->
+        <app-table [definition]="tableDefinition" [data]="outWardDetail" [tableAlertId]="'preturnDetailItemList'"
+          [isDataLoading]="isDataLoading" [disableActions]="disableActions"></app-table>
+      </div>
+
+    </div>
+  </div>
+
+  <ng-template #purchaseOrderDetail>
+    <div fxFlex="100" class="user-form" fxLayoutGap="10px">
+      <form [formGroup]="purchaseOrderDetailFormGroup" class="pur-add-form mbl_height">
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+          <app-autocomplete fxFlex="24" fxFlex.xs="100" class="return_mat" id="pProductName"
+            [definition]="customProductAutoCompleteDef" [control]="purchaseOrderDetailFormGroup.get('product')"
+            [optionsTableDefinition]="customProductOptsTable"></app-autocomplete>
+          <div fxFlex="24">
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Sh.Name</mat-label>
+              <input matInput formControlName="shname" required>
+              <mat-error>
+                <span *ngIf="purchaseOrderDetailFormGroup.get('shname').hasError('required') ">Sh.Name Required...!
+                </span>
+                <!-- <span *ngIf="purchaseOrderDetailFormGroup.get('shortName').hasError('greaterValue2') "> Sh.Name Not Found...!</span> -->
+                <span
+                  *ngIf="purchaseOrderDetailFormGroup.get('shname').errors && purchaseOrderDetailFormGroup.get('shname').hasError('incorrect')">
+                  Sh.Name Not Found...!</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxFlex="24">
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Product Pack</mat-label>
+              <input matInput formControlName="productpack" required>
+              <mat-error>
+                <span *ngIf="purchaseOrderDetailFormGroup.get('productpack').hasError('required') ">Product Pack Required...!
+                </span>
+                <!-- <span *ngIf="purchaseOrderDetailFormGroup.get('shortName').hasError('greaterValue2') "> Sh.Name Not Found...!</span> -->
+                <span
+                  *ngIf="purchaseOrderDetailFormGroup.get('productpack').errors && purchaseOrderDetailFormGroup.get('productpack').hasError('incorrect')">
+                  Product Pack Not Found...!</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="user-form" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+          <div fxFlex="24">
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Qty</mat-label>
+              <input matInput formControlName="qty" required>
+              <mat-error>
+                <span *ngIf="purchaseOrderDetailFormGroup.get('qty').hasError('required') ">Qty Required...! </span>
+                <!-- <span *ngIf="purchaseOrderDetailFormGroup.get('shortName').hasError('greaterValue2') "> Sh.Name Not Found...!</span> -->
+                <span
+                  *ngIf="purchaseOrderDetailFormGroup.get('qty').errors && purchaseOrderDetailFormGroup.get('qty').hasError('incorrect')">
+                  Qty Not Found...!</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxFlex="24">
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Qty.Disc</mat-label>
+              <input matInput formControlName="qtyDisc" required>
+              <mat-error>
+                <span *ngIf="purchaseOrderDetailFormGroup.get('qtyDisc').hasError('required') ">Qty.Disc Required...!
+                </span>
+                <!-- <span *ngIf="purchaseOrderDetailFormGroup.get('shortName').hasError('greaterValue2') "> Sh.Name Not Found...!</span> -->
+                <span
+                  *ngIf="purchaseOrderDetailFormGroup.get('qtyDisc').errors && purchaseOrderDetailFormGroup.get('qtyDisc').hasError('incorrect')">
+                  Qty Not Found...!</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxFlex="24">
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Rate</mat-label>
+              <input matInput formControlName="rate" required>
+              <mat-error>
+                <span *ngIf="purchaseOrderDetailFormGroup.get('rate').hasError('required') ">Rate Required...! </span>
+                <!-- <span *ngIf="purchaseOrderDetailFormGroup.get('shortName').hasError('greaterValue2') "> Sh.Name Not Found...!</span> -->
+                <span
+                  *ngIf="purchaseOrderDetailFormGroup.get('rate').errors && purchaseOrderDetailFormGroup.get('rate').hasError('incorrect')">
+                  Rate Not Found...!</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="user-form" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+          <div fxFlex="24">
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Company</mat-label>
+              <input matInput formControlName="company">
+              <mat-error>
+                <span *ngIf="purchaseOrderDetailFormGroup.get('company').hasError('required') ">company Required...!
+                </span>
+                <!-- <span *ngIf="purchaseOrderDetailFormGroup.get('shortName').hasError('greaterValue2') "> Sh.Name Not Found...!</span> -->
+                <span
+                  *ngIf="purchaseOrderDetailFormGroup.get('company').errors && purchaseOrderDetailFormGroup.get('company').hasError('incorrect')">
+                  Rate Not Found...!</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxFlex="24">
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label>HSN Code</mat-label>
+              <input matInput formControlName="hsncode" required>
+              <mat-error>
+                <!-- <span *ngIf="purchaseOrderDetailFormGroup.get('hsncode').hasError('required') ">Sh.Name Required...! </span> -->
+                <!-- <span *ngIf="purchaseOrderDetailFormGroup.get('shortName').hasError('greaterValue2') "> Sh.Name Not Found...!</span> -->
+                <!-- <span
+                  *ngIf="purchaseOrderDetailFormGroup.get('hsncode').errors && purchaseOrderDetailFormGroup.get('hsncode').hasError('incorrect')">
+                  Sh.Name Not Found...!</span> -->
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxFlex="24">
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Tax</mat-label>
+              <input matInput formControlName="tax" required>
+              <mat-error>
+                <span *ngIf="purchaseOrderDetailFormGroup.get('tax').hasError('required') ">Tax Required...! </span>
+                <!-- <span *ngIf="purchaseOrderDetailFormGroup.get('shortName').hasError('greaterValue2') "> Sh.Name Not Found...!</span> -->
+                <span
+                  *ngIf="purchaseOrderDetailFormGroup.get('tax').errors && purchaseOrderDetailFormGroup.get('tax').hasError('incorrect')">
+                  Tax Not Found...!</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+
+  <ng-template #purchaseOrderDetailButton>
+    <button type="button" mat-raised-button color="primary" [disabled]="!purchaseOrderDetailFormGroup.valid"
+      (click)="onSaveOrUpdatePurchaseOrderDetail(true)">{{outwardDtlBtnSaveContinueTxt}}</button>&nbsp;
+
+    <button type="button" mat-raised-button color="primary" [disabled]="!purchaseOrderDetailFormGroup.valid"
+      (click)="onSaveOrUpdatePurchaseOrderDetail(false)">{{outwardDtlBtnSaveCloseTxt}}</button>&nbsp;
+
+    <button type="button" mat-raised-button class="btn btn-primary" (click)="resetDialog()">Reset</button>
+  </ng-template>
+
+</div>
+
+
+  <!-- <ng-template>
+  <app-table [definition]="historytableDefinition" [data]="historydataSource" [tableAlertId]="'purchaseEntryList'"
+    [disableActions]="disableActions"></app-table>
+  </ng-template> -->
+
+  <ng-template #deletepreturnDetailTemplate let-saleHead="data">
+  Are you sure to delete <strong></strong>?
+</ng-template>
+
+<div class="modal" id="deletePopup" style="display: flex;background: rgba(0, 0, 0, 0.32);">
+  <div class="modal-dialog modal-dialog-centered" style="min-width: 30%;">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color: #006476;padding: 8px 16px;">
+        <p class="modal-title" style="font-size: 16px;color: #fff;">Delete Company Group</p>
+        <button class="close text-white" (click)="closePopup()" style="opacity: 1 !important;outline: none;">&times;</button>
+      </div>
+      <div class="modal-body" style="font-size: 15px;">
+        Are you sure you want to delete this item?
+      </div>
+      <div class="modal-footer modal-footer p-1 border-0 pb-2 pr-2">
+        <button type="button" mat-raised-button (click)="deleteItem()">Yes</button>
+        <button type="button" mat-raised-button (click)="closePopup()">No</button>
+      </div>
+    </div>
+  </div>
+</div>

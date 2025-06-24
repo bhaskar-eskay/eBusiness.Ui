@@ -1,0 +1,77 @@
+{
+    "scheduleOptions":
+        [
+            {"name" : "Assets", "code" : "1"},
+            {"name" : "Liabilities", "code" : "2"}        
+        ],
+        "scheduleType":
+        [
+            {"name" : "Main", "code" : "M"},
+            {"name" : "Sub", "code" : "S"}        
+        ],
+        "productValue":
+        [
+            {"name" : "Yes", "code" : 1},
+            {"name" : "No", "code" : 0}        
+        ],
+        "creditValue":
+        [
+            {"name" : "Credit", "code" : 2},
+            {"name" : "Cash", "code" : 1}        
+        ],
+        "creditValue1":
+        [
+            {"name" : "Credit", "code" : 2},
+            {"name" : "Debit", "code" : 1}        
+        ],
+        "firmMode":
+        [
+            {"name" : "Single", "code" : 0},
+            {"name" : "Main", "code" : 1},
+            {"name" : "Branch", "code" : 2},
+            {"name" : "Franchase", "code" : 3} 
+        ],
+        "mode": 
+        [
+            {"name" : "Credit", "code" : "Credit"} ,
+            {"name" : "Cash", "code" : "Cash"}  
+        ],
+        "inwardStatus": 
+        [
+            {"name": "Purchase", "code": 1},
+            {"name": "Replacement", "code": 2}
+        ],
+
+        "inwardTranStatus": 
+        [
+            {"name": "Actual", "code": 1},
+            {"name": "Free", "code": 2},
+            {"name": "Replacement", "code": 3}
+        ],
+        "discountType": 
+        [
+            {"name": "%", "code": 1},
+            {"name": "Rupee", "code": 2}
+            
+        ],
+
+        "discount": 
+        [
+            {"name": "%", "code": 1},
+            {"name": "Rupee", "code": 2}
+        ],
+
+        "productStatus": 
+        [
+            {"name": "Salable", "code": 1},
+            {"name": "Breakage", "code": 4},
+            {"name": "Spoiled", "code": 5},
+            {"name": "Mfg Defect", "code": 6},
+            {"name": "Expiry", "code": 7}
+        ]
+     
+
+}
+
+
+

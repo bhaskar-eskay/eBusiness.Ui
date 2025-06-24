@@ -1,0 +1,77 @@
+<div class="ml-3 mr-3 mb-3">
+  <div fxLayout="row" fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column" fxLayoutWrap
+    fxLayoutGap="10px">
+    <div fxFlex="60">
+      <h4 class="pharmacyHeading">Area Wise Collections</h4>
+    </div>
+    <button type="button" mat-raised-button color="primary" class="finance-button"
+      routerLink="../cashReceipts">Back</button>
+  </div>
+
+  <mat-accordion class="example-headers-align">
+    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+      <form [formGroup]="areaWiseCollectionsFormGroup">
+      <div fxLayout="row" fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column"
+        fxLayoutWrap fxLayoutGap="10px">
+        <div fxFlex="30" class="user-card">
+          <mat-card class="CashReceiptCard">
+            <mat-form-field appearance="outline">
+              <mat-label>Financial Years</mat-label>
+              <mat-select formControlName="financialyear">
+                <mat-option *ngFor="let food of foods" [value]="food.value">
+                  {{food.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>From Date</mat-label>
+              <input matInput [matDatepicker]="fromDatePicker" formControlName="fromDate">
+              <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #fromDatePicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>To Date</mat-label>
+              <input matInput [matDatepicker]="toDatePicker" formControlName="toDate">
+              <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #toDatePicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Report type</mat-label>
+              <mat-select formControlName="reportType">
+                <mat-option *ngFor="let food of foods" [value]="food.value">
+                  {{food.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <div class="mt-4">
+              <button type="button" class="finance-button " mat-raised-button color="primary"
+                (click)="nextStep()">Generate</button> &nbsp;
+              <button type="button" class="finance-button" mat-raised-button
+                [routerLink]="['../../home']">Cancel</button>
+            </div>
+          </mat-card>
+
+        </div>
+      </div>
+    </form>
+    </mat-expansion-panel>
+
+    <ng-template [ngIf]="isOpened">
+      <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+        <mat-form-field appearance="outline">
+          <input matInput placeholder="Country">
+        </mat-form-field>
+
+        <mat-action-row>
+          <button mat-button color="warn" (click)="prevStep()">Previous</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    </ng-template>
+  </mat-accordion>
+
+
+</div>

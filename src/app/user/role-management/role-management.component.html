@@ -1,0 +1,53 @@
+<div class="m-3" *ngIf="!editRoleFlag; else addOrEditRoleForm">
+  <div fxLayout="row" fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column" fxLayoutWrap
+    fxLayoutGap="10px">
+    <div fxFlex="50" fxFlex.xl="55" fxFlex.sm="57" fxFlex.md="46">
+      <h4 class="masters-pharma-head ">Role Management</h4>
+    </div>
+    <div fxFlex="27" fxFlex.xl="12" fxFlex.sm="12" fxFlex.md="20" class="master-btn">
+      <button mat-raised-button color="primary" (click)="addorEditRole()">Add Role</button>  &nbsp; &nbsp;
+      <button mat-raised-button (click)="getAllRoles()">Refresh</button>
+    </div>
+    <div fxFlex="23">
+    </div>
+  </div>
+  <div class="mt-4">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+      <div fxFlex="60">
+          <app-alert [id]="tableAlert"></app-alert>
+          <app-table [definition]="tableDefinition" [data]="roles" [tableAlertId]="tableAlert"  [isDataLoading]="isDataLoading" [disableActions]="disableActions"></app-table>
+      </div>
+
+    </div>
+  </div>
+
+
+</div>
+
+<ng-template #addOrEditRoleForm>
+  <div class="role-form m-2">
+    <h4 class="masters-pharma-head mb-3">{{editRole && editRole.id?'Edit Role':'Add Role'}}</h4>
+    <app-alert [id]="roleFormAlert"></app-alert>
+  <form [formGroup]="roleForm" *ngIf="roleForm" autocomplete="off">
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px" >
+    <div class="form-group">
+      <mat-form-field appearance="outline">
+        <mat-label>Name:</mat-label>
+        <input matInput type="text" formControlName="name" required>
+      </mat-form-field>
+    </div>
+    <div class="">
+      <button mat-raised-button color="primary" (click)="updateRole()">Save</button> &nbsp;
+      <button mat-raised-button (click)="clearOrResetRoleForm()">{{editRole && editRole.id?'Reset':'Clear'}}</button> &nbsp;
+      <button mat-raised-button (click)="clearEditRoleFlag()">Close</button>
+    </div>
+  </div>
+
+
+<app-drag-drop-dual-list [availables]="availableMenus" [selects]="selectedMenus" [nestedView]="true" [nestedField]="'menus'" valueField="id" availableText="Available Menus" selectedText="Assigned Menus"
+    textField="name" (selectsEmitter)="onMenusSelect($event)">
+</app-drag-drop-dual-list>
+
+</form>
+</div>
+</ng-template>

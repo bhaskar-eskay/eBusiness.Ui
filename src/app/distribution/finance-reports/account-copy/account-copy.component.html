@@ -1,0 +1,80 @@
+<div class="pharma-finance">
+  <div class="heading-container">
+    <h4 class="pharmacyHeading">Account Copy</h4>
+  </div>
+  <br>
+
+  <mat-accordion>
+    <mat-expansion-panel class="account_mat" [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+      <form [formGroup]="cashReceiptRegisterFormGroup">
+        <div fxLayout="row wrap" fxLayoutGap="16px" class="CashReceiptControls">
+          <!-- From Date -->
+          <mat-form-field fxFlex="20" fxFlex.xs="30" class="e_mat_date" appearance="outline">
+            <mat-label>From Date</mat-label>
+            <input matInput [matDatepicker]="fromDatePicker" formControlName="fromDate"
+              [matDatepickerFilter]="dateFilter">
+            <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #fromDatePicker></mat-datepicker>
+            <mat-error class="error-msg">
+              <span>From Date is Required...!</span>
+            </mat-error>
+          </mat-form-field>
+
+          <!-- To Date -->
+          <mat-form-field fxFlex="20" fxFlex.xs="30" class="e_mat_date" appearance="outline">
+            <mat-label>To Date</mat-label>
+            <input matInput [matDatepicker]="toDatePicker" formControlName="toDate" [matDatepickerFilter]="dateFilter">
+            <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #toDatePicker></mat-datepicker>
+            <mat-error class="error-msg">
+              <span>To Date is Required...!</span>
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Sort Option -->
+          <mat-form-field fxFlex="20" fxFlex.xs="28" appearance="outline">
+            <mat-label>Type</mat-label>
+            <mat-select formControlName="accopyType">
+              <mat-option value="1">Account Copy</mat-option>
+              <mat-option value="2">Ledger</mat-option>
+            </mat-select>
+            <mat-error class="error-msg">
+              <span>Type is Required...!</span>
+            </mat-error>
+          </mat-form-field>
+          
+          <div fxFlex="100" class="mt-1" *ngIf="cashReceiptRegisterFormGroup.get('accopyType')?.value === '1'">
+            <app-auto-select (outPutEmitter)="receiveData($event)" [optionsTableDefinition]="customAccountsOptsTable" [filterKeys]="filterKeys" [dataSource]="dropdownOptions"></app-auto-select>
+          </div>
+
+        </div>
+        <div fxLayout="row wrap" fxLayoutGap="16px" class="button-group justify-content-end">
+          <button type="button" mat-raised-button color="primary" [disabled]="cashReceiptRegisterFormGroup.invalid"
+            (click)="generateReport()">Generate</button>
+          <button type="button" mat-raised-button color="warn" (click)="resetForm()">Reset</button>
+          <button type="button" mat-raised-button color="primary" class="my-1" (click)="goback()">Back</button>
+          <div class="action-icons" *ngIf="isShowExcelpdf">
+            <!-- Excel Export Button -->
+            <button mat-icon-button (click)="exportToExcel(cashReceiptRegisterFormGroup.value)">
+              <img src="assets/new_xl.png" width="30px" alt="Excel" class="icon-img" />
+            </button>
+            
+      
+            <!-- PDF Export Button -->
+            <button mat-icon-button (click)="exportToPdf()">
+              <img src="assets/new_pdf.png" width="30px" alt="PDF" class="icon-img" />
+            </button>
+          </div>
+        </div>
+      </form>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+
+
+<div class="mt-2">
+  <div class="master-table" id="table-scroll" *ngIf="showTable">
+    <!-- <app-alert [id]="'dataTableAlertId'"></app-alert> -->
+    <app-registers-table [dataSource]="dataSource"></app-registers-table>
+  </div>
+</div>

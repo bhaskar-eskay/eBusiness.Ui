@@ -1,0 +1,30 @@
+.inward-pharma-head {
+    color: #006476;  
+    margin-bottom: 0px;
+}
+th.mat-sort-header-sorted {
+  color: #fff;
+}
+
+.inward-table {
+  position: relative;
+  max-height: 470px;
+  overflow: auto;
+}
+
+.inward-table .fa-pencil-alt {
+    color: #1f1f98;
+}
+
+.inward-table .fa-trash-alt {
+    color: #ef0000;
+}
+
+.inward-table tr:hover {
+  background-color: #f0f8ff;
+}
+
+// .mat-header-cell {
+ 
+//   font-family: 'Open Sans',sans-serif;
+// }

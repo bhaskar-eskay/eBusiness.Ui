@@ -1,0 +1,9 @@
+
+@import '../../../../assets/styles/mixin.scss';
+
+::ng-deep .puchase-form {
+    @include user-form; 
+      .mat-form-field {
+        width: 120px;   
+  }
+  }

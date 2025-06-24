@@ -1,0 +1,28 @@
+<mat-card class="header-card mat-elevation-z2">
+<mat-toolbar color="primary">
+	<mat-toolbar-row>
+    <span> <img src="assets/logo6.png" alt="" width="75"></span>
+    <ng-template [ngIf]="showUserOptions">
+      <ng-content select="[menuContent]"></ng-content>
+    </ng-template>
+    <span class="menu-spacer"></span>
+    <span *ngIf="firmName">{{firmName}}</span>
+    <span class="menu-spacer"></span>
+    
+    <a mat-button [matMenuTriggerFor]="admin" *ngIf="isAuthenticated" [ngClass]="{ 'disableMenu' :!showUserOptions || !menus }">  Hello {{authDetails.firmUserFullName|titlecase}} 
+      <mat-icon *ngIf="menus && showUserOptions ">settings</mat-icon >
+    </a>
+    <mat-menu #admin="matMenu">
+      <ng-container *ngFor="let menu of menus">
+        <div mat-menu-item [routerLink]="[menu.link]" routerLinkActive="active_routeMenu">       
+          <span>{{menu.label}}</span>
+        </div>
+      </ng-container>
+    </mat-menu>
+
+    <a  mat-button *ngIf="isAuthenticated"> <mat-icon (click)="logout()">power_settings_new</mat-icon> </a>
+
+
+	</mat-toolbar-row>
+</mat-toolbar>
+</mat-card>

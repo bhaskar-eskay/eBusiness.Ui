@@ -1,0 +1,10 @@
+
+@import '../../../../assets/styles/mixin.scss';
+
+::ng-deep .bank-form{
+    @include user-form;
+}
+
+.img-thumbnail{
+    height: 400px;
+}

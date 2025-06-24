@@ -1,0 +1,112 @@
+<ng-template [ngIf]="data && data.length>0">
+    <div *ngIf="(!definition.disableFilter || !definition.disableFilter)" class="table-form">
+        <mat-form-field appearance="outline" class="float-left">
+            <mat-label>Filter</mat-label>
+            <input matInput (keyup)="applyFilter($event)" autocomplete="off">
+        </mat-form-field>
+        <img src="../../../../assets/new_xl.png" class="mt-1 float-right" matTooltip="Click here for Excel File"
+         *ngIf="xlicon" alt="" width="40px" height="40px" (click)="excelFile()" >
+    </div>
+
+
+    <div class="master-table table-responsive mat-elevation-z4">
+        <table mat-table [dataSource]="dataSource" matSort *ngIf="definition" cdkDropListGroup>
+
+            <ng-container *ngFor="let column of definition.columns; let index=index" [cdkColumnDef]="column.id">
+                <th mat-header-cell *cdkHeaderCellDef class="text-center" cdkDropList cdkDropListLockAxis="x"
+                    cdkDropListOrientation="horizontal" cdkDrag (cdkDragStarted)="dragStarted(column.id)"
+                    (cdkDropListDropped)="dropListDropped(column.id)" [cdkDragDisabled]="definition.disableColDrag">
+                    <span class="table-header">
+                        <mat-icon *ngIf="!definition.disableColDrag"
+                            [ngClass]="column.actions?'col-drag-icon action':'col-drag-icon'"
+                            cdkDragHandle>more_vert</mat-icon>
+                        <span mat-sort-header [disabled]="column.disableSort?column.disableSort:false">
+                            <!-- <img *ngIf="column.name == 'Print All' " class="icons" src="assets/new_print.png" alt=""> -->
+                            {{column.name}}
+                        </span>
+
+                    </span>
+                </th>
+                <td mat-cell *cdkCellDef="let row" class="" [ngStyle]="{ 'background-color': getStatus(row) ? 'lightpink' : 'white' }" [ngClass]="column.actions?'action-col':''">
+                    <!-- Cell Value -->
+                    <ng-template [ngIf]="column.value">
+                        <div class="text-nowrap" [innerHTML]="(row[column.id]) | highlight:dataSource.filter"></div>
+                    </ng-template>
+
+                    <!-- Cell Actions -->
+                    <ng-template [ngIf]="column.actions">
+                        <ng-container *ngFor="let action of column.actions;let index=index">
+                            <button *ngIf="action.icon;else showLabeledButton" mat-icon-button
+                                (click)="doTableAction(action,row.data)" class="action-button" type="button"
+                                [disabled]="(action.isDisabled && row.actionsData[action.name])?true:disableActions">
+                                <!-- <mat-icon *ngIf="action.name != 'WhatsApp'" [matTooltip]="action.name" [ngClass]="(action.isDisabled && row.actionsData[action.name]) || disableActions?'':action.style?action.style+' table-action':'table-action'" >
+                                {{action.icon}}</mat-icon> -->
+                                <img *ngIf="action.name == 'Delete'" class="icons" [src]="action.icon"
+                                    [matTooltip]="action.name"
+                                    [ngClass]="(action.isDisabled && row.actionsData[action.name]) || disableActions?'':action.style?action.style+' table-action':'table-action'">
+                                <!-- <img *ngIf="action.name == 'WhatsApp'" class="icons" [src]="action.icon"
+                                    [matTooltip]="action.name"
+                                    [ngClass]="(action.isDisabled && row.actionsData[action.name]) || disableActions?'':action.style?action.style+' table-action':'table-action'"> -->
+                                <img *ngIf="action.name == 'Edit'" class="icons" [src]="action.icon"
+                                    [matTooltip]="action.name"
+                                    [ngClass]="(action.isDisabled && row.actionsData[action.name]) || disableActions?'':action.style?action.style+' table-action':'table-action'">
+                                <img *ngIf="action.name == 'Print'" [ngClass]="outStatus ? 'not-allowed' : '' " class="icons" [src]="action.icon"
+                                    [matTooltip]="action.name"
+                                    [ngClass]="(action.isDisabled && row.actionsData[action.name]) || disableActions?'':action.style?action.style+' table-action':'table-action'">
+                                <!-- <img *ngIf="action.name == 'Email'" class="icons" [src]="action.icon"
+                                    [matTooltip]="action.name"
+                                    [ngClass]="(action.isDisabled && row.actionsData[action.name]) || disableActions?'':action.style?action.style+' table-action':'table-action'"> -->
+                                <img *ngIf="action.name == 'IRN'" [matTooltip]="action.name" [ngClass]="isGST ? 'not-allowed' : '' " class="icons" [src]="action.icon">
+                                <!-- <img *ngIf="action.name == 'PDF'" class="icons" [src]="action.icon"> -->
+                                <div *ngIf="action.name == 'Share'" [ngClass]="outStatus ? 'not-allowed' : '' ">
+                                    <div class="tooltip-container">
+                                        <img src="assets/share.png" class="icons" alt="Hover to see tooltip">
+                                        <div class="tooltip">
+                                            <div style="background-color: white;">
+                                                <div class="d-flex">
+                                                    <img src="assets/new_whatsApp2.png" style="margin: 3px 1px 0 3px;" width="27px" alt="WhatsApp">
+                                                    <!-- <label class="mb-0 align-self-center" style="font-size: 10px;color: #006476;"><b>(or)</b></label> -->
+                                                    <img src="assets/new_mail.png" style="margin: 6px 3px 0 3px;height: 20px;" width="27px" alt="Email">
+                                                </div>
+                                                <div class="d-block text-center" for="" style="font-size: 10px;color: #006476;margin-top: 2px;"><b>Share</b></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <mat-checkbox *ngIf="action.name == 'checkbox'" [disabled]="outStatus"></mat-checkbox> -->
+                            </button>                            
+                            <ng-template #showLabeledButton>
+                                <button mat-button color="primary" (click)="doTableAction(action,row.data)"
+                                    class="action-button" type="button"
+                                    [disabled]="(action.isDisabled && row.actionsData[action.name])?true:disableActions">
+                                    {{action.name}}
+                                </button>
+                            </ng-template>
+                            <span class='action-separator' *ngIf="(column.actions.length-1) !==index">|</span>
+                        </ng-container>
+                    </ng-template>
+
+                    <!-- Cell Template -->
+                    <ng-template [ngIf]="column.template">
+                        <mat-icon *ngIf="column.template.type==='popover'" [popover]="popoverTemplate"
+                            [placement]="column.template.position ? column.template.position : 'right'"
+                            triggers="mouseenter:mouseleave"
+                            class='table-popover'>{{column.template.icon?column.template.icon:'info'}}
+                        </mat-icon>
+                        <ng-template #popoverTemplate>
+                            <ng-container *ngTemplateOutlet="row.template;context:{data:row.data}">
+                            </ng-container>
+                        </ng-template>
+                    </ng-template>
+                </td>
+            </ng-container>
+            <tr mat-header-row *cdkHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row class="d_row" *cdkRowDef="let row; columns: displayedColumns;" [matRowKeyboardSelection]="selection"
+                [selectOnFocus]="true" [toggleOnEnter]="false" [rowModel]="row">
+            </tr>
+        </table>
+    </div>
+    <div><mat-paginator *ngIf="(!definition.disablePagination || !definition.disablePagination)" #paginator
+            [pageSizeOptions]="definition.pageSizeOptions?definition.pageSizeOptions:[5, 10, 25, 100]"
+            class="mat-paginator-sticky custom_paginator mat_date"></mat-paginator></div>
+</ng-template>

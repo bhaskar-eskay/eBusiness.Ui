@@ -1,0 +1,47 @@
+<div class="p-3 reg-form">
+  <form [formGroup]="regForm" fxLayoutGap="10px" autocomplete="off">
+    <table class="table table-sm">
+      <tbody>
+        <tr *ngFor="let form of regForm.get('form').controls; let i = index" [formGroup]="form">
+          <td>
+            <mat-form-field appearance="outline">
+              <mat-label>LTO Type</mat-label>
+              <input matInput formControlName="ltoType" id="{{form.ltoType}}">
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field appearance="outline">
+              <mat-label>LTO Name</mat-label>
+              <input matInput formControlName="ltoName" id="{{form.ltoName}}">
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field appearance="outline">
+              <mat-label>LTO Prefix</mat-label>
+              <input matInput formControlName="ltoPrefix" id="{{form.ltoPrefix}}">
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field appearance="outline">
+              <mat-label>LTO Number</mat-label>
+              <input matInput formControlName="ltoNo" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                id="{{form.ltoNo}}">
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field appearance="outline">
+              <mat-label>LTO Valid Upto</mat-label>
+              <input matInput formControlName="ltoValidDate" id="{{form.ltoValidDate}}">
+            </mat-form-field>
+          </td>
+
+        </tr>
+      </tbody>
+    </table>
+  </form>
+
+  <br>
+  <button mat-raised-button [disabled]="!regForm" color="primary" (click)="regFormValue()"> Next </button>
+
+
+</div>

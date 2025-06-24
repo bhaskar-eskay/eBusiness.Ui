@@ -1,0 +1,36 @@
+
+<!-- <app-app-sidemenu (collapsedEvent)="receiveCollapsed($event)"> </app-app-sidemenu>
+
+<section class="main-container" [ngClass]="{collapsed: collapedSideBar}">
+    <router-outlet></router-outlet>
+</section> -->
+
+
+
+  <marquee class="py-3">
+    <span style="color: red;font-weight: bold;" title="Supplier Name" *ngFor="let e of expArray"> <i class="far fa-hand-point-right"></i> 
+      {{e?.prod_Name}} {{e?.prod_Pack}} [{{e?.company_Name}}] EXP:{{e?.expiry}} Qty:{{e?.qty}}
+    </span>  &nbsp;
+    <!-- <span  title="Supplier Name"> <i class="far fa-hand-point-right"></i> </span>  &nbsp; -->
+    <!-- <span  title="Supplier Name"> <i class="far fa-hand-point-right"></i> Laxmi Venkateshwara Medical Distributors</span>  &nbsp;
+    <span  title="Supplier Name"> <i class="far fa-hand-point-right"></i> Laxmi Venkateshwara Medical Distributors</span>  &nbsp;
+    <span  title="Supplier Name"> <i class="far fa-hand-point-right"></i> Laxmi Venkateshwara Medical Distributors</span>  &nbsp; -->
+  </marquee>
+
+  
+  <app-dynamic-tabs [refFuncByIdConfig]="dynaTabsDefination" [id]="distDynaTabsId" (tabView)=updateTabView($event)></app-dynamic-tabs>
+
+  <ng-template [ngIf]="!isTabView">
+    <router-outlet ></router-outlet>
+  </ng-template>
+    
+
+
+  <ng-template #dynaTab1>
+    <input type="text">
+  </ng-template>
+
+  <ng-template #dynaTab2>
+    <input type="text">
+  </ng-template>
+

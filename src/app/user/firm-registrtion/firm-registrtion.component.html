@@ -1,0 +1,42 @@
+<mat-horizontal-stepper linear id="stepper">
+
+  <ng-template matStepperIcon="edit">
+    <mat-icon>insert_drive_file</mat-icon>
+  </ng-template>
+
+  <ng-template matStepperIcon="done">
+    <mat-icon>done_all</mat-icon>
+  </ng-template>
+
+
+  <div class="user-form">
+    <mat-step label="firm Details">
+        <div  fxLayoutGap="10px" autocomplete="off">
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap  fxLayoutGap="10px">
+              <div fxFlex="40">
+                <mat-form-field appearance="outline">
+                  <mat-label>Account Name</mat-label>
+                  <input matInput  >
+                </mat-form-field>
+              </div>
+              <div fxFlex="20">
+                <mat-form-field appearance="outline">
+                  <mat-label>Sh.Name</mat-label>
+                  <input matInput >
+                </mat-form-field>
+              </div>
+            
+              </div>
+              </div>
+        <button mat-button (click)="complete()" mat-raised-button color="primary">Complete</button>
+        <button mat-button (click)="next()" mat-raised-button color="primary">NextB</button>
+      </mat-step>
+ 
+
+
+  <mat-step #step2 label="Registration information">
+    <h3>Step 2</h3>
+    <button mat-button (click)="complete()" mat-raised-button color="primary">Complete</button>
+  </mat-step>
+</div>
+</mat-horizontal-stepper>

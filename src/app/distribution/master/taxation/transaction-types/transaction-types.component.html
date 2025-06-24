@@ -1,0 +1,104 @@
+<div class="m-3">
+
+
+  <div fxLayout="row" fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column" fxLayoutWrap
+    fxLayoutGap="10px">
+    <div fxFlex="80" fxFlex.xl="55" fxFlex.sm="57" fxFlex.md="46">
+      <h4 class="masters-pharma-head">Tax Transaction Type Details </h4>
+    </div>
+    <div fxFlex="20" fxFlex.xl="12" fxFlex.sm="12" fxFlex.md="20" class="master-btn text-right">
+    </div>
+
+  </div>
+
+
+  <div class="mt-2">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+      <div fxFlex="80">
+        <form [formGroup]="formGroup" fxLayoutGap="10px" class="tax-type-form">
+
+          <div class="my-1 d-inline">
+            <app-autocomplete [definition]="TransactionTypeAutoCompleteDef" [control]="formGroup.get('menuName')"
+            [optionsTableDefinition]="transactionTypeOptsTable" [autofocus]="true"></app-autocomplete>
+          </div>
+
+          <mat-form-field appearance="outline" class="my-1">
+            <mat-label>Standard Prefix</mat-label>
+            <input matInput formControlName="stdPrefix"
+              [value]="formGroup.get('menuName').value?formGroup.get('menuName').value.stdPrefix:''">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="my-1">
+            <mat-label>Want Tran No. Dynamically</mat-label>
+            <mat-select formControlName="dtlFlag" appMatSelect>
+              <mat-option *ngFor="let data of yesnoData" [value]="data.code">
+                {{ data.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+            <mat-form-field appearance="outline" [hidden]="showLookUpTable" class="my-1">
+              <mat-label>Customized Prefix</mat-label>
+              <input matInput formControlName="userDefinedPrefix">
+            </mat-form-field>
+                   
+        </form>
+        <div class="text-right mb-1">
+          <button type="button" mat-raised-button color="primary"
+            (click)="onSave_UpdateTranType()">{{buttonText}}</button> &nbsp;
+          <button type="button" mat-raised-button (click)="resetHandler()">Reset</button> &nbsp;
+          <button type="button" mat-raised-button (click)="clickCancelHandler()">Cancel</button>
+        </div>
+        <div [hidden]="!showLookUpTable">
+          <form [formGroup]="buildMetaTableFormGroup">
+            <div formArrayName="tableMeta">
+              <table class="table table-bordered lookUpTable">
+                <thead>
+                  <tr>
+                    <th>Field Name</th>
+                    <th>LookUp Column</th>
+                    <th>Size</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let tableMetaData of buildMetaTableFormGroup.controls['tableMeta'].controls; let i=index"
+                    [formGroupName]="i">
+                    <td>
+                      <span>
+                        <mat-checkbox color="primary" formControlName="fieldCheckBox" #checkBoxVal
+                          (change)="changeValue($event,i)">
+                          &nbsp; <input matInput formControlName="tableFldName">
+                        </mat-checkbox>
+                      </span>
+                    </td>
+                    <td>
+                      <input matInput formControlName="lookupFieldName">
+                    </td>
+                    <td>
+                      <mat-form-field appearance="outline">
+                        <input matInput formControlName="prefixsize" maxlength="1" [disabled]="checkBoxVal.value"
+                          (keypress)="isNumber(event)" #sizeVal>
+                      </mat-form-field>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </form>
+        </div>
+
+
+
+      </div>
+
+      <!-- <div fxFlex="40">
+        <div class="master-img">
+          <img src="assets/images/schedule.jpg" alt="" class="mx-auto d-block img-fluid img-thumbnail">
+        </div>
+      </div> -->
+
+    </div>
+  </div>
+
+
+</div>

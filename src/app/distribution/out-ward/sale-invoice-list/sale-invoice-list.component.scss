@@ -1,0 +1,48 @@
+@import '../../../../assets/styles/mixin.scss';
+
+
+.invList-form {
+  @include user-form;
+
+  // mat-form-field {
+  //   width: 8.5%;
+  // }
+}
+
+::ng-deep {
+  .invList-form {
+    @include user-form;
+
+    .firm-name {
+      width: 65%;
+    }
+  }
+}
+
+
+.w_116{
+  width: 110px !important;
+  margin: 0.5rem 0;
+}
+
+.w_224{
+  width: 224px;
+  margin: 0.5rem 0;
+}
+
+// .invList-form mat-form-field {
+//   margin: 0.5rem 0;
+//   width: 224px !important;
+// }
+
+@media screen and (max-width:600px) {
+  .invList-form mat-form-field{
+    width: 100% !important;
+  }  
+}
+
+@media screen and (min-width:950px) and (max-width:1280px) {
+  .d_md_flex {
+    display: flex;
+  }
+}

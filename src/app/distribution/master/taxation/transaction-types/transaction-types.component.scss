@@ -1,0 +1,28 @@
+
+@import '../../../../../assets/styles/mixin.scss';
+
+.lookUpTable {
+  th {
+    color: #fff;
+    background-color: #006476;
+    font-size: 12px;
+  }
+
+  td{
+    font-size: 12px;
+    height: 16px;
+  }
+
+  tr {
+    max-height: 10px !important;
+    height: 10px !important;
+ }
+}
+
+
+
+
+
+::ng-deep .tax-type-form {
+    @include user-form;
+  }

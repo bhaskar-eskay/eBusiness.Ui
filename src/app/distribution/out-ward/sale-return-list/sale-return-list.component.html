@@ -1,0 +1,88 @@
+<div class="m-3">
+
+
+
+  <div fxLayout="row" fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column" fxLayoutWrap
+    fxLayoutGap="10px">
+    <div fxFlex="80" fxFlex.xl="80" fxFlex.sm="80" fxFlex.md="80">
+      <h4 class="outward-pharma-head">Sales Return List</h4>
+    </div>
+
+    <div fxFlex="20" fxFlex.xl="20" fxFlex.sm="20" fxFlex.md="20" class="master-btn text-right">
+      <button mat-raised-button (click)="addInvoice()"  color="primary">Add SaleReturn</button>
+
+      <!-- <button mat-raised-button [routerLink]="['../salesReturns']" color="primary">Back</button> -->
+    </div>
+
+  </div>
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="5px" class="user-form">
+    <div fxFlex="100" class="retList-form">
+      <form [formGroup]="salesReturnList" fxLayoutGap="5px">
+        <mat-form-field appearance="outline" class="e_mat_date w_116" style="margin: 5px;">
+          <mat-label>From Date</mat-label>
+          <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" formControlName="fromDate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="e_mat_date w_116" style="margin: 5px;">
+          <mat-label>To Date</mat-label>
+          <input matInput [matDatepicker]="picker1" [min]="minDate" [max]="maxDate" formControlName="toDate">
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+        <!-- <mat-form-field>
+            <mat-label>To Date</mat-label>
+            <input matInput>
+          </mat-form-field> -->
+        <mat-form-field appearance="outline" class="w_224" style="margin: 5px;">
+          <mat-label>SRET No</mat-label>
+          <input matInput formControlName="sretNo">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w_224" style="margin: 5px;">
+          <mat-label>Customer Name</mat-label>
+          <input matInput formControlName="custmorName">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w_116" style="margin: 5px;">
+          <mat-label>Sh.Name</mat-label>
+          <input matInput formContromName="shName">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w_224" style="margin: 5px;">
+          <mat-label>City Name</mat-label>
+          <input matInput formContromName="cityName">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w_224" style="margin: 5px;">
+          <mat-label>GSTIN</mat-label>
+          <input matInput formContromName="gstin">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w_224" style="margin: 5px;">
+          <mat-label>Mode</mat-label>
+          <input matInput formContromName="mode">
+        </mat-form-field>
+        <mat-form-field appearance="outline" style="margin: 5px;">
+          <mat-label>Inv.Value</mat-label>
+          <input matInput formContromName="invValue">
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" class="mat_btn" (click)="getList()">Search</button>
+        <button mat-raised-button class="mat_btn">Reset</button>
+        <button type="button" class="mat_btn" mat-raised-button [routerLink]="['../OutwardTransaction']">Back</button>
+      </form>
+
+    </div>
+  </div>
+
+
+
+  <div class="mt-2">
+    <div class="master-table" id="table-scroll">
+      <app-alert [id]="'dataTableAlertId'"></app-alert>
+      <app-table [definition]="tableDefinition" [data]="dataList" [tableAlertId]="'dataTableAlertId'"
+        [isDataLoading]="isDataLoading" [disableActions]="disableActions"></app-table>
+    </div>
+  </div>
+
+  <ng-template #deletePurchaseHeadTemplate let-purchaseHead="data">
+    Are you sure to delete <strong></strong> Purchase Head?
+  </ng-template>
+
+</div>

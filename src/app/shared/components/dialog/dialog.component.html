@@ -1,0 +1,28 @@
+<div fxLayoutGap class="business-modal">
+
+  <p mat-dialog-title *ngIf="!data.hideHeader">{{data.title?data.title:'Confirm'}} 
+    <mat-icon (click)="onDismiss()">close    </mat-icon>
+  </p>
+  <div class="modal-body" id="table-scroll">
+    <p display-2 *ngIf="!data.templateRef">{{data.message?data.message:'Are you sure?'}}</p>
+
+    <ng-template [ngIf]="data.templateRef">
+      <ng-container *ngTemplateOutlet="dialogBodyTemplate;context:{data:data.data}">
+      </ng-container>
+    </ng-template>
+
+  </div>
+  <div  class="dialog-footer pr-3 text-right" *ngIf="!data.hideFooter">
+    <ng-template [ngIf]="data.buttonTemplates">
+      <ng-container *ngFor="let buttonTemplate of data.buttonTemplates">
+        <ng-container *ngTemplateOutlet="buttonTemplate.templateRef;context:{data:data.data}">
+        </ng-container>
+      </ng-container>
+    </ng-template>
+    <button mat-raised-button class="ml-1" (click)="onDismiss()">{{data.closeBtnLabel?data.closeBtnLabel:'No'}}</button>&nbsp;
+    <ng-template [ngIf]="data.buttons">
+      <button mat-raised-button color="primary" (click)="onConfirm(button)" *ngFor="let button of data.buttons">{{button.label}}</button>&nbsp;
+    </ng-template>
+
+  </div>
+</div>

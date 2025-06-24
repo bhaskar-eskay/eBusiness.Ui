@@ -1,0 +1,86 @@
+<div class="p-3 user-form">
+  <form [formGroup]="otherForm" fxLayoutGap="10px" autocomplete="off">
+    <mat-form-field appearance="outline">
+      <mat-label>Bank Name</mat-label>
+      <mat-select id="bankName" formControlName="accBankId1" appMatSelect>
+        <mat-option *ngFor="let data of dataList" [value]="data.id">
+          {{ data.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!-- <mat-form-field appearance="outline">
+      <mat-label>Bank IFSC Code</mat-label>
+      <input matInput id="ifscCOde" formControlName="accBankIFSC1">
+    </mat-form-field> -->
+
+    <mat-form-field appearance="outline">
+      <mat-label>Bank IFSC Code</mat-label>
+      <mat-select id="ifscCode" formControlName="accBankIFSC1" appMatSelect>
+        <mat-option *ngFor="let ifsc of ifscList" [value]="ifsc.id">
+          {{ ifsc.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+    <mat-form-field appearance="outline">
+      <mat-label>Bank Account Number</mat-label>
+      <input matInput id="accNumber" formControlName="accBankAccNo1" maxlength="20"
+        onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Transaction Mode</mat-label>
+      <mat-select id="transactionMode" formControlName="traMode" appMatSelect>
+        <mat-option *ngFor="let data of creditData" [value]="data.code">
+          {{ data.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>HSN Code</mat-label>
+      <mat-select formControlName="hsncode" appMatSelect>
+        <mat-option *ngFor="let data of hsnList" [value]="data.hsnId">
+          {{ data.hsnDescription }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>SAC Code</mat-label>
+      <input matInput formControlName="accSacCode" maxlength="8"
+        onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Rate of Tax</mat-label>
+      <input matInput formControlName="taxRate">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Shadow</mat-label>
+      <mat-select formControlName="shadow" appMatSelect>
+        <mat-option *ngFor="let data of yesnoData" [value]="data.code">
+          {{ data.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Firm Type</mat-label>
+      <mat-select formControlName="firmType" appMatSelect>
+        <mat-option [value]="0"> Wholesale </mat-option>
+        <mat-option [value]="1"> Retail </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Due Days</mat-label>
+      <input matInput maxlength="4" formControlName="accDueDays"
+        onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Credit Limit</mat-label>
+      <input matInput formControlName="accCreditLimit">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Textarea</mat-label>
+      <textarea matInput formControlName="remarks"></textarea>
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="regFormValue()"> Save </button>
+  </form>
+</div>

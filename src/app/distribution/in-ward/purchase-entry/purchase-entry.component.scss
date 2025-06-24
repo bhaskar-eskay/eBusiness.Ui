@@ -1,0 +1,120 @@
+@import '../../../../assets/styles/mixin.scss';
+
+::ng-deep .user-form {
+  @include user-form;
+  .head-form .mat-form-field {
+    // width: 140px;
+    margin-bottom: 10px !important ;
+  }
+  .adj-form .mat-form-field{
+    width: 100%;
+  }
+}
+
+#t01 table {
+  font-size: 12px;
+}
+#t01 tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#t01 tr:nth-child(odd) {
+  background-color: #fff;
+}
+
+::ng-deep .e_mat_date .mat-form-field-label{
+  margin-top: -0.45em !important;  
+}
+
+
+
+@media screen and (max-width:600px) {
+  .head-form {
+    .mat-form-field{
+      margin: 15px 0 !important ;
+      width: 100% !important;
+    }
+  }
+
+  .user-form .head-form .mat-form-field{
+    width: 100%;
+  }
+
+  .mbl_height{
+    max-height: 300px;
+    overflow: auto;
+  }
+
+  // .mbl_w{
+  //   min-width: 100%;
+  // }
+}
+
+@media screen and (min-width:600px) and (max-width:730px) {
+.sm_mt{
+  margin-top: 5px;
+}
+.mt_1{
+  margin-top: 10px;
+}
+}
+
+@media screen and (min-width:750px) and (max-width:930px) {
+  .sm_mt_2{
+    margin-top: 12px;
+  }
+  }
+
+@media screen and (min-width:960px){
+  .md_flex{
+    display: flex !important;
+    flex-direction: row !important;
+  }
+}
+
+@media screen and (min-width:930px) and (max-width:1261px) {
+  .sm_mt_3{
+    margin-top: 12px;
+  }
+}
+
+@media screen and (min-width:1263px) and (max-width:1471px) {
+  .sm_mt_4{
+    margin-top: 12px;
+  }
+}
+
+
+@media screen and (max-width:780px) {
+  .mb_10{
+    margin-bottom: 10px !important;
+  }
+}
+
+@media screen and (min-width:600px) and (max-width:950px) {
+  .sm_align{
+    align-items: unset !important;
+  }
+  }
+
+@media screen and (max-width:600px) {
+  .sm_align{
+    align-items: unset !important;
+  }
+  .mbl_center{
+    text-align: center !important;
+  }
+  .mbl_w-100{
+    width: 100%;
+  }
+}
+
+  .pe_btn{
+    bottom: 4px;
+  }  
+
+  .mat_product {
+    ::ng-deep .mat-form-field{
+    width: 99% !important;
+    }
+  }

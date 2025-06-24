@@ -1,0 +1,28 @@
+<div [hidden]="!isTabView">
+  <ng-container *ngFor="let tab of tabs">
+      <div [hidden]="!tab.isActive">
+        <ng-container  *ngTemplateOutlet="tab.template;context:{id:tab.id,data:tab.data}">
+        </ng-container>
+      </div>
+  </ng-container>
+</div>
+
+
+<div @list>
+    <ul class="nav nav-tabs justify-content-end">
+      <li *ngFor="let tab of tabs; let index=index" [class.active]="activeTabIndex===index" (click)="selectTabByIndex(index)" @items>
+        <a title="{{tab.id===0 ? 'Add '+tab.title : tab.title+' '+tab.id}}">{{tab.id===0 ? 'Add '+tab.title : tab.title+' '+tab.id}} </a>
+        <span class="tab-close">
+            <a (click)="closeTabByIndex(index)">
+              <i class="fa fa-times-circle" aria-hidden="true"></i>
+            </a>
+        </span>
+      </li>
+      <li [hidden]="tabs.length === 0" class="text-right ml-auto"> 
+        <i (click)="toggleTabView()" [class]="!isTabView ? 'fas fa-compress' : 'far fa-window-minimize'" @items></i> 
+      </li>
+      <li class="rounded bg-white" style="height: auto;padding: 4px;display: flex;align-self: center;">
+        <small style="color: #006476;font-size: 12px;font-family: Arial MT;"><b>Powered By &#169; Eskay Soft</b></small>
+      </li>
+    </ul>
+</div>

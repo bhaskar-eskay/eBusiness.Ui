@@ -1,0 +1,6 @@
+@import '../../../../../assets/styles/mixin.scss';
+
+
+::ng-deep .tax-form {
+    @include user-form;
+  }

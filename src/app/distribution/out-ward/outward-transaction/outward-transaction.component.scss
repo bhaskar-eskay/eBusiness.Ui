@@ -1,0 +1,63 @@
+/* Container to align the buttons */
+.button-container {
+    display: flex;
+    // justify-content: space-around;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 25px;
+    padding: 15px;
+}
+
+/* Styling for buttons */
+.btn {
+    // display: flex;
+    // align-items: center;
+    // justify-content: center;
+    padding: 8px 20px 10px 8px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.4s;
+    // height: 145px;
+    // width: 208px;
+    // font-size: 16px;
+
+    i{
+        font-size: 28px;
+    }
+    
+}
+.head{
+    color: #305687;
+    padding: 24px;
+    // margin-left: 371px;
+    text-align: center;
+    // background-color: 
+}
+
+/* Icon styling */
+.btn i {
+    margin-right: 8px;
+}
+
+/* Button colors */
+.btn-success {
+    background-color: #28a745;
+    color: white;
+}
+
+/* Hover effect */
+.btn:hover {
+    background-color: white;
+    color: green;
+    border: 1px solid;
+}
+
+.inward_reg_card{
+    .card-header{
+        background-color: #0fa2be;
+        text-align: center;
+        color: white;
+    }
+}

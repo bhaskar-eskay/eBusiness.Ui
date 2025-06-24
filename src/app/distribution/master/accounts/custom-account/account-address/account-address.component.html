@@ -1,0 +1,93 @@
+<div class="p-3 user-form">
+  <form [formGroup]="addressForm" fxLayoutGap="10px" autocomplete="off">
+
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap  fxLayoutGap="10px">
+      <div fxFlex="20">
+        <mat-form-field appearance="outline">
+          <mat-label>Address1 </mat-label>
+          <input matInput formControlName="accAddress1" >
+        </mat-form-field>
+    </div>  
+    <div fxFlex="20">
+      <mat-form-field appearance="outline">
+        <mat-label>Address2</mat-label>
+        <input matInput formControlName="accAddress2">
+      </mat-form-field>
+    </div> 
+    <div fxFlex="20">
+      <app-autocomplete class="company-city" [definition]="cityAutoCompleteDef" [control]="addressForm.get('city')"
+      [optionsTableDefinition]="cityOptsTable"></app-autocomplete>
+      </div>
+    <mat-form-field appearance="outline">
+      <mat-label>Pincode</mat-label>
+      <mat-select formControlName="pincode" appMatSelect>
+        <mat-option *ngFor="let data of pincodeList" [value]="data.id">
+          {{ data.cityPincode }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!-- <mat-form-field appearance="outline">
+      <mat-label>Area Name</mat-label>
+      <input matInput >
+    </mat-form-field> -->
+
+    <!-- <app-autocomplete [definition]="areaAutoCompleteDef" [autofocus]="true"
+              [control]="addressForm.get('areaMaster')"></app-autocomplete> -->
+
+    <!-- formControlName="areaMaster" -->
+    <mat-form-field appearance="outline">
+      <mat-label>District</mat-label>
+      <input matInput formControlName="district">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>State</mat-label>
+      <input matInput formControlName="state">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Landline Number</mat-label>
+      <input matInput formControlName="accPhone">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Mobile Number</mat-label>
+      <input matInput minlength="10" maxlength="11" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+        formControlName="accMobile">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Whatsup Alert</mat-label>
+      <mat-select formControlName="allowWhatsup" appMatSelect>
+        <mat-option *ngFor="let data of yesnoData" [value]="data.code">
+          {{ data.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Whatsapp Mobile</mat-label>
+      <input matInput minlength="10" maxlength="11" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+        formControlName="whatsAppMobile">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>SMS Alert</mat-label>
+      <mat-select formControlName="allowsms" appMatSelect>
+        <mat-option *ngFor="let data of yesnoData" [value]="data.code">
+          {{ data.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>SMS Mobile</mat-label>
+      <input matInput minlength="10" maxlength="11" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+        formControlName="smsMobile">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Contact Person</mat-label>
+      <input matInput formControlName="person">
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="addressFormValue()"> Next </button>
+    </div>
+  </form>
+
+</div>

@@ -1,0 +1,129 @@
+<div class="ml-3 mr-3 mb-3">
+  <div fxLayout="row" fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column" fxLayoutWrap
+    fxLayoutGap="10px">
+    <div fxFlex="60">
+      <h4 class="pharmacyHeading">Cash Payment Register</h4>
+    </div>
+    
+  </div>
+
+
+  <mat-accordion class="example-headers-align">
+    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+      <form [formGroup]="cashPaymentRegisterFormGroup">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column"
+          fxLayoutWrap fxLayoutGap="10px">
+
+          <div fxLayout="row" fxLayoutAlign="start center" fxFlex="100" class="user-card w-100">
+            <mat-card class="CashReceiptCard" fxLayoutGap="10px" fxLayout="row" fxLayout.xs="column" fxLayout.sm="row" >
+              <!-- From Date -->
+              <mat-form-field fxFlex="15" fxFlex.sm="19" fxFlex.xs="100" appearance="outline" class="e_mat_date">
+                <mat-label>From Date</mat-label>
+                <input matInput [matDatepicker]="fromDatePicker" formControlName="fromDate">
+                <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #fromDatePicker></mat-datepicker>
+              </mat-form-field>
+          
+              <!-- To Date -->
+              <mat-form-field fxFlex="15" fxFlex.sm="17" fxFlex.xs="100" appearance="outline" class="e_mat_date">
+                <mat-label>To Date</mat-label>
+                <input matInput [matDatepicker]="toDatePicker" formControlName="toDate">
+                <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #toDatePicker></mat-datepicker>
+              </mat-form-field>
+          
+              <!-- Want Voucher Total -->
+              <div fxFlex="30" fxFlex.xs="100" fxFlex.sm="24" class="radio-group d-flex text-center mt-2">
+                <span style="margin-right: 8px;">Want Voucher Total:</span>
+                <mat-radio-group formControlName="wantVoucherTotal" fxLayout="row" fxLayoutGap="16px">
+                  <mat-radio-button value="yes" class="ml-1 mr-2">Yes</mat-radio-button>
+                  <mat-radio-button value="no">No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+          
+              <!-- Buttons -->
+              <div fxFlex="24" fxFlex.xs="100" class="text-center" fxFlex.sm="20">
+                <button type="button" class="finance-button mt-1 mr-2" mat-raised-button color="primary" (click)="nextStep(cashPaymentRegisterFormGroup.value)">Generate</button>
+                <button type="button" class="finance-button mt-1" mat-raised-button (click)="resetForm()">Reset</button>                
+              </div>
+
+              <div fxFlex="8" fxFlex.xs="100" class="text-center">
+                <button type="button" mat-raised-button color="primary" class="finance-button"
+                    (click)="goback()">Back</button>
+              </div>
+            </mat-card>
+          </div>
+          
+        </div>
+      </form>
+
+    </mat-expansion-panel>
+
+    <ng-template [ngIf]="openPanel">
+      <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle class="full-height">
+        <!-- Action Buttons for Export -->
+        <div class="action-icons">
+          <!-- Excel Export Button -->
+          <button mat-icon-button (click)="exportToExcel(cashPaymentRegisterFormGroup.value)">
+            <img src="assets/new_xl.png" alt="Excel" class="icon-img" />
+          </button>
+    
+          <!-- PDF Export Button -->
+          <button mat-icon-button (click)="exportToPdf()">
+            <img src="assets/new_pdf.png" alt="PDF" class="icon-img" />
+          </button>
+        </div>
+    
+        <!-- Table Container -->
+        <div class="table-container table-responsive mt-4">
+          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+            <!-- Columns Definitions -->
+            <ng-container matColumnDef="voucherNo">
+              <th mat-header-cell *matHeaderCellDef> Voucher No. </th>
+              <td mat-cell *matCellDef="let element"> {{element.finTranHeadNo}} </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="voucherDate">
+              <th mat-header-cell *matHeaderCellDef> Voucher Date </th>
+              <td mat-cell *matCellDef="let element"> {{element.finTranDate}} </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="AccountName">
+              <th mat-header-cell *matHeaderCellDef> Account Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.accName}} </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="Description">
+              <th mat-header-cell *matHeaderCellDef> Description </th>
+              <td mat-cell *matCellDef="let element"> {{element.finTranDesc}} </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="Amount">
+              <th mat-header-cell *matHeaderCellDef> Amount </th>
+              <td mat-cell *matCellDef="let element"> {{element.finTranAmount}} </td>
+            </ng-container>
+    
+            <!-- <ng-container matColumnDef="Discount">
+              <th mat-header-cell *matHeaderCellDef> Discount </th>
+              <td mat-cell *matCellDef="let element"> {{element.Discount}} </td>
+            </ng-container> -->
+    
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+          <mat-paginator class="mat-paginator-sticky custom_paginator" [pageSizeOptions]="[10, 20, 30, 40, 50]"></mat-paginator>
+
+        </div>
+    
+        <mat-action-row>
+          <button mat-button color="warn" (click)="prevStep()">Previous</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    </ng-template>
+
+  </mat-accordion>
+</div>
+
+  
+
+

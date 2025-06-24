@@ -1,0 +1,73 @@
+<div fxLayout="row" fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column" fxLayoutWrap
+    fxLayoutGap="10px">
+    <div fxFlex="70" fxFlex.xl="55" fxFlex.sm="57" fxFlex.md="46">
+      <h4 class="outward-pharma-head">Sales Invoice(SAL) Entry</h4>
+    </div>
+    <div fxFlex="10" fxFlex.xl="12" fxFlex.sm="12" fxFlex.md="20" class="master-btn text-right">
+      <button type="button" mat-raised-button color="primary" (click)="showOutwardEntryDetailTemplate()">Add
+        Item</button>
+    </div>
+    <div fxFlex="20" fxFlex.xl="12" fxFlex.sm="12" fxFlex.md="20" class="master-btn text-right">
+      <button mat-raised-button [routerLink]="['../saleInvoiceList']" color="primary">Sale Invoice List</button>
+    </div>
+
+  </div>
+
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px" class="fieldCntrl">
+    <form [formGroup]="saleInvoiceHeadFormGroup">
+      <div fxFlex="100" class="invoice-form" fxLayoutGap="5px">
+
+        
+        <mat-form-field appearance="outline">
+          <mat-label>SAL Date</mat-label>
+          <input matInput [matDatepicker]="salesDate" formControlName="invDate" appDateMask>
+          <mat-datepicker-toggle matSuffix [for]="salesDate"></mat-datepicker-toggle>
+          <mat-datepicker #salesDate></mat-datepicker>
+        </mat-form-field>
+
+        <app-autocomplete [definition]="customAccountAutoCompleteDef" [control]="saleInvoiceHeadFormGroup.get('accId')"
+          [optionsTableDefinition]="customAccountsOptsTable"></app-autocomplete>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Sh.Name</mat-label>
+          <input matInput formControlName="accShName"
+            [value]="saleInvoiceHeadFormGroup.get('accId').value? saleInvoiceHeadFormGroup.get('accId').value.accShName:''">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>City Name</mat-label>
+          <input matInput formControlName="cityId"
+            [value]="saleInvoiceHeadFormGroup.get('accId').value? saleInvoiceHeadFormGroup.get('accId').value.cityName:''">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Mobile</mat-label>
+          <input matInput formControlName="accMobile"
+            [value]="saleInvoiceHeadFormGroup.get('accId').value? saleInvoiceHeadFormGroup.get('accId').value.accMobile:''">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>GSTIN</mat-label>
+          <input matInput formControlName="accGstIn"
+            [value]="saleInvoiceHeadFormGroup.get('accId').value? saleInvoiceHeadFormGroup.get('accId').value.accGstIn:''">
+        </mat-form-field>
+
+        <app-autocomplete [definition]="companyGroupAutoCompleteDef" [control]="saleInvoiceHeadFormGroup.get('compId')"
+          [optionsTableDefinition]="companyGroupOptsTable"></app-autocomplete>
+
+        <app-autocomplete [definition]="modeAutoCompleteDef" [control]="saleInvoiceHeadFormGroup.get('mode')">
+        </app-autocomplete>
+
+
+        <mat-form-field appearance="outline">
+          <mat-label>Delivery To</mat-label>
+          <input matInput formControlName="deliveryTo">
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="onSaveOrUpdateOutwardHead()">{{outwardHeadBtnText}}</button>
+        <button mat-raised-button (click)="onResetForm()">Reset</button>
+        <button mat-raised-button (click)="goBack()">Back</button>
+
+      </div>
+    </form>
+  </div>

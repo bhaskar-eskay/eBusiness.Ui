@@ -1,0 +1,345 @@
+<div class="m-3">
+  <div fxLayout="row" fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column" fxLayoutWrap
+    fxLayoutGap="10px">
+    <div fxFlex="80" fxFlex.xl="55" fxFlex.sm="57" fxFlex.md="46">
+      <h4 class="masters-pharma-head">Add Products</h4>
+    </div>
+    <div fxFlex="20" fxFlex.xl="12" fxFlex.sm="12" fxFlex.md="20" class="master-btn text-right"></div>
+  </div>
+
+  <mat-card class="fieldCntrl mt-3">
+    <form [formGroup]="formGroup">
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap>
+        <div fxFlex="100" >
+          <div fxLayoutGap="10px">
+            <mat-form-field appearance="outline" class="mb-2">
+              <mat-label>Product Name</mat-label>
+              <input matInput formControlName="prodName" required maxlength="30" class="fieldCntrl"
+                (keypress)="keyPressAlphaNumericWithCharacters($event)" />
+                <mat-error class="error-msg">
+                  <span *ngIf="formGroup.get('prodName').hasError('required')"> Product Name is Required...!</span>
+                </mat-error>
+            </mat-form-field>
+            <!-- <mat-form-field appearance="outline" class="mb-2">
+              <mat-label>Product Full Name</mat-label>
+              <input matInput formControlName="prodFullName" maxlength="100" class="fieldCntrl"
+                (keypress)="keyPressAlphaNumericWithCharacters($event)" />
+            </mat-form-field> -->
+            <!-- <app-autocomplete [definition]="productTypeAutoCompleteDef" [control]="formGroup.get('prodTypeId')"
+              [optionsTableDefinition]="productTypeOptsTable"></app-autocomplete> -->
+
+
+              <mat-form-field appearance="outline" class="mb-2">
+                <mat-label>Sh. Name</mat-label>
+                <input matInput formControlName="prodShName" required maxlength="10" class="fieldCntrl"
+                  (keypress)="keyPressAlphaNumericWithCharacters($event)" />
+                  <mat-error class="error-msg">
+                    <span *ngIf="formGroup.get('prodShName').hasError('required')"> Product Sh.Name is Required...!</span>
+                  </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="mb-2">
+                <mat-label>Product Type </mat-label>
+                <mat-select formControlName="prodTypeId"  appMatSelect placeholder="--Select--" required #prodTypeTab   #singleSelect>
+                  <mat-option>
+                    <ngx-mat-select-search placeholderLabel="Find Prod Type..."  (keydown)="ProdTypeTab($event)"
+                    noEntriesFoundLabel="'no matching Product Type found'"  [formControl]="ProdTypeTabMultiFilterCtrl"></ngx-mat-select-search>
+                  </mat-option>
+                  <!-- <mat-option [value]=0>--Select--</mat-option> -->
+                  <mat-option *ngFor="let bank of filteredProdTypeMulti | async"  [value]="bank.prodMasterTypeId">
+                    {{bank.prodMasterTypeName}}
+                  </mat-option>
+                </mat-select>
+
+                <mat-error class="error-msg">
+                  <span *ngIf="formGroup.get('prodTypeId').hasError('required')"> Product Type is Required...!</span>
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="mb-2">
+                <mat-label>Product Pack </mat-label>
+                <mat-select formControlName="prodPackId"  appMatSelect placeholder="--Select--" #prodPackfocus required #prodPackTab   #singleSelect>
+                  <mat-option>
+                    <ngx-mat-select-search placeholderLabel="Find Prod Pack Type..."  (keydown)="ProdPackTab($event)"
+                    noEntriesFoundLabel="'no matching Product Pack found'"  [formControl]="ProdPackTabMultiFilterCtrl"></ngx-mat-select-search>
+                  </mat-option>
+                  <!-- <mat-option [value]=0>--Select--</mat-option> -->
+                  <mat-option *ngFor="let bank of filteredProdPackMulti | async"  [value]="bank.prodPackId">
+                    {{bank.prodPackName}}
+                  </mat-option>
+                </mat-select>
+
+                <mat-error class="error-msg">
+                  <span *ngIf="formGroup.get('prodPackId').hasError('required')"> Product Type is Required...!</span>
+                </mat-error>
+              </mat-form-field>
+
+              <!-- <mat-form-field appearance="outline" class="mb-2" >
+                <mat-label>Company</mat-label>
+
+                <input matInput #citiesfocus required  [formControl]="CompanyTabMultiFilterCtrl" #schautoCompleteInput  placeholderLabel="Find Company Type..."  (keydown)="companyTab($event)"
+                (input)="filterCompanyMulti()" [matAutocomplete]="autoCompletesch"  (keydown)="companyTab($event)">
+              <mat-autocomplete class="pincode-list" [displayWith]="schMapper" autoActiveFirstOption [panelWidth]="450"
+               #autoCompletesch="matAutocomplete"  >
+                <div>
+                  <div fxLayout="row" fxLayout.xs="column" class="autocomplete-heading" fxLayoutWrap
+                   fxLayoutGap="30px">
+                    <div  fxFlex="40">    Company Name            </div>
+                    <div  fxFlex="30">     Group Name          </div> 
+                    <div  fxFlex="20">     Sh.Name            </div>
+                  </div>
+                  <mat-option *ngFor="let code of  filteredCompanyMulti | async" class="master-option-text"    [value]="code.compId"
+                    (click)="companyChange(code)" >
+                    <div fxLayout="row" fxLayout.xs="column"
+                      fxLayoutWrap fxLayoutGap="30px">
+                      <div  class="text-truncate auto-border" fxFlex="40" title="{{ code?.compName }}">{{ code?.compName }} </div>
+                      <div  class="text-truncate auto-border" fxFlex="30" title="{{ code?.compGroupName }}">{{ code?.compGroupName }} </div>
+                      <div  class="text-truncate auto-border" fxFlex="20" title="{{ code?.compShName }}">{{ code?.compShName }} </div>
+                    </div>
+                  </mat-option>
+                </div>
+              </mat-autocomplete> -->
+              <mat-form-field appearance="outline" class="mb-2" >
+                <mat-select formControlName="compId"  appMatSelect placeholder="--Select--" #companyfocus required #CompanyTab (selectionChange)="companychange($event)"   #singleSelect>
+                  <mat-option>
+                    <ngx-mat-select-search placeholderLabel="Find Company Type..."  (keydown)="companyTab($event)"
+                    noEntriesFoundLabel="'no matching Company found'"  [formControl]="CompanyTabMultiFilterCtrl"></ngx-mat-select-search>
+                  </mat-option>
+                  <mat-option *ngFor="let bank of filteredCompanyMulti | async"  [value]="bank.compId">
+                    {{bank.compName}}
+                  </mat-option>
+                </mat-select>
+
+                
+
+                <mat-error class="error-msg">
+                  <span *ngIf="formGroup.get('compId').hasError('required')"> Company is Required...!</span>
+                </mat-error>
+              </mat-form-field>
+
+              <!-- <app-autocomplete [definition]="companyDefintion"  [control]="CompanyTabMultiFilterCtrl" 
+                 [optionsTableDefinition]="companyOptsTable"></app-autocomplete> -->
+
+              <mat-form-field appearance="outline" class="mb-2">
+                <mat-label>Company Group</mat-label>
+                <input matInput type="text" [formControl]="compGroupName" disabled>
+              </mat-form-field>
+
+        
+
+            <!-- <app-autocomplete [definition]="productPackDef" [control]="formGroup.get('prodPackId')" -->
+              <!-- [optionsTableDefinition]="productPackOptsTable"></app-autocomplete> -->
+
+
+            <!-- <app-autocomplete [definition]="companyGroupAutoCompleteDef" [control]="formGroup.get('prodCombId')"
+            [optionsTableDefinition]="companyGroupOptsTable"></app-autocomplete> -->
+
+            <!-- <mat-form-field appearance="outline" class="mb-2">
+              <mat-label>Company Group</mat-label>
+              <input matInput type="text"
+                [value]="formGroup.get('compId').value?formGroup.get('compId').value:''" disabled>
+            </mat-form-field> -->
+
+            <mat-form-field appearance="outline" class="mb-2">
+              <mat-label>Box Pack</mat-label>
+              <input matInput onkeypress='return event.charCode >= 48 && event.charCode <= 57' formControlName="prodBoxPack" #boxfocus />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="mb-2">
+              <mat-label>Case Pack</mat-label>
+              <input matInput onkeypress='return event.charCode >= 48 && event.charCode <= 57' formControlName="prodCasePack" />
+            </mat-form-field>
+
+
+            <mat-form-field appearance="outline" class="mb-2">
+              <mat-label>Product Group </mat-label>
+              <mat-select formControlName="prodGroupId"  appMatSelect placeholder="--Select--" required #prodGroupTab   #singleSelect>
+                <mat-option>
+                  <ngx-mat-select-search placeholderLabel="Find Prod Group..."  (keydown)="ProdGroupTab($event)"
+                  noEntriesFoundLabel="'no matching Product Group found'"  [formControl]="ProdGroupTabMultiFilterCtrl"></ngx-mat-select-search>
+                </mat-option>
+                <!-- <mat-option [value]=0>--Select--</mat-option> -->
+                <mat-option *ngFor="let bank of filteredProdGroupMulti | async"  [value]="bank.prodMasterTypeId">
+                  {{bank.prodMasterTypeName}}
+                </mat-option>
+              </mat-select>
+
+              <mat-error class="error-msg">
+                <span *ngIf="formGroup.get('prodGroupId').hasError('required')"> Product Group is Required...!</span>
+              </mat-error>
+            </mat-form-field>
+
+
+            <mat-form-field appearance="outline" class="mb-2">
+              <mat-label>Product Category </mat-label>
+              <mat-select formControlName="prodCatId"  appMatSelect placeholder="--Select--" #prodCategoryfocus required #prodCategoryTab   #singleSelect>
+                <mat-option>
+                  <ngx-mat-select-search placeholderLabel="Find Prod Category..."  (keydown)="ProdCategoryTab($event)"
+                  noEntriesFoundLabel="'no matching Product Category found'"  [formControl]="ProdCategoryTabMultiFilterCtrl"></ngx-mat-select-search>
+                </mat-option>
+                <!-- <mat-option [value]=0>--Select--</mat-option> -->
+                <mat-option *ngFor="let bank of filteredProdCategoryMulti | async"  [value]="bank.prodMasterTypeId">
+                  {{bank.prodMasterTypeName}}
+                </mat-option>
+              </mat-select>
+
+              <mat-error class="error-msg">
+                <span *ngIf="formGroup.get('prodCatId').hasError('required')"> Product Category is Required...!</span>
+              </mat-error>
+            </mat-form-field>
+
+
+            <mat-form-field appearance="outline" class="mb-2">
+              <mat-label>Product Combinations </mat-label>
+              <mat-select formControlName="prodCombId"  appMatSelect placeholder="--Select--" #prodCombFocus required #prodCombTab   #singleSelect>
+                <mat-option>
+                  <ngx-mat-select-search placeholderLabel="Find Prod Comb..."  (keydown)="ProdCombTab($event)"
+                  noEntriesFoundLabel="'no matching Product Comb found'"  [formControl]="ProdCombTabMultiFilterCtrl"></ngx-mat-select-search>
+                </mat-option>
+                <!-- <mat-option [value]=0>--Select--</mat-option> -->
+                <mat-option *ngFor="let bank of filteredProdCombMulti | async"  [value]="bank.prodMasterTypeId">
+                  {{bank.prodMasterTypeName}}
+                </mat-option>
+              </mat-select>
+
+              <mat-error class="error-msg">
+                <span *ngIf="formGroup.get('prodCombId').hasError('required')"> Product Comb is Required...!</span>
+              </mat-error>
+            </mat-form-field>
+
+
+            <mat-form-field appearance="outline" class="mb-2">
+              <mat-label>Product Locations </mat-label>
+              <mat-select formControlName="prodLocationId"  appMatSelect placeholder="--Select--" #prodLocationfocus required #prodLocationTab   #singleSelect>
+                <mat-option>
+                  <ngx-mat-select-search placeholderLabel="Find Prod Locations..."  (keydown)="ProdLocationTab($event)"
+                  noEntriesFoundLabel="'no matching Product Locations found'"  [formControl]="ProdLocationTabMultiFilterCtrl"></ngx-mat-select-search>
+                </mat-option>
+                <!-- <mat-option [value]=0>--Select--</mat-option> -->
+                <mat-option *ngFor="let bank of filteredProdLocationMulti | async"  [value]="bank.prodMasterTypeId">
+                  {{bank.prodMasterTypeName}}
+                </mat-option>
+              </mat-select>
+
+              <mat-error class="error-msg">
+                <span *ngIf="formGroup.get('prodLocationId').hasError('required')"> Product Locations is Required...!</span>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="mb-2">
+              <mat-label>Tax Slab </mat-label>
+              <mat-select formControlName="taxSlabId"  appMatSelect placeholder="--Select--"  #taxSlabfocus required #taxSlabTab   #singleSelect>
+                <mat-option>
+                  <ngx-mat-select-search placeholderLabel="Find Tax Slab..."  (keydown)="TaxSlabTab($event)"
+                  noEntriesFoundLabel="'no matching Tax Slab found'"  [formControl]="TaxSlabTabMultiFilterCtrl"></ngx-mat-select-search>
+                </mat-option>
+                <!-- <mat-option [value]=0>--Select--</mat-option> -->
+                <mat-option *ngFor="let bank of filteredTaxSlabMulti | async"  [value]="bank.taxSlabId">
+                  {{bank.tax}}
+                </mat-option>
+              </mat-select>
+
+              <mat-error class="error-msg">
+                <span *ngIf="formGroup.get('taxSlabId').hasError('required')"> Tax Slab is Required...!</span>
+              </mat-error>
+            </mat-form-field>
+
+            <!-- <app-autocomplete [definition]="productGroupAutoCompleteDef" [control]="formGroup.get('prodGroupId')"
+              [optionsTableDefinition]="productGroupOptsTable"></app-autocomplete> -->
+
+            
+        
+
+            <!-- <app-autocomplete [definition]="productCategoryDef" [control]="formGroup.get('prodCatId')"
+              [optionsTableDefinition]="productCategoryOptsTable"></app-autocomplete> -->
+
+            <!-- <app-autocomplete [definition]="productCombinationDef" [control]="formGroup.get('prodCombId')"
+              [optionsTableDefinition]="productCombinationOptsTable"></app-autocomplete> -->
+<!-- 
+            <app-autocomplete [definition]="productLocationDef" [control]="formGroup.get('prodLocationId')"
+              [optionsTableDefinition]="productLocationOptsTable"></app-autocomplete> -->
+
+            <!-- <app-autocomplete [definition]="taxSlabAutoCompleteDef" [control]="formGroup.get('taxSlabId')"
+              [optionsTableDefinition]="taxSlabOptsTable"></app-autocomplete> -->
+
+
+            <app-autocomplete [definition]="hsnCodeAutoCompltDef" [control]="formGroup.get('hsncode')"
+              [optionsTableDefinition]="hsnCodeTableOpt"></app-autocomplete>
+           
+
+
+            <mat-form-field appearance="outline" class="mb-2">
+              <mat-label>Net Rate</mat-label>
+              <input matInput formControlName="netRate" maxlength="13" (keypress)="isNumberKey($event.target.value);" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="mb-2">
+              <mat-label>Allow Net Rate</mat-label>
+              <mat-select formControlName="allowNetRate" appMatSelect>
+                <mat-option *ngFor="let data of yesnoData" [value]="data.code">
+                  {{ data.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="mb-2">
+              <mat-label>Allow Discount</mat-label>
+              <mat-select formControlName="allowDiscount" appMatSelect>
+                <mat-option *ngFor="let data of yesnoData" [value]="data.code">
+                  {{ data.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+          <mat-form-field appearance="outline" class="mb-2">
+            <mat-label>Allow Expiry Date</mat-label>
+            <mat-select formControlName="allowExpiry" appMatSelect>
+              <mat-option *ngFor="let data of yesnoData" [value]="data.code">
+                {{ data.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="mb-2">
+            <mat-label>Allow Mfg Date</mat-label>
+            <mat-select formControlName="allowMfg" appMatSelect>
+              <mat-option *ngFor="let data of yesnoData" [value]="data.code">
+                {{ data.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          
+          <mat-form-field appearance="outline" class="mb-2">
+            <mat-label>Allow Inventory</mat-label>
+            <mat-select formControlName="allowInventory" appMatSelect>
+              <mat-option *ngFor="let data of yesnoData" [value]="data.code">
+                {{ data.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- <mat-form-field appearance="outline" class="mb-2">
+            <mat-label>Allow Loose</mat-label>
+            <mat-select formControlName="allowLoose" appMatSelect>
+              <mat-option *ngFor="let data of yesnoData" [value]="data.code">
+                {{ data.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field> -->
+        </div>
+          <div class="text-right mt-3">
+            <button mat-raised-button color="primary" [disabled]="formGroup.invalid" (click)="save()">
+              {{buttonName}}
+            </button>
+            &nbsp;
+            <button mat-raised-button (click)="reset()">Reset</button> &nbsp;
+            <button mat-raised-button (click)="onClickBackBtn()" >
+              Back
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </mat-card>
+</div>

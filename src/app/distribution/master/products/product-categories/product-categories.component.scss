@@ -1,0 +1,4 @@
+@import '../../../../../assets/styles/mixin.scss';
+::ng-deep .category-form {
+    @include user-form;
+  }

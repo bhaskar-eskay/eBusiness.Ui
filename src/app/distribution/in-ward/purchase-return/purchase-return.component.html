@@ -1,0 +1,411 @@
+<div class="m-3">
+
+  <div fxLayout="row" fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column" fxLayoutWrap
+    fxLayoutGap="10px" class="md_flex">
+    <div fxFlex="30" fxFlex.xl="30" fxFlex.sm="30" fxFlex.md="30">
+      Pur.Retn.No: {{outwardHead?.outwardHeadNo}}
+    </div>
+    <div fxFlex="30" fxFlex.xl="30" fxFlex.sm="30" fxFlex.md="30">
+      <h4 class="outward-pharma-head text-center">Pur Return Entry</h4>
+    </div>
+    <div fxFlex="30" fxFlex.xl="30" fxFlex.sm="30" fxFlex.md="30" class="master-btn text-right">
+
+      <!-- <button mat-raised-button color="primary" (click)="clikRegisters()">Purchase Register</button>&nbsp; -->
+      
+      <button type="button" mat-raised-button color="primary" [disabled]="!preturnInvoiceHeadFormGroup?.valid" (click)="showpreturnDetailTemplate()">Add
+        Item</button> &nbsp;
+
+      <button mat-raised-button [routerLink]="['../purchaseReturns']" color="primary">List</button>
+    </div>
+
+  </div>
+
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px" class="fieldCntrl">
+    <form [formGroup]="preturnInvoiceHeadFormGroup" autocomplete="off">
+      <div fxFlex="100" class="invoice-form" fxLayoutGap="5px">
+  
+        <mat-form-field appearance="outline" class="e_mat_date w_116">
+          <mat-label>P.Retn Date</mat-label>
+          <input matInput [matDatepicker]="preturnDate" [min]="minDate" [max]="maxDate" formControlName="outwardDate" appDateMask>
+          <mat-datepicker-toggle matSuffix [for]="preturnDate"></mat-datepicker-toggle>
+          <mat-datepicker #preturnDate></mat-datepicker>
+        </mat-form-field>
+  
+        <app-autocomplete [definition]="customAccountAutoCompleteDef" [control]="accName"
+          [optionsTableDefinition]="customAccountsOptsTable" #customerName></app-autocomplete>
+          <!-- <app-autocomplete [definition]="customAccountAutoCompleteDef" [control]="accName"
+          [optionsTableDefinition]="customAccountsOptsTable"></app-autocomplete> -->
+        <mat-form-field appearance="outline" class="w_116">
+          <mat-label>Sh.Name</mat-label>
+          <input matInput formControlName="accShName">
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline" class="w_224">
+          <mat-label>City Name</mat-label>
+          <input matInput formControlName="cityId">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w_116">
+          <mat-label>Mobile</mat-label>
+          <input matInput formControlName="accMobile">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w_224">
+          <mat-label>GSTIN</mat-label>
+          <input matInput formControlName="accGstIn">
+        </mat-form-field>
+
+        <!-- <app-autocomplete [definition]="companyGroupAutoCompleteDef"
+          [control]="saleInvoiceHeadFormGroup.get('companyMaster')" [optionsTableDefinition]="companyGroupOptsTable">
+        </app-autocomplete> -->
+         <mat-form-field appearance="outline" class="w_224">
+          <mat-label>Company</mat-label>
+          <mat-select formControlName="compId"  appMatSelect placeholder="--Select--" #companyfocus  #CompanyTab   #singleSelect>
+            <mat-option>
+              <ngx-mat-select-search placeholderLabel="Find Company Type..."  (keydown)="companyTab($event)"
+              noEntriesFoundLabel="'no matching Company found'"  [formControl]="CompanyTabMultiFilterCtrl"></ngx-mat-select-search>
+            </mat-option>
+            <mat-option value='0'>--Select--</mat-option>
+            <mat-option *ngFor="let bank of filteredCompanyMulti | async"  [value]="bank.compId">
+              {{bank.compName}}
+            </mat-option>
+          </mat-select> 
+
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" [disabled]="!preturnInvoiceHeadFormGroup?.valid" (click)="onSaveOrUpdatepreturnHead()">{{outwardHeadBtnText}}</button>
+        <button mat-raised-button (click)="onResetForm()">Reset</button>
+
+      </div>
+    </form>
+  </div>
+
+  <div class="mt-2">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+      <div fxFlex="100">
+        <app-alert [id]="'preturnDetailItemList'"></app-alert>
+        <app-table [definition]="tableDefinition" [data]="outWardDetail" [tableAlertId]="'preturnDetailItemList'"
+          [isDataLoading]="isDataLoading" [disableActions]="disableActions"></app-table>
+      </div>
+
+    </div>
+  </div>
+
+  <mat-card class="mt-1 p-2 mbl_margin">
+    <!-- <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center" fxLayoutWrap fxLayoutGap="20px"> -->
+    <!-- </div> -->
+    <!-- <br> -->
+    
+      <form [formGroup]="preturnInvoiceFinalSaveFormGroup" autocomplete="off">
+        <div fxLayout="row" class="tab_center pur-values-form" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="10px">
+      <div fxFlex="30" fxFlex.md="20" class="tab_width " fxLayoutGap="5px">
+
+        
+<!-- 
+            <div fxLayout="row" fxLayoutGap="10px">
+              
+
+              <mat-form-field appearance="outline" >
+                <mat-label>other Charges</mat-label>
+                <input matInput formControlName="otherCharges">
+              </mat-form-field>
+
+            </div> -->
+
+
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Remarks</mat-label>
+            <textarea matInput formControlName="remarks"></textarea>
+          </mat-form-field>
+
+
+      </div>
+      <div fxFlex="30" class="tab_width text-center">
+        <div style="max-height: 160px;overflow: auto;scrollbar-width: thin;">
+        <table class="table table-bordered table-sm" style="font-size: 12px;" id="t01" sty>
+          <thead>
+            <th> GST% </th>
+            <th> Taxable </th>
+            <ng-template [ngIf]="hasIGST">
+              <th>IGST</th>
+            </ng-template>
+            <ng-template [ngIf]="!hasIGST">
+              <th>CGST</th>
+              <th>SGST</th>
+            </ng-template>
+          </thead>
+          <tr *ngFor="let pretax of outwardPretaxes">
+            <td>{{pretax.tax}}</td>
+            <td>{{pretax.preTaxValue}}</td>
+            <ng-template [ngIf]="hasIGST">
+              <td> {{outwardTaxes[0]?.stakeValue}}</td>
+            </ng-template>
+            <ng-template [ngIf]="!hasIGST">
+              <td>
+                {{(outwardTaxes)?(outwardTaxes[0].taxStakeName=='CGST'?outwardTaxes[0].stakeValue:outwardTaxes[1].stakeValue):''}}
+              </td>
+              <td>
+                {{(outwardTaxes)?(outwardTaxes[0].taxStakeName=='SGST'?outwardTaxes[0].stakeValue:outwardTaxes[1].stakeValue):''}}
+              </td>
+            </ng-template>
+          </tr>
+        </table>
+        </div>
+      </div>
+      <div fxFlex="22" fxFlex.md="30" class="tab_width tab_width_md" style="font-size: 14px; font-weight: bold;">
+        <div style="display: flex;">
+          <div class="col-md-6 px-1 text-right">Grs. Value :&nbsp;</div> 
+          <div class="col-md-6 px-1 tab_width2 text-right">{{outwardHead?.grsValue | number:'1.2-2'}}</div>
+        </div>
+        <div style="display: flex;">
+          <div class="col-md-6 px-1 text-right">Disc. Value :&nbsp;</div>
+          <div class="col-md-6 px-1 tab_width2 text-right">{{outwardHead?.discValue | number:'1.2-2'}}</div>
+        </div>
+        <div style="display: flex;">
+          <div class="col-md-6 px-1 text-right">Disc. Value 1 :&nbsp;</div>
+          <div class="col-md-6 px-1 tab_width2 text-right">{{outwardHead?.disc1Value | number:'1.2-2'}}</div>
+        </div>
+        <div style="display: flex;">
+          <div class="col-md-6 px-1 text-right">Tax Value :&nbsp;</div>
+          <div class="col-md-6 px-1 tab_width2 text-right">{{outwardHead?.taxValue | number:'1.2-2'}}</div>
+        </div>
+        <div style="display: flex;">
+          <div class="col-md-6 px-1 align-self-center text-right">other charges :&nbsp;</div>
+          <div class="col-md-6 px-1 tab_width2 text-right">
+            <mat-form-field appearance="outline" style="width: 95px !important;" >
+              <input appCurrencyFormat matInput formControlName="otherCharges">
+            </mat-form-field>
+          </div>
+        </div>
+        <div style="display: flex;">
+          <div class="col-md-6 px-1 text-right text-success">Pur.Retn.Value :&nbsp;</div>
+          <div class="col-md-6 tab_width2 px-1 text-right text-success">{{roundedValue}}</div>
+        </div>
+      </div>
+        
+      <div fxFlex="17" class="tab_width text-right mt-2" style="place-content: end;">
+        <button mat-raised-button color="primary" [disabled]="!preturnInvoiceFinalSaveFormGroup?.valid"  (click)="onSaveOrUpdateFinalSave()">{{outwardFinalSaveBtnText}}</button>
+        &nbsp;
+        <button mat-raised-button (click)="resetFinalSave()"> Reset</button>
+      </div>
+    </div>
+    </form>
+
+  </mat-card>
+</div>
+
+<ng-template #preturnEntryDetailTemplate>
+  <div fxFlex="100" class="user-form form_height" fxLayoutGap="10px">
+  <form [formGroup]="preturnInvoiceDetailFormGroup" class="invoice2-form">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+
+      <app-autocomplete fxFlex="24" fxFlex.xs="100" class="return_mat" id="pProductName"  [definition]="customProductAutoCompleteDef"
+        [control]="preturnInvoiceDetailFormGroup.get('prodId')" [optionsTableDefinition]="customProductOptsTable"
+        ></app-autocomplete>
+
+      <mat-form-field fxFlex="24" fxFlex.xs="100" appearance="outline" s>
+        <mat-label>Sh.Name</mat-label>
+        <input matInput formControlName="prodShName" required>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="24" fxFlex.xs="100" appearance="outline">
+        <mat-label>Product Pack</mat-label>
+        <input matInput formControlName="prodPackName">
+      </mat-form-field>
+
+    </div>
+    <div fxLayout="row" class="mt-1" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+
+      <app-autocomplete class="return_mat" fxFlex="24" fxFlex.xs="100" [definition]="batchAutoCompleteDef" id="addBatchProductId"
+        [control]="preturnInvoiceDetailFormGroup.get('batch')" #batchAutoComplete
+        [optionsTableDefinition]="batchOptsTable"></app-autocomplete>
+      
+      <mat-form-field fxFlex="24" fxFlex.xs="100" appearance="outline">
+        <mat-label>Exp.Date</mat-label>
+        <input matInput type="text" formControlName="expdate" maxLength="5" (focusout)="expdate($event.target.value)"
+         appOmitSpecialCharacters="integer" required 
+         onkeyup=" var v = this.value;
+        if (v.match(/^\d{2}$/) !== null) {
+            this.value = v + '-'; }" >
+        <mat-error>
+         
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="12" fxFlex.xs="100" appearance="outline">
+        <mat-label>Qty.</mat-label>
+        <input matInput appQntCurrencyFormat formControlName="issQty" step="0.01" (input)="validQty($event.target.value)"
+          appOmitSpecialCharacters="integer">
+        <mat-error
+          *ngIf="preturnInvoiceDetailFormGroup.get('issQty').hasError('invalidInput') && (preturnInvoiceDetailFormGroup.get('issQty').touched || preturnInvoiceDetailFormGroup.get('issQty').dirty)">
+          qty cannot be greater Than<strong>{{purhistoryData.invQty - purhistoryData.retQty}}..! </strong></mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="11" fxFlex.xs="100" appearance="outline">
+        <mat-label>Qty.Disc.</mat-label>
+        <input matInput appQntCurrencyFormat formControlName="issQtyDisc" (input)="validQtyDisc($event.target.value)"
+          appOmitSpecialCharacters="integer">
+        <mat-error
+          *ngIf="preturnInvoiceDetailFormGroup.get('issQtyDisc').hasError('invalidInput') && (preturnInvoiceDetailFormGroup.get('issQtyDisc').touched || preturnInvoiceDetailFormGroup.get('issQtyDisc').dirty)">
+          qty cannot be greater Than<strong>{{purhistoryData.invQtyDisc - purhistoryData.retQtyDisc}}..! </strong> </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" fxFlex="25" fxFlex.xs="100">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="productStatus" appMatSelect>
+          <mat-option *ngFor="let status of statusDropdown" [value]="status.code">{{status?.name}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    </div>
+
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+
+    <!-- <app-autocomplete fxFlex="24" fxFlex.xs="100" class="return_mat" *ngIf="firmPreferences?.discTypeOption === 3" [definition]="discountType" [control]="preturnInvoiceDetailFormGroup?.get('salDisc')">
+    </app-autocomplete> -->
+
+    <mat-form-field appearance="outline" class="w-100 mt-0" fxFlex="24" fxFlex.xs="100" *ngIf="firmPreferences?.discTypeOption === 3">
+      <mat-label>Discount Type</mat-label>
+      <mat-select appMatSelect formControlName="salDiscType">
+        <mat-option *ngFor="let dsc of discountDropDown" [value]="dsc.code">
+          {{dsc.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="firmPreferences?.discTypeOption == 1 || firmPreferences?.discTypeOption == 2" appearance="outline" fxFlex="24" fxFlex.xs="100">
+      <mat-label>Discount Type</mat-label>
+      <input matInput disabled [value]="firmPreferences?.discTypeOption == 1 ? '%': 'Rupee'" maxlength="8" appOmitSpecialCharacters="integer" formControlName="salDiscType">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" fxFlex="24" fxFlex.xs="100">
+
+      <mat-label>Discount{{ preturnInvoiceDetailFormGroup.get('salDisc')?.value?.name ? ('('+preturnInvoiceDetailFormGroup.get('salDisc')?.value?.name+')'): '' }}</mat-label>
+      <input matInput appQntCurrencyFormat formControlName="salDisc" maxlength="2" appOmitSpecialCharacters="integer">
+      <mat-error>
+        <span *ngIf="preturnInvoiceDetailFormGroup.get('salDisc').hasError('invalidInput')"> Discount cannot be greater Than 100..!
+        </span>
+        <span *ngIf="preturnInvoiceDetailFormGroup.get('salDisc').hasError('value')"> Rupee Not Greater Than 6 Digits..!</span>
+      </mat-error>
+
+    </mat-form-field>
+
+    <!-- <app-autocomplete  fxFlex="25" class="return_mat" fxFlex.xs="100" *ngIf="firmPreferences?.allowDisc2 != 1"  [definition]="discountType1" [control]="preturnInvoiceDetailFormGroup.get('salDiscType1')">
+    </app-autocomplete> -->
+    <mat-form-field appearance="outline" fxFlex="24" *ngIf="firmPreferences?.allowDisc2 != 0 && firmPreferences?.discTypeOption == 3" >
+      <mat-label>Discount *</mat-label>
+      <mat-select appMatSelect formControlName="salDiscType1">
+        <!-- <mat-option [value]=0>--Select--</mat-option> -->
+        <mat-option *ngFor="let tran of discountDropDown"  [value]="tran.code">
+          {{tran.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field
+      *ngIf="(firmPreferences?.discTypeOption == 1 || firmPreferences?.discTypeOption == 2) && firmPreferences?.allowDisc2 != 0"
+      appearance="outline">
+      <mat-label>Discount Type 1</mat-label>
+      <input matInput disabled [value]="firmPreferences?.discTypeOption == 1 ? '%': 'Rupee'" maxlength="8" formControlName="salDiscType1"
+        appOmitSpecialCharacters="integer">
+    </mat-form-field>
+    <!-- *ngIf="firmPreferences.allowDisc2 != 1" -->
+
+    <mat-form-field appearance="outline" *ngIf="firmPreferences?.allowDisc2 != 0" fxFlex="24" fxFlex.xs="100">
+
+      <mat-label>Discount{{ preturnInvoiceDetailFormGroup.get('salDiscType1')?.value?.name ? ('('+preturnInvoiceDetailFormGroup.get('salDiscType1')?.value?.name+')'): '' }}</mat-label>
+      <input matInput appQntCurrencyFormat formControlName="salDisc1" maxlength="2" appOmitSpecialCharacters="integer">
+      <mat-error>
+        <span *ngIf="preturnInvoiceDetailFormGroup.get('salDisc1').hasError('invalidInput')"> Discount cannot be greater Than 100..!
+        </span>
+        <span *ngIf="preturnInvoiceDetailFormGroup.get('salDisc1').hasError('value')"> Rupee Not Greater Than 6 Digits..!</span>
+      </mat-error>
+
+    </mat-form-field>    
+
+    <mat-form-field fxFlex="24" fxFlex.xs="100" appearance="outline" *ngIf="firmPreferences?.allowDisc2 == 0">
+      <mat-label>Inv.Rate</mat-label>
+      <input matInput appCurrencyFormat formControlName="tranRate" appOmitSpecialCharacters="integer">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" fxFlex="24" *ngIf="firmPreferences?.allowDisc2 == 0">
+      <mat-label>Tax(%)</mat-label>
+      <input matInput formControlName="tax">
+    </mat-form-field>
+  </div>
+
+  <!-- <div class="mt-1" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+
+    <mat-form-field fxFlex="25" fxFlex.xs="100" appearance="outline">
+      <mat-label>Inv.Rate</mat-label>
+      <input matInput appCurrencyFormat formControlName="tranRate" appOmitSpecialCharacters="integer">
+    </mat-form-field>
+
+  </div> -->
+
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+
+    <mat-form-field fxFlex="24" fxFlex.xs="100" appearance="outline" *ngIf="firmPreferences?.allowDisc2 != 0">
+      <mat-label>Inv.Rate</mat-label>
+      <input matInput appCurrencyFormat formControlName="tranRate" appOmitSpecialCharacters="integer">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" fxFlex="24" *ngIf="firmPreferences?.allowDisc2 != 0">
+      <mat-label>Tax(%)</mat-label>
+      <input matInput formControlName="tax">
+    </mat-form-field>
+
+    <mat-form-field fxFlex="24" fxFlex.xs="100" appearance="outline">
+      <mat-label>MRP</mat-label>
+      <input matInput formControlName="mrp" appCurrencyFormat appOmitSpecialCharacters="integer">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" fxFlex="24" >
+      <mat-label>HSN Code</mat-label>
+      <input matInput formControlName="hsncode" maxlength="8" appOmitSpecialCharacters="noSpecialChars">
+      <mat-error>
+        <span *ngIf="preturnInvoiceDetailFormGroup.get('hsncode').hasError('required') "> HSN Code Required...! </span>
+      </mat-error>
+    </mat-form-field>
+  </div>
+    
+
+  </form>
+</div>
+
+</ng-template>
+
+<ng-template #preturnEntryDetailButtonTemplate>
+  <button type="button" mat-raised-button color="primary" [disabled]="!preturnInvoiceDetailFormGroup?.valid" 
+    (click)="onSaveOrUpdateOutwardDetail(false)">{{outwardDtlBtnSaveContinueTxt}}</button>&nbsp;
+  <button type="button" mat-raised-button color="primary" [disabled]="!preturnInvoiceDetailFormGroup?.valid" 
+    (click)="onSaveOrUpdateOutwardDetail(true)">{{outwardDtlBtnSaveCloseTxt}}</button>&nbsp;
+  <button type="button" mat-raised-button (click)="resetDetailForm()">Reset</button>
+</ng-template>
+
+
+<ng-template #deletepreturnDetailTemplate let-saleHead="data">
+  Are you sure to delete <strong></strong>?
+</ng-template>
+
+<ng-template #purhistory>
+  <app-table [definition]="historytableDefinition" [data]="historydataSource" [tableAlertId]="'purchaseEntryList'"
+ [disableActions]="disableActions"></app-table>   
+</ng-template>
+
+<div class="modal" id="deletePopup" style="display: flex;background: rgba(0, 0, 0, 0.32);">
+  <div class="modal-dialog modal-dialog-centered" style="min-width: 30%;">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color: #006476;padding: 8px 16px;">
+        <p class="modal-title" style="font-size: 16px;color: #fff;">Delete Company Group</p>
+        <button class="close text-white" (click)="closePopup()" style="opacity: 1 !important;outline: none;">&times;</button>
+      </div>
+      <div class="modal-body" style="font-size: 15px;">
+        Are you sure you want to delete this item?
+      </div>
+      <div class="modal-footer modal-footer p-1 border-0 pb-2 pr-2">
+        <button type="button" mat-raised-button (click)="deleteItem()">Yes</button>
+        <button type="button" mat-raised-button (click)="closePopup()">No</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,4 @@
+@import '../../../../../assets/styles/mixin.scss';
+::ng-deep .pack-form {
+    @include user-form;
+  }

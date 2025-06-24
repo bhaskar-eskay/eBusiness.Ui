@@ -1,0 +1,147 @@
+<div fxLayout="row" class="user-form admin_form mt-1" fxLayoutAlign="center center" fxLayoutWrap fxLayoutGap="10px">
+    <div fxFlex="80" class="bg-white">
+      <form [formGroup]="formGroup" autocomplete="off">
+          <div class="user-form  admin-form1">
+              <div fxLayoutGap="10px">
+                <mat-card fxLayoutGap="10px">
+                  <div style="text-align:center;" class="profile-heading">
+                    <h4 class="masters-pharma-head">Admin  Registration </h4>
+                  </div>
+
+
+                  <mat-form-field  appearance="outline">
+                    <mat-label>Firm Group</mat-label>
+                    <mat-select formControlName="firmGroupId"   (selectionChange)="changefirmgroup($event.value)" required appMatSelect>
+                      <mat-option value="">--Select--</mat-option>
+                      <mat-option *ngFor="let firm of firmGroup" [value]="firm.firmGroupId">{{firm.firmGroupName}}-({{firm.firmGroupAlias}})
+                      </mat-option>
+                    </mat-select>
+                    <mat-error class="error-msg">
+                      <span *ngIf="formGroup.get('firmGroupId').hasError('required')"> firm Group is Required...!</span>
+                    </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline">
+                    <mat-label>Firm</mat-label>
+                    <mat-select  appMatSelect formControlName="firmId"  (selectionChange)="changefirm($event.value,false)" required>
+                    <mat-option value="">--Select--</mat-option>
+                      <mat-option *ngFor="let data of filterfirmdata" [value]="data.firmId">
+                        {{ data.firmName}}-({{data.firmAlias}})
+                      </mat-option>
+                    </mat-select>
+                    <mat-error class="error-msg">
+                      <span *ngIf="formGroup.get('firmId').hasError('required')">Firm is Required...!</span>
+                    </mat-error>
+                  </mat-form-field>
+             
+
+                  
+                    <!-- changefirm -->
+                 
+
+                  <mat-form-field  appearance="outline">
+                    <mat-label>Firm Role</mat-label>
+                    <!-- (selectionChange)="firmRolechange($event)" -->
+                    <mat-select formControlName="firmRoleId" required appMatSelect>
+                      <mat-option value="">--Select--</mat-option>
+                      <mat-option *ngFor="let firm of getfirmRoles" [value]="firm.firmRoleId">{{firm.firmRoleName}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error class="error-msg">
+                      <span *ngIf="formGroup.get('firmRoleId').hasError('required')"> firm Role is Required...!</span>
+                    </mat-error>
+                  </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>User Full Name </mat-label>
+                    <input matInput formControlName="firmUserFullName" required >
+                    <mat-error class="error-msg">
+                      <span *ngIf="formGroup.get('firmUserFullName').hasError('required')"> Please enter User Full Name..!</span>
+                    </mat-error>
+                  </mat-form-field>
+
+
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Email </mat-label>
+                  <input matInput formControlName="firmUserEmail" required>
+                  <mat-error class="error-msg">
+                    <span *ngIf="formGroup.get('firmUserEmail').hasError('required')"> Please enter  Email Address..!</span>
+                    <span *ngIf="formGroup.get('firmUserEmail').hasError('pattern')">Please provide a valid email address</span>
+                  </mat-error>
+                </mat-form-field>  
+
+                <mat-form-field appearance="outline" >
+                  <mat-label>Mobile</mat-label>
+                  <input matInput formControlName="firmUserMobile" required onkeypress='return event.charCode >= 48 && event.charCode <= 57' minlength="10" maxlength="10">
+                  <mat-hint class="error-msg" align="end">{{formGroup?.get('firmUserMobile')?.value?.length || 0}}/10</mat-hint>
+                  <mat-error class="error-msg">
+                    <span *ngIf="formGroup.get('firmUserMobile').hasError('required')"> Please enter Mobile
+                      Number..!</span>
+                    <span *ngIf="formGroup.get('firmUserMobile').hasError('minlength')"> Please enter 10
+                      digits..!</span>
+                    <span *ngIf="formGroup.get('firmUserMobile').hasError('maxlength')"> Please enter 10
+                      digits..!</span>
+                    <span *ngIf="formGroup.get('firmUserMobile').hasError('pattern')">Must start with
+                      6,7,8,9...!</span>
+                  </mat-error>
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline">
+                  <mat-label>User Name </mat-label>
+                  <input matInput formControlName="firmUserName" required >
+                  <mat-error class="error-msg">
+                    <span *ngIf="formGroup.get('firmUserName').hasError('required')"> Please enter User Name..!</span>
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Password</mat-label>
+                  <input matInput formControlName="firmUserPassword"  [type]="hide ? 'password' : 'text'" type="password" minlength="8" maxlength="14" required>
+                  <mat-icon class="pointer" matSuffix (click)="hide = !hide">
+                    {{hide? 'visibility_off' : 'visibility'}}</mat-icon>
+               <mat-error class="error-msg">
+                <div *ngIf="password.touched && password.invalid">
+                  <!-- <div *ngIf="password.errors?.required">Password is required.</div> -->
+                  <div *ngIf="password.errors?.upperCase">Password must contain at least one uppercase letter.</div>
+                  <div *ngIf="password.errors?.specialChar">Password must contain at least one special character (e.g., @, #, $, etc.).</div>
+                  <div *ngIf="password.errors?.number">Password must contain at least one numeric digit.</div>
+                  <div *ngIf="password.errors?.minLength">Password must be at least 8 characters long.</div>
+                </div>
+                 <!-- <span *ngIf="formGroup.get('firmUserPassword').hasError('required')">Password Required...! </span>
+                 <span *ngIf="formGroup.get('firmUserPassword').hasError('minlength')">Minimum 8 characters is
+                   Required...! </span>
+                 <span *ngIf="formGroup.get('firmUserPassword').hasError('maxlength')">Maximum 14 characters Only...!
+                 </span>
+                 <span *ngIf="formGroup.get('firmUserPassword').hasError('pattern')"> Sample pattern... <b> Some@123</b> </span> -->
+                 <!-- <span *ngIf="password.hasError('trimError')">Whitespace is Not Allowed  ...! </span> -->
+               </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Conform Password</mat-label>
+                  <input matInput [formControl]="UserPassword"  [type]="hide1 ? 'password' : 'text'"  required (input)="changeconformpassword($event)" minlength="8" maxlength="14">
+                  <mat-icon class="pointer" matSuffix (click)="hide1 = !hide1">
+                    {{hide1? 'visibility_off' : 'visibility'}}</mat-icon>
+                  <mat-error class="error-msg">
+                    <span *ngIf="UserPassword.hasError('required')"> Please enter Conform Password..!</span>
+                    <span *ngIf="UserPassword.hasError('incorrect')"> Password Mismatch...!</span>
+                    
+                  </mat-error>
+                  
+                </mat-form-field>
+  
+
+                <div class="text-right">
+                  <button mat-button (click)="saveadmin(formGroup.value,'next')" class="m-3" [disabled]="!(formGroup.valid && UserPassword.valid)" mat-raised-button color="primary">Save & Next</button>
+                  <button mat-button (click)="saveadmin(formGroup.value,'')" class="m-3" [disabled]="!(formGroup.valid && UserPassword.valid)" mat-raised-button color="primary">Save</button>
+                  <button mat-raised-button  (click)="resetform()" type="button">Reset</button>
+                </div>
+
+              </mat-card>
+              </div> 
+          </div>
+      </form>
+
+    </div>
+  </div>

@@ -1,0 +1,727 @@
+
+<div class="m-3">
+
+
+
+  <div fxLayout="row" class="tab_md_flex" fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="5px">
+    <div fxFlex="20" fxFlex.xl="20" fxFlex.sm="20" fxFlex.md="20">
+      Sal.Retn.No: {{outwardHeadNo}}
+    </div>
+    <div fxFlex="40" fxFlex.xl="40" class="text-right" fxFlex.sm="40" fxFlex.md="40">
+        <h4 class="outward-pharma-head">Sales Return Entry</h4>
+    </div>
+   <div fxFlex="40" fxFlex.xl="40" fxFlex.sm="40" fxFlex.md="40">
+    
+    <div  class="master-btn text-right">
+      <button mat-raised-button color="primary" [disabled]="!salesReturnFormGroup.valid"  (click)="showSaleDetailTemplate('Add')">Add Item</button> &nbsp; &nbsp;
+      <button mat-raised-button color="primary"  (click)="showList()">List</button>
+
+  </div>
+   </div>
+</div>
+
+    
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px" class="user-form">
+      <form [formGroup]="salesReturnFormGroup">
+        <div fxFlex="100" class="return-form" fxLayoutGap="5px">
+    
+          <!-- SRET Date -->
+          <mat-form-field appearance="outline" class="e_mat_date">
+            <mat-label>S.RET Date *</mat-label>
+            <input  matInput [matDatepicker]="sretDate" [min]="minDate" [max]="maxDate" formControlName="sretDate" appDateMask>
+            <mat-datepicker-toggle matSuffix [for]="sretDate"></mat-datepicker-toggle>
+            <mat-datepicker #sretDate></mat-datepicker>
+            <mat-error *ngIf="salesReturnFormGroup.get('sretDate').hasError('required')">
+              S.RET Date is required.
+            </mat-error>
+          </mat-form-field>
+    
+          <!-- Customer Name Autocomplete -->
+          <app-autocomplete
+            [definition]="customerNameAutoCompleteDef"  
+            [control]="salesReturnFormGroup.get('accName')"
+            [optionsTableDefinition]="customAccountsOptsTable">
+          </app-autocomplete>
+    
+          <!-- Short Name -->
+          <mat-form-field appearance="outline">
+            <mat-label>Sh.Name</mat-label>
+            <input matInput formControlName="accShName">
+          </mat-form-field>
+    
+          <!-- GSTIN -->
+          <mat-form-field appearance="outline">
+            <mat-label>GSTIN</mat-label>
+            <input matInput formControlName="gstin" maxlength="15">
+            <mat-error *ngIf="salesReturnFormGroup.get('gstin').hasError('pattern')">
+              Invalid GSTIN format.
+            </mat-error>
+          </mat-form-field>
+    
+          <!-- Company Name Autocomplete -->
+          <!-- <app-autocomplete
+            [definition]="companyNameAutoCompleteDef"
+            [control]="salesReturnFormGroup.get('companyName')"
+            [optionsTableDefinition]="companyNameOptsTable">
+          </app-autocomplete> -->
+
+          <mat-form-field appearance="outline">
+            <mat-label>Company</mat-label>
+            <mat-select formControlName="compId"  appMatSelect placeholder="--Select--" #companyfocus  #CompanyTab   #singleSelect>
+              <mat-option>
+                <ngx-mat-select-search placeholderLabel="Find Company Type..."  (keydown)="companyTab($event)"
+                noEntriesFoundLabel="'no matching Company found'"  [formControl]="CompanyTabMultiFilterCtrl"></ngx-mat-select-search>
+              </mat-option>
+              <!-- <mat-option [value]=0>--Select--</mat-option> -->
+              <mat-option value='0'>--Select--</mat-option>
+              <mat-option *ngFor="let bank of filteredCompanyMulti | async"  [value]="bank.compId">
+                {{bank.compName}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+    
+          <!-- Delivery From -->
+          <!-- <mat-form-field appearance="outline">
+            <mat-label>Delivery From</mat-label>
+            <input matInput formControlName="deliveryFrom">
+          </mat-form-field> -->
+    
+          <!-- Mode Selection -->
+          <!-- <mat-form-field appearance="outline">
+            <mat-label>Mode *</mat-label>
+            <mat-select 
+              formControlName="mode" 
+              (focusout)="onDropdownOpen()">
+              <mat-option *ngFor="let mode of modeData" [value]="mode.code">{{ mode.name }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="salesReturnFormGroup.get('mode').hasError('required')">
+              Mode is required.
+            </mat-error>
+          </mat-form-field> -->
+          <mat-form-field appearance="outline" class="w_224">
+            <mat-label>Mode</mat-label>
+            <mat-select formControlName="mode" required appMatSelect>
+              <mat-option *ngFor="let mode of modeData" [value]="mode?.code">{{mode?.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- <mat-form-field appearance="outline" class=" ">
+            <mat-label>Mode</mat-label>
+            <mat-select formControlName="mode" required appMatSelect>
+              <mat-option *ngFor="let mode of modeData" [value]="mode?.code">{{mode?.name}}</mat-option>
+            </mat-select>
+          </mat-form-field> -->
+          <!-- Buttons -->
+          <button type="button" mat-raised-button color="primary" [disabled]="salesReturnFormGroup.invalid"
+            (click)="onSaveSalesReturn()">{{purchaseHeadBtnText}}</button>
+          <button type="button" mat-raised-button (click)="resetForm()">Reset</button>
+          <button type="button" mat-raised-button (click)="goBack()">Back</button>
+        </div>
+      </form>
+    </div>
+    
+    
+    <!-- <div class="mt-2" *ngIf="showTable">
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+          <div fxFlex="100">
+    
+            <div class="master-table mat-elevation-z4" id="table-scroll">
+              <table mat-table [dataSource]="dataSource" matSort>
+                <ng-container matColumnDef="shName">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Sh.Name </th>
+                  <td mat-cell *matCellDef="let element"> {{element.prodShName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="ProductName">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Product Name </th>
+                  <td mat-cell *matCellDef="let element"> {{element.prodName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="ProductPack">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Product Pack </th>
+                  <td mat-cell *matCellDef="let element"> {{element.prodPackName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="ProductType">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Batch </th>
+                  <td mat-cell *matCellDef="let element"> {{element.batch}} </td>
+                </ng-container>
+                <ng-container matColumnDef="expDate">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Exp.Date </th>
+                  <td mat-cell *matCellDef="let element"> {{element.expdate}} </td>
+                </ng-container>
+                <ng-container matColumnDef="companyName">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Qty </th>
+                  <td mat-cell *matCellDef="let element"> {{element.invQty}} </td>
+                </ng-container>
+                <ng-container matColumnDef="tax">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Qty.Disc </th>
+                  <td mat-cell *matCellDef="let element"> {{element.invQtyDisc}} </td>
+                </ng-container>
+                <ng-container matColumnDef="mrp">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> MRP </th>
+                  <td mat-cell *matCellDef="let element"> {{element.mrp}} </td>
+                </ng-container>
+                <ng-container matColumnDef="saleRate">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Sale Rate </th>
+                  <td mat-cell *matCellDef="let element"> {{element.saleRate}} </td>
+                </ng-container>
+                <ng-container matColumnDef="rate">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Rate </th>
+                  <td mat-cell *matCellDef="let element"> {{element.purRate}} </td>
+                </ng-container>
+                <ng-container matColumnDef="disc">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Disc </th>
+                  <td mat-cell *matCellDef="let element"> {{element.purDisc}} </td>
+                </ng-container>
+                <ng-container matColumnDef="grsValue">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Grs.Value </th>
+                  <td mat-cell *matCellDef="let element"> {{element.grsValue}} </td>
+                </ng-container>
+             
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Actions </th>
+                  <td mat-cell *matCellDef="let element"> <i title="Edit" class="fas fa-pencil-alt" (click)="editDetails(element)"></i> | <i  (click)="deleteDetails(element)" title="Delete"
+                      class="far fa-trash-alt"></i> </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+              <mat-paginator class="mat-paginator-sticky" [pageSizeOptions]="[10, 20, 30, 40, 50]"></mat-paginator>
+            </div>
+          </div>
+    
+        </div>
+    </div> -->
+
+    <div class="mt-2">
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+        <div fxFlex="100">
+          <app-alert [id]="'purchaseEntryList'"></app-alert>
+          <app-table [definition]="tableDefinition" [data]="dataSource" [tableAlertId]="'purchaseEntryList'"
+            [isDataLoading]="isDataLoading" [disableActions]="disableActions"></app-table>      
+        </div>
+      </div>
+    </div>
+
+    <ng-template [ngIf]="displayPreTax">
+      <mat-card class="mt-1 p-2 mb-2 mb_50">
+
+        <div fxLayout="row"  [formGroup]="headFormGroup" fxLayout.xs="column" fxLayout.sm="column" class="sm_align" fxLayout.lg="row" fxLayoutWrap fxLayoutGap="10px">
+          
+      <div fxFlex="30" fxFlex.md="20" class="user-form tab_width" fxFlex.xs="100">
+            <!-- <mat-form-field appearance="outline">
+              <mat-label>Dr. Adj.</mat-label>
+              <input matInput formControlName="otherDed" appOmitSpecialCharacters="integer"  (focusout)="validateFloatKeyPress($event.target)" (input)="djadjInput($event.target.value)">
+            </mat-form-field> -->
+            <!-- <mat-form-field appearance="outline" >
+              <mat-label>other Charges</mat-label>
+              <input matInput formControlName="otherDed">
+            </mat-form-field> -->
+                      
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Remarks</mat-label>
+                <textarea matInput formControlName="otherAdd"></textarea>
+              </mat-form-field>
+            <!-- <mat-form-field appearance="outline">
+              <mat-label>Cr. Adj.</mat-label>
+              <input matInput formControlName="otherAdd"  appOmitSpecialCharacters="integer"  (focusout)="validateFloatKeyPress($event.target)" (input)="cjadjInput($event.target.value)">
+            </mat-form-field> -->
+
+          <!-- <div fxFlex="60" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="47">
+            <app-autocomplete [definition]="customAccountDedAdjAutoCompleteDef"
+            [control]="otherDedAccId"></app-autocomplete>
+
+            <app-autocomplete [definition]="customAccountAddAdjAutoCompleteDef"
+            [control]="otherAddAccId"></app-autocomplete>
+          </div> -->
+                      
+      
+        <!-- <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="row" fxLayout.md="row" fxLayoutGap="10px"> -->
+          <!-- <mat-form-field appearance="outline" fxFlex="31">
+            <mat-label>Hamali Value</mat-label>
+            <input matInput formControlName="hamaliValue">
+          </mat-form-field> -->
+          <!-- <mat-form-field appearance="outline" fxFlex="48" fxFlex.xs="100" fxFlex.sm="50">
+            <mat-label>Net. Value</mat-label>
+            <input matInput formControlName="netValue">
+          </mat-form-field> -->
+          <!-- <mat-form-field appearance="outline" fxFlex="48" fxFlex.xs="100" fxFlex.sm="50">
+            <mat-label>Inv. Value</mat-label>
+            <input matInput formControlName="invValue">
+          </mat-form-field> -->
+        <!-- </div> -->
+        </div>
+          
+      <div fxFlex="30" id="t01" class="tab_width text-center">
+          <!-- <h6>As Per Calculation</h6> -->
+          <div style="max-height: 160px;overflow: auto;scrollbar-width: thin;">
+            <table class="table table-sm table-bordered" style="width: 100%;font-size: 12px;">
+              <thead>
+                <tr>
+                  <th>GST%</th>
+                  <th>Taxable </th>
+                  <ng-template [ngIf]="hasIGST">
+                    <th>IGST</th>
+                  </ng-template>
+                  <ng-template [ngIf]="!hasIGST">
+                    <th>CGST</th>
+                    <th>SGST</th>
+                  </ng-template>
+                </tr>
+              </thead>
+              <tr *ngFor="let pretax of pretaxes">
+                <td>{{pretax.tax | number:'1.2-2'}}</td>
+                <td>{{pretax.preTaxValue | number:'1.2-2'}}</td>
+                <ng-template [ngIf]="hasIGST">
+                  <td> {{pretax?.taxes[0]?.stakeValue | number:'1.2-2'}}</td>
+                </ng-template>
+                <ng-template [ngIf]="!hasIGST">
+                  <td>
+                    {{(pretax?.taxes.length > 0)?(pretax.taxes[0].taxStakeName=='CGST'?pretax.taxes[0].stakeValue:pretax.taxes[1].stakeValue | number:'1.2-2'):''}}
+                  </td>
+                  <td>
+                    {{(pretax?.taxes.length > 0)?(pretax.taxes[0].taxStakeName=='SGST'?pretax.taxes[0].stakeValue:pretax.taxes[1].stakeValue | number:'1.2-2'):''}}
+                  </td>
+                </ng-template>
+              </tr>
+            </table>
+          </div>
+        </div>
+      
+      <div fxFlex="20" fxFlex.md="30" class="tab_width" style="font-size: 14px;font-weight: bold;">
+        <!-- <div fxFlex="100"  fxLayoutGap="20px"> -->
+          <div style="display: flex;">
+            <div class="col-md-6 px-1 text-right">Grs. Value :&nbsp;</div>
+            <div class="col-md-6 tab_width2 px-1 text-right"> {{head.grsValue | number:'1.2-2'}}</div>
+          </div>
+          <div style="display: flex;">
+            <div class="col-md-6 px-1 text-right">Disc. Value :&nbsp;</div>
+            <div class="col-md-6 tab_width2 px-1 text-right">{{head.discValue | number:'1.2-2'}}</div>
+          </div>
+          <div style="display: flex;">
+            <div class="col-md-6 px-1 text-right"> Disc. Value 1 :&nbsp;</div>
+            <div class="col-md-6 tab_width2 px-1 text-right">{{head.disc1Value | number:'1.2-2'}}</div>
+          </div>
+          <div style="display: flex;">
+            <div class="col-md-6 px-1 text-right">Tax Value :&nbsp;</div>
+            <div class="col-md-6 tab_width2 px-1 text-right">{{head.taxValue | number:'1.2-2'}}</div>
+          </div>
+          <div style="display: flex;">
+            <div class="col-md-6 align-self-center px-1 text-right">other charges :&nbsp;</div>
+            <div class="col-md-6 tab_width2 px-1 text-right">
+              <mat-form-field appearance="outline" style="width: 95px !important;" >
+                <input appCurrencyFormat matInput formControlName="otherDed">
+              </mat-form-field>
+            </div>
+          </div>
+          <div style="display: flex;">
+            <div class="col-md-6 px-1 text-right text-success">Sal.Retn.Value :&nbsp;</div>
+            <div class="col px-1 tab_width2 text-right text-success">{{roundedValue}}</div>
+          </div>
+        <!-- </div> -->
+      </div>
+
+      <div fxFlex="17" class="text-right mbl_center mt-2" style="place-content: end;">
+        <button mat-raised-button color="primary" (click)="doFinalSave()">{{finalSavebutton}}</button> &nbsp;
+        <button mat-raised-button (click)="resetFinalSave()">Reset</button>
+      </div>
+
+            <!-- <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="100" id="t01">
+              <h6>As per Invoice</h6>
+              <table class="table table-sm table-bordered"  >
+                <thead>
+                  <th>GST%</th>
+                  <th>Taxable </th>
+                  <ng-template [ngIf]="hasIGST">
+                    <th>IGST</th>
+                  </ng-template>
+                  <ng-template [ngIf]="!hasIGST">
+                    <th>CGST</th>
+                    <th>SGST</th>
+                  </ng-template>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let pretaxFormGroup of invoiceTax.controls">
+    
+                    <td>{{pretaxFormGroup.controls.tax.value}}</td>
+                    <td [formGroup]="pretaxFormGroup"><input type="text" formControlName="iPreTaxValue"
+                        style="border:0;width: 66px;" (blur)="updateInvValueForFinalSave()"></td>
+                    <ng-template [ngIf]="hasIGST">
+                      <ng-container *ngFor="let taxFormGroup of pretaxFormGroup.controls.taxes.controls">
+                        <td [formGroup]="taxFormGroup"> <input type="text" formControlName="iStakeValue"
+                            style="border:0;width: 66px;" (blur)="updateInvValueForFinalSave()"></td>
+                      </ng-container>
+                    </ng-template>
+                    <ng-template [ngIf]="!hasIGST">
+                      <ng-container *ngFor="let taxFormGroup of pretaxFormGroup.controls.taxes.controls">
+                        <ng-template [ngIf]="taxFormGroup.controls.taxStakeName.value==='CGST'">
+                          <td [formGroup]="taxFormGroup"> <input type="text" formControlName="iStakeValue"
+                              style="border:0;width: 66px;" (blur)="updateInvValueForFinalSave()"></td>
+                        </ng-template>
+                      </ng-container>
+                      <ng-container *ngFor="let taxFormGroup of pretaxFormGroup.controls.taxes.controls">
+                        <ng-template [ngIf]="taxFormGroup.controls.taxStakeName.value==='SGST'">
+                          <td [formGroup]="taxFormGroup"> <input type="text" formControlName="iStakeValue"
+                              style="border:0;width: 66px;" (blur)="updateInvValueForFinalSave()"></td>
+                        </ng-template>
+                      </ng-container>
+                    </ng-template>
+                  </tr>
+                </tbody>
+              </table>
+            </div> -->
+           
+  
+        </div>
+  
+      </mat-card>
+    </ng-template>
+    
+    <!-- <mat-card class="mt-3 p-2"> 
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+        <div fxFlex="55">
+            <table class="table table-bordered table-sm">
+                <thead>
+                    <th> GST% </th>
+                    <th> Taxable </th>                  
+                </thead>
+                <tbody>
+                    <tr>
+                        <td> 18% </td>
+                        <td> 2000 </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div fxFlex="45" class="pur-values-form" fxLayoutGap="5px">   
+          <mat-form-field appearance="fill">
+            <mat-label>Textarea</mat-label>
+            <textarea matInput></textarea>
+          </mat-form-field>  
+        </div>
+        </div>    
+        <div class="text-right">
+            <button mat-raised-button color="primary">Save</button>  &nbsp;
+            <button mat-raised-button>Reset</button>
+        </div>
+    
+    </mat-card> -->
+
+    <ng-template #purchaseDetailTemplate>
+      <div fxFlex="100" class="user-form form_height_mbl" fxLayoutGap="10px">
+        <form [formGroup]="salesReturnDetails">
+          <div fxLayout="row" class="mt-1" fxLayoutWrap fxLayoutGap="10px">
+
+                <div fxFlex="24" class="return_mat" fxFlex.xs="100">
+                  <app-autocomplete [definition]="customProductAutoCompleteDef" #productName
+                  [control]="salesReturnDetails.get('prodId')" [optionsTableDefinition]="customProductOptsTable"
+                  [autofocus]="false"></app-autocomplete>
+                </div>
+
+
+                <mat-form-field appearance="outline" fxFlex="24" fxFlex.xs="100">
+                  <mat-label>Sh.Name</mat-label>
+                  <input matInput formControlName="prodShName" required>
+                  <mat-error>
+                    <span *ngIf="salesReturnDetails.get('prodShName').hasError('required') ">Sh.Name Required...! </span>
+                    <span
+                      *ngIf="salesReturnDetails.get('prodShName').errors && purchaseDetailFormGroup.get('prodShName').hasError('incorrect')">
+                      Sh.Name Not Found...!</span>
+                  </mat-error>
+                </mat-form-field>
+
+              <mat-form-field appearance="outline" fxFlex="24" fxFlex.xs="100">
+                <mat-label>Product Pack</mat-label>
+                <input [disabled]="isdisable" matInput formControlName="prodPackName" required>
+    
+                <mat-error>
+                  <span *ngIf="salesReturnDetails.get('prodPackName').hasError('required')">Product Pack
+                    Required...!</span>
+                </mat-error>
+              </mat-form-field>
+    
+          </div>
+          <div fxLayout="row" class="mt-1" fxLayoutWrap fxLayoutGap="10px">
+    
+              <!-- <mat-form-field appearance="outline" fxFlex="33">
+                  <mat-label>Batch</mat-label>
+                  <input matInput formControlName="batch" required>
+                </mat-form-field> -->
+              
+              <app-autocomplete class="return_mat" fxFlex="24" fxFlex.xs="100" [definition]="batchAutoCompleteDef" id="addBatchProductId"
+              [control]="salesReturnDetails.get('batch')" #batchAutoComplete
+              [optionsTableDefinition]="batchOptsTable"></app-autocomplete>
+    
+              <mat-form-field appearance="outline" fxFlex="24" fxFlex.xs="100">
+                <mat-label>Exp.Date</mat-label>
+                <input matInput disabled type="text" formControlName="expdate" maxLength="5"
+                   appOmitSpecialCharacters="integer" required onkeyup="
+                  var v = this.value;
+                  if (v.match(/^\d{2}$/) !== null) {
+                      this.value = v + '-'; }">
+                <mat-error>
+                  <span *ngIf="salesReturnDetails.get('expdate').hasError('required') "> Exp.Date Required...! </span>
+                  <span *ngIf="salesReturnDetails.get('expdate').hasError('greaterValue') "> Do not enter <b>Previous
+                      Date</b>...!</span>
+                  <span *ngIf="salesReturnDetails.get('expdate').hasError('greaterValue1')">Not a Valid Date...!</span>
+                  <span *ngIf="salesReturnDetails.get('expdate').hasError('greater')">Not a Valid Date...!</span>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" fxFlex="12" fxFlex.xs="100">
+                <mat-label>Qty.</mat-label>
+    
+                <input [disabled]="isdisable" matInput formControlName="invQty" appQntCurrencyFormat maxlength="7"
+                  appOmitSpecialCharacters="integer" (input)="qtyvalue('invQty')">
+                <mat-error>
+                  <span
+                    *ngIf="salesReturnDetails.get('invQty').errors && purchaseDetailFormGroup.get('invQty').hasError('incorrecterror')">quantity
+                    must be greater {{qtyvalue1}}</span>
+                  <span *ngIf="salesReturnDetails.get('invQty').hasError('required') "> Qty. Required...! </span>
+                </mat-error>
+              </mat-form-field>
+    
+              <mat-form-field appearance="outline" fxFlex="11" fxFlex.xs="100">
+                <mat-label>Qty.Disc.</mat-label>
+                <input matInput [disabled]="isdisable" formControlName="invQtyDisc" appQntCurrencyFormat maxlength="7"
+                  appOmitSpecialCharacters="integer" (input)="qtyvalue('recdQtyFree')">
+                <mat-error>
+                  <!-- <span *ngIf="itemForm.get('recdQtyFree').hasError('notUnique')">quantity must be greater {{qtyandfree}}</span> -->
+                  <span
+                    *ngIf="salesReturnDetails.get('invQtyDisc').errors && itemForm.get('invQtyDisc').hasError('incorrecterror1')">quantity
+                    must be greater {{qtyandfree}}</span>
+                </mat-error>
+              </mat-form-field>
+
+              <div fxFlex="24" fxFlex.xs="100" class="mat_product">
+                <!-- <app-autocomplete [definition]="productStatus"
+                  [control]="salesReturnDetails.get('productStatus')"></app-autocomplete> -->
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Status</mat-label>
+                    <mat-select formControlName="productStatus" appMatSelect>
+                      <mat-option *ngFor="let status of statusDropdown" [value]="status.code">{{status?.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+              </div>
+    
+          </div>
+          <div fxLayout="row" class="sales-return mt-1" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+    
+              <!-- <app-autocomplete fxFlex="24" fxFlex.xs="100" *ngIf="firmPreferences?.discTypeOption === 3" [definition]="discountType"
+              [control]="salesReturnDetails.get('purDiscType')">
+            </app-autocomplete> -->
+            
+            <mat-form-field appearance="outline" fxFlex="24" *ngIf="firmPreferences?.allowDisc2 != 0 && firmPreferences?.discTypeOption == 3" >
+              <mat-label>Discount *</mat-label>
+              <mat-select appMatSelect formControlName="purDiscType">
+                <!-- <mat-option [value]=0>--Select--</mat-option> -->
+                <mat-option *ngFor="let tran of discountDropDown"  [value]="tran.code">
+                  {{tran.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+  
+            <mat-form-field *ngIf="(firmPreferences?.discTypeOption == 1 || firmPreferences?.discTypeOption == 2) && firmPreferences?.allowDisc2 != 0"
+              appearance="outline" fxFlex="24" fxFlex.xs="100">
+              <mat-label>Discount</mat-label>
+              <input matInput disabled [value]="firmPreferences?.discTypeOption == 1 ? '%': 'Rupee'" maxlength="8"
+                appOmitSpecialCharacters="integer">
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline" fxFlex="24" fxFlex.xs="100">
+  
+              <mat-label>Discount{{ salesReturnDetails.get('purDiscType')?.value?.name ?
+                ('('+salesReturnDetails.get('purDiscType')?.value?.name+')'): '' }}</mat-label>
+              <input matInput [disabled]="isdisable" formControlName="purDisc" maxlength="2" appOmitSpecialCharacters="integer">
+              <mat-error>
+                <span *ngIf="salesReturnDetails.get('purDisc').hasError('invalidInput')"> Discount cannot be greater Than
+                  100..!
+                </span>
+                <span *ngIf="salesReturnDetails.get('purDisc').hasError('value')"> Rupee Not Greater Than 6
+                  Digits..!</span>
+              </mat-error>
+  
+            </mat-form-field>
+
+            
+            <mat-form-field appearance="outline" fxFlex="24" *ngIf="firmPreferences?.allowDisc2 != 0 && firmPreferences?.discTypeOption == 3" >
+              <mat-label>Discount *</mat-label>
+              <mat-select appMatSelect formControlName="purdiscType1">
+                <!-- <mat-option [value]=0>--Select--</mat-option> -->
+                <mat-option *ngFor="let tran of discountDropDown"  [value]="tran.code">
+                  {{tran.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            
+            <mat-form-field *ngIf="(firmPreferences?.discTypeOption == 1 || firmPreferences?.discTypeOption == 2) && firmPreferences?.allowDisc2 != 0" appearance="outline">
+              <mat-label>Discount *</mat-label>
+              <input matInput disabled formControlName="purdiscType1" [value]="firmPreferences?.discTypeOption == 1 ? '%': 'Rupee'" maxlength="8"
+                appOmitSpecialCharacters="integer">
+            </mat-form-field>
+            
+    
+            <mat-form-field appearance="outline" *ngIf="firmPreferences?.allowDisc2 != 0" fxFlex="24" fxFlex.xs="100">
+    
+              <mat-label>Discount{{ salesReturnDetails.get('purdiscType1')?.value?.name ?
+                ('('+salesReturnDetails.get('purdiscType1')?.value?.name+')'): '' }}</mat-label>
+              <input matInput [disabled]="isdisable" formControlName="purDisc1" maxlength="2" appOmitSpecialCharacters="integer">
+              <mat-error>
+                <span *ngIf="salesReturnDetails.get('purDisc1').hasError('invalidInput')"> Discount cannot be greater Than
+                  100..!
+                </span>
+                <span *ngIf="salesReturnDetails.get('purDisc1').hasError('value')"> Rupee Not Greater Than 6
+                  Digits..!</span>
+              </mat-error>
+  
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="return_mat" fxFlex="24" fxFlex.xs="100"  *ngIf="firmPreferences?.allowDisc2 == 0">
+              <mat-label>Inv.Rate</mat-label>
+              <input matInput formControlName="purRate" appCurrencyFormat maxlength="8"
+                appOmitSpecialCharacters="integer" required>
+              <mat-error>
+                <span *ngIf="salesReturnDetails.get('purRate').hasError('required') ">Inv.Rate required...! </span>
+                <span *ngIf="salesReturnDetails.get('purRate').hasError('recqq') ">Inv.Rate Required...!</span>
+              </mat-error>
+            </mat-form-field>
+        
+            <mat-form-field appearance="outline" fxFlex="24" fxFlex.xs="100" *ngIf="firmPreferences?.allowDisc2 == 0">
+              <mat-label>Sale Rate</mat-label>
+              <input matInput  [disabled]="isdisable" formControlName="saleRate" maxlength="10" appCurrencyFormat
+                appOmitSpecialCharacters="integer" required>
+              <mat-error>
+                <span *ngIf="salesReturnDetails.get('saleRate').hasError('required') "> Sale Rate Required...! </span>
+                <span *ngIf="salesReturnDetails.get('saleRate').hasError('greatersalerate')"> Sale Rate Must be Greater Than Inv.Rate...! </span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" class="sales-return mt-1" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+
+            <mat-form-field appearance="outline" class="return_mat" fxFlex="24" fxFlex.xs="100"  *ngIf="firmPreferences?.allowDisc2 != 0">
+              <mat-label>Inv.Rate</mat-label>
+              <input matInput formControlName="purRate" appCurrencyFormat maxlength="8"
+                appOmitSpecialCharacters="integer" required>
+              <mat-error>
+                <span *ngIf="salesReturnDetails.get('purRate').hasError('required') ">Inv.Rate required...! </span>
+                <span *ngIf="salesReturnDetails.get('purRate').hasError('recqq') ">Inv.Rate Required...!</span>
+              </mat-error>
+            </mat-form-field>
+        
+            <mat-form-field appearance="outline" fxFlex="24" fxFlex.xs="100" *ngIf="firmPreferences?.allowDisc2 != 0">
+              <mat-label>Sale Rate</mat-label>
+              <input matInput  [disabled]="isdisable" formControlName="saleRate" maxlength="10" appCurrencyFormat
+                appOmitSpecialCharacters="integer" required>
+              <mat-error>
+                <span *ngIf="salesReturnDetails.get('saleRate').hasError('required') "> Sale Rate Required...! </span>
+                <span *ngIf="salesReturnDetails.get('saleRate').hasError('greatersalerate')"> Sale Rate Must be Greater Than Inv.Rate...! </span>
+              </mat-error>
+            </mat-form-field>
+    
+              <mat-form-field appearance="outline" fxFlex="24" fxFlex.xs="100">
+                <mat-label>MRP</mat-label>
+                <input matInput [disabled]="isdisable" formControlName="mrp" (focusout)="getmrpvalid()" appOmitSpecialCharacters="integer"
+                  maxlength="8" required appCurrencyFormat>
+                <mat-error>
+                  <span *ngIf="salesReturnDetails.get('mrp').hasError('required')"> MRP Required...! </span>
+                  <span *ngIf="salesReturnDetails.get('mrp').hasError('greaterValue')"> MRP Must be Greater Than Retail
+                    Rate...!
+                  </span>
+                  <span *ngIf="salesReturnDetails.get('mrp').hasError('greaterValue1')"> MRP Must be Greater Than or Equal
+                    To Sale Rate...!
+                  </span>
+                  <span *ngIf="salesReturnDetails.get('mrp').hasError('value')">Enter Valid Number...! </span>
+                </mat-error>
+              </mat-form-field>
+    
+    
+              <div fxFlex="24" fxFlex.xs="100" class="return_mat">
+                <app-autocomplete [definition]="manifactureDetails" 
+                [control]="salesReturnDetails.get('mfgId')"></app-autocomplete>
+              </div>
+
+                <!-- <app-autocomplete fxFlex="18" class="return_mat" fxFlex.xs="100" *ngIf="firmPreferences?.allowDisc2 != 1" [definition]="discountType1"
+                [control]="salesReturnDetails?.get('purdiscType1')">
+              </app-autocomplete> -->
+    
+          </div>
+          <div fxLayout="row" class="sales-return" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+              <!-- *ngIf="firmPreferences.allowDisc2 != 1" -->
+    
+        
+              <mat-form-field appearance="outline" fxFlex="24" fxFlex.xs="100">
+                <mat-label>HSN Code</mat-label>
+                <input matInput formControlName="hsncode" maxlength="8" appOmitSpecialCharacters="noSpecialChars">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" fxFlex="24" fxFlex.xs="100">
+                <mat-label>Tax(%)</mat-label>
+                <input matInput [disabled]="isdisable" formControlName="tax">
+              </mat-form-field>
+    
+              <!-- <mat-form-field appearance="outline" fxFlex="16">
+                <mat-label>Sch.Qty.</mat-label>
+                <input matInput [disabled]="isdisable" formControlName="psQty" (input)="schQty()" maxlength="7">
+              </mat-form-field>
+    
+    
+              <mat-form-field appearance="outline" fxFlex="15">
+                <mat-label>Sch.Qty.Disc.</mat-label>
+                <input matInput [disabled]="isdisable" formControlName="psQtyDisc" maxlength="7">
+              </mat-form-field> -->
+    
+
+          </div>
+        </form>
+      </div>
+     
+    </ng-template>
+
+    <ng-template #saleReturnDetailButtonTemplate>
+      
+        <button type="button" mat-raised-button color="primary" [disabled]="!salesReturnDetails?.valid"
+          (click)="onSaveOrUpdateSaleDetail(true)">{{detailbutton}}</button>&nbsp;
+    
+        <button type="button" mat-raised-button color="primary" [disabled]="!salesReturnDetails?.valid"
+          (click)="onSaveOrUpdateSaleDetail(false)">{{detailsave}}</button>&nbsp;
+    
+        <button type="button" mat-raised-button class="btn btn-primary" (click)="resetDialog()">Reset</button>
+    </ng-template>
+    
+    <!-- <ng-template #purhistory>
+      <app-table [definition]="historytableDefinition" [data]="historydataSource" [tableAlertId]="'purchaseEntryList'"
+     [disableActions]="disableActions"></app-table>   
+    </ng-template> -->
+
+    <ng-template #deletePurchaseHeadTemplate let-purchaseHead="data">
+      Are you sure to delete <strong></strong>?
+    </ng-template>
+
+    <!-- <ng-template #deletePurchase let-purchaseHead="data">
+      Are you sure to delete <strong></strong>?
+    </ng-template> -->
+    </div>
+    <!-- <div id="deletePopup" class="popup">
+      <div class="popup-content">
+        <p>Are you sure you want to delete this item?</p>
+        <button (click)="deleteItem()">Yes</button>
+        <button onclick="closePopup()">No</button>
+      </div>
+    </div> -->
+
+    <div class="modal" id="deletePopup" style="display: flex;background: rgba(0, 0, 0, 0.32);">
+      <div class="modal-dialog modal-dialog-centered" style="min-width: 30%;">
+        <div class="modal-content">
+          <div class="modal-header" style="background-color: #006476;padding: 8px 16px;">
+            <p class="modal-title" style="font-size: 16px;color: #fff;">Delete Company Group</p>
+            <button class="close text-white" data-dismiss="modal" style="opacity: 1 !important;outline: none;">&times;</button>
+          </div>
+          <div class="modal-body" style="font-size: 15px;">
+            Are you sure you want to delete this item?
+          </div>
+          <div class="modal-footer modal-footer p-1 border-0 pb-2 pr-2">
+            <button type="button" mat-raised-button (click)="deleteItem()">Yes</button>
+            <button type="button" mat-raised-button (click)="closePopup()">No</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    

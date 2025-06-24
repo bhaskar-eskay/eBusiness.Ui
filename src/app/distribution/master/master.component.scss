@@ -1,0 +1,30 @@
+.masters-pharma-head {
+    color: #006476;
+    padding-top: 5px;
+    margin-bottom: 0px;
+}
+th.mat-sort-header-sorted {
+  color: #fff;
+}
+
+.master-table {
+  position: relative;
+  max-height: 470px;
+  overflow: auto;
+}
+
+.master-table .fa-pencil-alt {
+    color: #1f1f98;
+}
+
+.master-table .fa-trash-alt {
+    color: #ef0000;
+}
+
+.master-table tr:hover {
+  background-color: #f0f8ff;
+}
+.master-img img{
+  height: 360px;
+  width: 95%;
+}

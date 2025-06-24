@@ -1,0 +1,138 @@
+<div class="m-3">
+
+
+
+  <div fxLayout="row" fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column" fxLayoutWrap
+    fxLayoutGap="10px">
+    <div fxFlex="80" fxFlex.xl="55" fxFlex.sm="57" fxFlex.md="46">
+      <h4 class="outward-pharma-head">Internal Stock Adjustments Minus(SADJM) Entry</h4>
+    </div>
+    <div fxFlex="25" fxFlex.xl="12" fxFlex.sm="12" fxFlex.md="20" class="master-btn text-right">
+      
+        <button mat-raised-button color="primary" (click)="clikRegisters()">SADJM Register</button>
+      
+      <!-- <button mat-raised-button [routerLink]="['../OSALList']" color="primary">Internal Minus List</button> -->
+    </div>
+
+  </div>
+
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+    <div fxFlex="30" class="return-form" fxLayoutGap="5px">
+      <form [formGroup]="internalStockAdjMinusHeadFormGroup">
+
+        <mat-form-field class="mr-3">
+          <mat-label>SADJM Date</mat-label>
+          <input matInput formControlName="invDate" [matDatepicker]="picker">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Remarks</mat-label>
+          <input matInput formControlName="remarks">
+        </mat-form-field>
+      </form>
+    </div>
+    <div fxFlex="40" fxLayoutGap="5px">
+      <button mat-raised-button color="primary">Save</button>
+      <button mat-raised-button>Reset</button>
+      <button mat-raised-button>Cancel</button>
+      <button type="button" mat-raised-button [routerLink]="['../OutwardTransaction']">Back</button>
+    </div>
+  </div>
+
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+    <div fxFlex="100" class="minus-form" fxLayoutGap="5px">
+      <form [formGroup]="internalStockAdjMinusDetailFormGroup">
+
+        <app-autocomplete [definition]="customProductAutoCompleteDef" [optionsTableDefinition]="customProductOptsTable"
+          [control]="internalStockAdjMinusDetailFormGroup.get('prodName')" [autofocus]="true" 
+          nextElementId="addBatchProductId" [dependent]="batchAutoComplete"></app-autocomplete>
+
+        <mat-form-field>
+          <mat-label>Sh.Name</mat-label>
+          <input matInput formControlName="prodShName">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Product Pack</mat-label>
+          <input matInput formControlName="prodPackName">
+        </mat-form-field>
+
+
+        <app-autocomplete [definition]="batchAutoCompleteDef" [optionsTableDefinition]="batchOptsTable"
+          [control]="internalStockAdjMinusDetailFormGroup.get('batch')" id="addBatchProductId" #batchAutoComplete>
+        </app-autocomplete>
+
+
+        <mat-form-field>
+          <mat-label>Qty.</mat-label>
+          <input matInput formControlName="issQty">
+        </mat-form-field>
+
+
+        <mat-form-field>
+          <mat-label>Qty.Disc</mat-label>
+          <input matInput formControlName="issQtyDisc">
+        </mat-form-field>
+      </form>
+
+      <button mat-raised-button color="primary">Save</button>
+      <button mat-raised-button>Reset</button>
+      <button mat-raised-button>Cancel</button>
+
+    </div>
+  </div>
+
+  <div class="mt-2">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+      <div fxFlex="100">
+
+        <div class="master-table mat-elevation-z4" id="table-scroll">
+          <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="shName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Sh.Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.shName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="ProductName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Product Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.ProductName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="ProductPack">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Product Pack </th>
+              <td mat-cell *matCellDef="let element"> {{element.ProductPack}} </td>
+            </ng-container>
+            <ng-container matColumnDef="ProductType">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Batch </th>
+              <td mat-cell *matCellDef="let element"> {{element.ProductType}} </td>
+            </ng-container>
+            <ng-container matColumnDef="expDate">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Exp.Date </th>
+              <td mat-cell *matCellDef="let element"> {{element.companyName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="companyName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Qty </th>
+              <td mat-cell *matCellDef="let element"> {{element.companyName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="tax">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Qty.Disc </th>
+              <td mat-cell *matCellDef="let element"> {{element.tax}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Actions </th>
+              <td mat-cell *matCellDef="let element"> <img title="Edit" style="height: 24px;width: 24px" src="../../../../assets/new_edit2.png"> |  <img title="Delete" style="height: 24px;width: 24px" src="../../../../assets/new_delete2.png"> </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+          <mat-paginator class="mat-paginator-sticky" [pageSizeOptions]="[10, 20, 30, 40, 50]"></mat-paginator>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+</div>

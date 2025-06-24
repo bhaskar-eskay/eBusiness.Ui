@@ -1,0 +1,69 @@
+<div class="pharma-finance">
+    <div class="heading-container">
+      <h4 class="pharmacyHeading">GSTR 1</h4>
+    </div>
+    <br>
+  
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+        <form [formGroup]="dayBookReportFormGroup">
+          <div fxLayout="row wrap" fxLayoutGap="16px" class="CashReceiptControls">
+            
+            <!-- Report Option -->
+            <mat-form-field fxFlex="30" appearance="outline">
+              <mat-label>Report Option</mat-label>
+              <mat-select formControlName="reportOption" (selectionChange)="onReportOptionChange($event)">
+                <mat-option value="datewise">Datewise</mat-option>
+                <mat-option value="monthwise">Monthwise</mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+            <!-- Monthwise Dropdown (Only visible when Monthwise is selected) -->
+            <div *ngIf="dayBookReportFormGroup.get('reportOption').value === 'monthwise'">
+              <mat-form-field fxFlex="70" appearance="outline">
+                <mat-label>Month</mat-label>
+                <mat-select formControlName="month">
+                  <mat-option value="april">April</mat-option>
+                  <mat-option value="may">May</mat-option>
+                  <mat-option value="june">June</mat-option>
+                  <mat-option value="july">July</mat-option>
+                  <mat-option value="august">August</mat-option>
+                  <mat-option value="september">September</mat-option>
+                  <mat-option value="october">October</mat-option>
+                  <mat-option value="november">November</mat-option>
+                  <mat-option value="december">December</mat-option>
+                  <mat-option value="january">January</mat-option>
+                  <mat-option value="february">February</mat-option>
+                  <mat-option value="march">March</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+  
+            <!-- Datewise Fields (Only visible when Datewise is selected) -->
+            <div *ngIf="dayBookReportFormGroup.get('reportOption').value === 'datewise'">
+              <mat-form-field fxFlex="40" appearance="outline">
+                <mat-label>From Date</mat-label>
+                <input matInput [matDatepicker]="fromDatePicker" formControlName="fromDate" [matDatepickerFilter]="dateFilter">
+                <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #fromDatePicker></mat-datepicker>
+              </mat-form-field>
+                &nbsp;
+              <mat-form-field fxFlex="40" appearance="outline">
+                <mat-label>To Date</mat-label>
+                <input matInput [matDatepicker]="toDatePicker" formControlName="toDate" [matDatepickerFilter]="dateFilter">
+                <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #toDatePicker></mat-datepicker>
+              </mat-form-field>
+            </div>
+  
+            <!-- Buttons -->
+            <div fxLayout="row wrap" fxLayoutGap="16px" class="button-group">
+              <button type="button" mat-raised-button color="primary" (click)="generateReport()">Generate</button>
+              <button type="button" mat-raised-button color="warn" (click)="resetForm()">Reset</button>
+            </div>
+          </div>
+        </form>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  

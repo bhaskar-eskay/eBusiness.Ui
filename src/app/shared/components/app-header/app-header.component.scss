@@ -1,0 +1,30 @@
+@import '../../../../variables.scss';
+
+.menu-spacer {
+    flex: 1 1 auto;
+  }
+
+  .mat-toolbar-multiple-rows {
+    min-height: 50px;
+}
+.mat-toolbar-row, .mat-toolbar-single-row {
+  height: 50px;
+}
+
+.header-card {
+  z-index: 101;
+  padding:0px;
+}
+
+.disableMenu {
+  pointer-events:none;
+}
+
+div.active_routeMenu {
+  background: $topnav-background-color;
+  color:$theme-white;
+}
+
+div.active_routeMenu:hover {
+  color:black;
+}

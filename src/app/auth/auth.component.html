@@ -1,0 +1,113 @@
+ 
+ 
+ <div class="main-bg">
+
+ 
+ 
+ <div  fxLayout="row"   fxLayoutAlign="center center" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">    
+    <div fxFlex="25" fxFlex.md="50" fxFlex.sm="50">
+     <form [formGroup]="authForm" class="mt-4" *ngIf="authForm">    
+      <mat-card *ngIf="login" class="user-form login-form  mt-2">
+        <div class="avatar" color="primary"><i class="material-icons">&#xE7FF;</i></div>
+        <h4 class="modal-title">Login to Your Account</h4>
+        <app-alert [id]="loginAlert"></app-alert>
+        <div *ngIf="showlogin">
+          <mat-form-field appearance="outline">
+            <mat-label> User Name: </mat-label>
+            <input matInput type="text" #name autocomplete="off" formControlName="userName" required>
+            <mat-error *ngIf="!authForm.controls['userName'].valid && authForm.controls['userName'].touched">
+              UserName Required
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label> Password: </mat-label>
+            <input [type]="showPassword ? 'text': 'password'" autocomplete="off" matInput  formControlName="password" required>
+            <!-- <mat-icon matSuffix class="suffix" class="showPassword" (mousedown)="showPassword = !showPassword"  (mouseup)="showPassword = !showPassword">{{showPassword ? 'visibility_off' : 'visibility'}}</mat-icon>  -->
+            <mat-error *ngIf="!authForm.controls['password'].valid && authForm.controls['password'].touched">
+              Password Required
+            </mat-error>
+          </mat-form-field>
+
+          
+        <div class="form-group small clearfix">
+          <label class="checkbox-inline"><input type="checkbox"> Remember me</label>
+          <a  class="forgot-link">Forgot Password?</a>
+        </div>
+
+        <div class="text-center">
+          <button type="submit" class=" btn-block btn-lg" color="primary" [disabled]="!authForm.valid" (click)="doLogin(1)" mat-raised-button> Login </button>
+          <!-- <button type="submit" class=" btn-block btn-lg" color="primary" [disabled]="!firmGroupId.valid" (click)="doLogin(2)" mat-raised-button> Continue </button> -->
+        </div>  
+        </div>
+       <div *ngIf="!showlogin">
+        <mat-form-field  appearance="outline">
+          <mat-label>Firm</mat-label>
+          <mat-select [formControl]="firmGroupId"   required  (selectionChange)="FirmYear($event.value)" >
+            <mat-option value="">--Select--</mat-option>
+            <mat-option *ngFor="let firm of firmGroup" [value]="firm.firmId">{{firm.firmName}}-({{firm.firmAlias}})
+            </mat-option>
+          </mat-select>
+          <mat-error class="error-msg">
+            <span *ngIf="firmGroupId.hasError('required')"> firm  is Required...!</span>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Select Year</mat-label>
+          <mat-select [formControl]="firmyear"  (selectionChange)="changefirmgroup($event.value)" >
+            <mat-option *ngFor="let year of years" [value]="year.firmYear">
+             {{year.firmYear}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        
+        <div class="form-group small clearfix">
+          <label class="checkbox-inline"><input type="checkbox"> Remember me</label>
+          <a  class="forgot-link">Forgot Password?</a>
+        </div>
+
+        <div class="text-center">
+          <!-- <button type="submit" class=" btn-block btn-lg" color="primary" [disabled]="!firmGroupId.valid" (click)="doLogin(1)" mat-raised-button> Login </button> -->
+          <button type="submit" class=" btn-block btn-lg" color="primary" [disabled]="!firmGroupId.valid" (click)="doLogin(2)" mat-raised-button> Continue </button>
+        </div>  
+       </div>
+      
+        <!-- private routeService: RouteService -->
+        
+        <!-- <div class="text-center small mt-2">Don't have an account? <a >Sign up</a></div> -->
+      </mat-card>
+      
+       <!-- ---------------------------------------Todo---------------------------------------- -->
+      <mat-card *ngIf="otpVerify" style="border-radius: 15px;margin-top: 13%;">
+        <div class="d-flex justify-content-center"><img src="../../assets/one-time-password.png" width="110px" alt=""></div>
+        <h4 class="my-3 text-center">Enter Verification code</h4>
+        <!-- <label for="">We've sent a code to </label> -->
+        <form [formGroup]="otpForm">
+          <div class="d-flex" style="column-gap: 15px;justify-content: center;">
+            <input *ngFor="let control of otpControls.controls; let i = index"
+                   type="password"
+                   class="form-control form-control-sm text-center"
+                   maxlength="1"
+                   style="height: 40px; width: 40px;"
+                   [formControl]="control" (keydown)="handleBackspace($event, i)"
+                   (input)="moveFocus($event, i)">
+          </div>
+        </form>
+        <div class="mt-2 px-3">
+          <label for="">Didn't get a code? <a (click)="resend()" class="pointer" [ngClass]="resendOTP == true ? 'otpClass': '' " style="color: #006476;">Resend</a></label>
+          <label for="" style="color: #006476;float: right;">[ <span id="timer" class="ml-1" style="color: #006476;"> 10:00</span> ]</label>
+        </div>
+        <div class="px-3">
+          <button type="submit" class=" btn-block btn-lg" color="primary" [disabled]="veriftbtn" (click)="verifyOTP(1)"
+            mat-raised-button> Verify </button>
+          <button type="submit" class=" btn-block btn-lg" (click)="cancel()" color="" mat-raised-button> Cancel </button>
+        </div>
+      </mat-card>
+    </form>
+    </div>
+  </div>
+
+</div>
+
+
+<br>

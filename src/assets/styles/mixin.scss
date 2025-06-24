@@ -1,0 +1,44 @@
+@mixin user-form {
+
+  // .mat-form-field {
+  //   font-size: 14px;
+  //   height: 48px;
+  //   width: 100%;
+  // }
+
+  
+    .mat-form-field-flex>.mat-form-field-infix {
+      padding: 0.4em 0px !important;
+    }
+  
+    .mat-form-field-label-wrapper {
+      top: -1.5em;
+    }
+  
+    .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+      transform: translateY(-1.1em) scale(.75);
+    }
+  
+    .mat-form-field-wrapper {
+      padding-bottom: 0;
+    }
+  
+    .mat-form-field-subscript-wrapper {
+      font-size: 75%;
+      margin-top: 2em;
+      top: calc(100% - 1.79167em);
+    }
+  }
+  
+  
+  @mixin mat-tab {
+    .mat-tab-label {
+      background: #ebedef;
+      border-radius: 8% 8% 0% 0%;
+      margin: 2px;
+      height: 35px;
+      padding: 0 11px;
+      min-width: 110px;
+    }
+  }
+  

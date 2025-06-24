@@ -1,0 +1,120 @@
+<div class="m-3">
+  <div fxLayout="row" fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column" fxLayoutWrap
+    fxLayoutGap="10px">
+    <div fxFlex="50" fxFlex.xl="55" fxFlex.sm="57" fxFlex.md="46">
+      <h4 class="masters-pharma-head">Tax Slabs</h4>
+    </div>
+    <!-- <div fxFlex="50" fxFlex.xl="12" fxFlex.sm="12" fxFlex.md="20" fxLayoutAlign="end end">
+      <button mat-raised-button color="primary" type="button" *ngIf="!addOrEditFlag" (click)="addOrEdit()">Add
+        Slab</button>&nbsp;
+      <button mat-icon-button (click)="clearAddOrEdit()" *ngIf="addOrEditFlag" matTooltip="Close" type="button">
+        <mat-icon>close</mat-icon>
+      </button>
+      <button mat-raised-button type="button" (click)="refresh()"
+        *ngIf="!isDataLoading && !addOrEditFlag">Refresh</button>
+    </div> -->
+  </div>
+
+  <div class="mt-2">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+      <div fxFlex="100">
+        <app-alert [id]="formAlertId"></app-alert>
+        <form [formGroup]="formGroup" *ngIf="formGroup && addOrEditFlag" autocomplete="off">
+          <div fxLayoutGap="10px" class="slab-form ">
+            <app-autocomplete [definition]="taxTypeAutoCompleteDef" [autofocus]="true"
+              [control]="formGroup.get('type')"></app-autocomplete>
+            <mat-form-field appearance="outline">
+              <mat-label>Slab</mat-label>
+              <input matInput type="text" formControlName="slab" required>
+              <mat-error *ngIf="formGroup.get('slab')">
+                <ng-template [ngIf]="formGroup.get('slab').hasError('required')">
+                  Slab is <strong>required</strong>
+                </ng-template>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Active Date</mat-label>
+              <input matInput [matDatepicker]="activeDate" [min]="minDate" (focus)="activeDate.open()"
+                formControlName="activeDate" required>
+              <mat-datepicker-toggle matSuffix [for]="activeDate"></mat-datepicker-toggle>
+              <mat-datepicker #activeDate></mat-datepicker>
+              <mat-error *ngIf="formGroup.get('activeDate')">
+                <ng-template [ngIf]="formGroup.get('activeDate').hasError('required')">
+                  Active Date is <strong>required</strong>
+                </ng-template>
+                <ng-template [ngIf]="formGroup.get('activeDate').hasError('matDatepickerMin')">
+                  Active Date is <strong>not valid</strong>
+                </ng-template>
+              </mat-error>
+            </mat-form-field>
+
+            <div class="float-right">
+              <button mat-raised-button color="primary" type="button" [disabled]="formGroup.invalid"
+                (click)="save()">Add</button> &nbsp;
+              <button mat-raised-button type="button" (click)="clearOrResetForm()">Clear</button>
+            </div>
+
+          </div>
+        </form>
+        <app-alert [id]="'dataTableAlertId'"></app-alert>
+        <app-table [definition]="tableDefinition" [data]="dataList" [tableAlertId]="'dataTableAlertId'"
+          [isDataLoading]="isDataLoading" [disableActions]="disableActions"></app-table>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+<ng-template #terminateSlabTemplate>
+  <app-alert [id]="templateAlertId"></app-alert>
+  <form [formGroup]="formGroup" *ngIf="formGroup" autocomplete="off">
+    <div fxLayoutGap="20px">
+      <app-autocomplete [definition]="taxTypeAutoCompleteDef" [control]="formGroup.get('type')"></app-autocomplete>
+      <mat-form-field>
+        <mat-label>Slab</mat-label>
+        <input matInput type="text" formControlName="slab" required (keyup)="updateToDecimalValue()">
+        <mat-error *ngIf="formGroup.get('slab')">
+          <ng-template [ngIf]="formGroup.get('slab').hasError('required')">
+            Slab is <strong>required</strong>
+          </ng-template>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Active Date</mat-label>
+        <input matInput [matDatepicker]="activeDate" formControlName="activeDate">
+        <mat-datepicker-toggle matSuffix [for]="activeDate"></mat-datepicker-toggle>
+        <mat-datepicker #activeDate></mat-datepicker>
+        <mat-error *ngIf="formGroup.get('activeDate')">
+          <ng-template [ngIf]="formGroup.get('activeDate').hasError('required')">
+            Active Date is <strong>required</strong>
+          </ng-template>
+          <ng-template [ngIf]="formGroup.get('activeDate').hasError('matDatepickerMin')">
+            Active Date is <strong>not valid</strong>
+          </ng-template>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Termination Date</mat-label>
+        <input matInput autofocus [matDatepicker]="terminationDate" [min]="minDate" (focus)="terminationDate.open()"
+          formControlName="terminationDate" required>
+        <mat-datepicker-toggle matSuffix [for]="terminationDate"></mat-datepicker-toggle>
+        <mat-datepicker #terminationDate></mat-datepicker>
+        <mat-error *ngIf="formGroup.get('terminationDate')">
+          <ng-template [ngIf]="formGroup.get('terminationDate').hasError('required')">
+            Termination Date is <strong>required</strong>
+          </ng-template>
+          <ng-template [ngIf]="formGroup.get('terminationDate').hasError('matDatepickerMin')">
+            Termination Date is <strong>not valid</strong>
+          </ng-template>
+        </mat-error>
+      </mat-form-field>
+
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #terminateButtonTemplate>
+  <button mat-raised-button color="primary" type="button" [disabled]="formGroup.invalid"
+    (click)="save()">Confirm</button> &nbsp;
+</ng-template>

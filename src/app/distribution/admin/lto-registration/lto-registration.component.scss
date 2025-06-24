@@ -1,0 +1,45 @@
+@import '../../../../assets/styles/mixin.scss';
+::ng-deep {
+    .user-form {
+      @include user-form;  
+  
+      .firm-name{
+        width: 65%;
+      } 
+    }
+  
+    .reg-form {
+      @include user-form;
+      .mat-form-field {
+        width: 153px;
+      }
+    }
+  
+    .profile-heading {
+      font-size: 20px;
+      color: steelblue;
+    }
+  
+    .admin-form {
+      mat-form-field {
+        width: 100% !important;
+        margin-bottom: 10px;
+      }
+    }
+  
+  }
+
+
+  @media screen and (min-width:769px) and (max-width:1200px) {
+    .nowrap{
+      white-space: nowrap;
+      text-align: left !important;
+    }
+  }
+  @media screen and (min-width:769px) and (max-width:1200px) {
+    .btn_tab{
+      padding: 0 !important;
+      font-size: 13px !important;
+      min-width: 50px !important;
+    }
+  }

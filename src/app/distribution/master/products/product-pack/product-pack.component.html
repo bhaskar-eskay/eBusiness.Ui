@@ -1,0 +1,75 @@
+<div class="m-3">
+  <div fxLayout="row" class="md_flex" fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column" fxLayoutWrap
+    fxLayoutGap="10px">
+    <div fxFlex="38" fxFlex.xl="55" fxFlex.sm="57" fxFlex.md="46">
+      <h4 class="masters-pharma-head ">Product Packs</h4>
+    </div>
+    <div fxFlex="20" fxFlex.xl="12" fxFlex.sm="32" fxFlex.md="32" fxLayoutAlign="end end" class="master-btn">
+      <button mat-raised-button color="primary" type="button" *ngIf="!addOrEditFlag" (click)="addOrEdit()">Add Pack</button>&nbsp;
+      <button mat-icon-button (click)="clearAddOrEdit()" *ngIf="addOrEditFlag" matTooltip="Close" type="button">
+        <mat-icon>close</mat-icon>
+      </button>
+      <button mat-raised-button type="button" (click)="refresh()" *ngIf="!isDataLoading && !addOrEditFlag">Refresh</button>
+    </div>
+    <div fxFlex="23">      
+    </div>
+  </div>      
+  <div class="mt-2">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+      <div fxFlex="60" class="pack-form">
+        <app-alert [id]="formAlertId"></app-alert>
+        <form [formGroup]="formGroup" *ngIf="formGroup && addOrEditFlag" autocomplete="off">
+        <div fxLayoutGap="20px">
+          
+          <mat-form-field appearance="outline" class="my-1">
+            <mat-label>Name</mat-label>
+            <input matInput type="text" formControlName="prodPackName" required autofocus>
+            <mat-error *ngIf="formGroup.get('prodPackName')">
+              <ng-template [ngIf]="formGroup.get('prodPackName').hasError('required')">
+                Name is <strong>required</strong>
+              </ng-template>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="my-1">
+            <mat-label>Loose Pack</mat-label>
+            <input matInput type="text" formControlName="prodLoosePack" (keypress)="numberOnly($event)" required>
+            <mat-error *ngIf="formGroup.get('prodLoosePack')">
+              <ng-template [ngIf]="formGroup.get('prodLoosePack').hasError('required')">
+                Loose Pack is <strong>required</strong>
+              </ng-template>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="my-1">
+            <mat-label>UOM</mat-label>
+            <mat-select id="transactionMode"   appMatSelect formControlName="prodUOMId" required>
+              <mat-option [value]=0>--Select--</mat-option>
+              <mat-option *ngFor="let data of UOMdataList" [value]="data.prodMasterTypeId">
+                {{ data.prodMasterTypeName }}
+              </mat-option>
+            </mat-select>
+            <mat-error class="error-msg">
+              <span *ngIf="formGroup.get('prodUOMId').hasError('required')">UOM is Required...!</span>
+            </mat-error>
+          </mat-form-field>           
+       
+        </div>
+      </form>
+       
+      <div class="text-right mb-1" *ngIf="formGroup && addOrEditFlag">
+        <button mat-raised-button color="primary" type="button" [disabled]="formGroup.invalid" (click)="save()">{{isUpdate()?'Update':'Add'}}</button> &nbsp;
+        <button mat-raised-button type="button" (click)="clearOrResetForm()">{{isUpdate()?'Reset':'Clear'}}</button>
+      </div>
+          <app-alert [id]="'dataTableAlertId'"></app-alert>
+          <app-table [definition]="tableDefinition" [data]="dataList" [tableAlertId]="'dataTableAlertId'" [isDataLoading]="isDataLoading" [disableActions]="disableActions"></app-table>    
+      </div>      
+        <div fxFlex="40">
+          <div class="master-img" >
+            <img src="assets/images/schedule.jpg" alt="" class="mx-auto d-block img-fluid img-thumbnail">
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    </div>

@@ -1,0 +1,85 @@
+
+
+* {
+    -webkit-transition: margin-left 0.2s ease-in-out;
+    -moz-transition: margin-left 0.2s ease-in-out;
+    -ms-transition: margin-left 0.2s ease-in-out;
+    -o-transition: margin-left 0.2s ease-in-out;
+    transition: margin-left 0.2s ease-in-out;
+  }
+  
+  .main-container {
+    //margin-top: 20px;
+    margin-left: 230px;
+    padding: 10px;
+    // background-color: #ebeff2;
+    -ms-overflow-x: hidden;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .collapsed {
+    margin-left: 50px;
+  }
+  
+  @media screen and (max-width: 992px) {
+    .main-container {
+      margin-left: 0px !important;
+    }
+  }
+  
+  @media print {
+    .main-container {
+      margin-top: 0px !important;
+      margin-left: 0px !important;
+    }
+  }
+  
+  .main-menu-body {
+    background-color: #f4f3ef;
+  }
+  
+  
+  .masters-pharma-head {
+    color: #006476;
+    padding-top: 5px;
+    margin-bottom: 0px;
+}
+th.mat-sort-header-sorted {
+  color: #fff;
+}
+
+.master-table {
+  position: relative;
+  max-height: 470px;
+  overflow: auto;
+}
+
+.master-table .fa-pencil-alt {
+    color: #1f1f98;
+}
+
+.master-table .fa-trash-alt {
+    color: #ef0000;
+}
+
+.master-table tr:hover {
+  background-color: #f0f8ff;
+}
+.master-img img{
+  height: 450px;
+  width: 80%;
+}
+
+.profile-list .mat-list-base .mat-list-item {
+  color:  #858a8f;
+  cursor: pointer;
+}
+.profile-list  .active{
+  color: #030303 !important;
+  font-weight: 500;
+  font-size: 18px;
+  background-color: #fff;
+}

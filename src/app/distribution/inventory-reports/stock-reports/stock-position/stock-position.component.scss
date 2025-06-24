@@ -1,0 +1,116 @@
+.pharmacyHeading {
+  color: #2f8bbd;
+  font-size: 24px;
+  font-family: 'Monospace', sans-serif;
+  font-weight: bold;
+  margin: 0;
+  text-align: center;
+}
+
+.pharma-finance {
+  padding: 16px;
+}
+
+.CashReceiptControls {
+  width: 100%;
+}
+
+button.mat-raised-button {
+  border-radius: 63px;
+  min-width: 101px;
+  height: 48px;
+  margin: 6px
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+.dropdown-table .header {
+  font-weight: bold;
+  background-color: #006476;
+  border-bottom: 1px solid #ddd;
+  color: white;
+  padding: 0 5px;
+}
+
+.mat_header{
+  padding-right: 0px !important;
+  pointer-events: none !important;
+  cursor: none;
+  background: #006476;
+  position: sticky;
+  top: -1px;
+  z-index: 1;
+}
+
+::ng-deep .mat_header .mat-pseudo-checkbox{
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+::ng-deep .mat_header.mat-active {
+  background: #006476 !important;
+}
+
+.mat_opt{
+  padding-right: 0 !important;
+}
+
+.mat_option {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding: 0 5px;
+}
+
+mat-checkbox {
+  margin: 8px 0;
+}
+
+::ng-deep .account_mat .mat-expansion-panel-body {
+  padding: 14px 16px 24px 16px;
+}
+
+::ng-deep .account_select {
+    max-height: unset !important;
+}
+
+::ng-deep .account_search .mat-form-field-flex {
+  padding-top: 11px !important;
+  padding-bottom: 0px !important;
+}
+
+::ng-deep .account_search .mat-form-field-label-wrapper {
+  top: -1.1em !important;
+}
+
+
+::ng-deep .mat_checkbox label {
+  margin-bottom: 0;
+}
+
+@media screen and (max-width: 1200px) {
+.mat_opt, .mat_header, .mat_option{
+  line-height: unset !important;
+  height: unset !important;
+  white-space: normal !important;
+  text-emphasis: unset !important;
+  overflow: unset !important;
+  word-wrap: break-word;
+}
+}
+.action-icons {
+  display: flex;
+  justify-content: flex-end; /* Align icons to the right */
+  gap: 16px; /* Space between buttons */
+  margin-bottom: 8px; /* Space below the buttons */
+}
+
+.icon-img {
+  width: 37px;
+  height: 38px;
+  -o-object-fit: contain;
+  object-fit: contain;
+  margin: 3px;
+}

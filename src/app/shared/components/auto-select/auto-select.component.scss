@@ -1,0 +1,25 @@
+::ng-deep .account_search .mat-form-field-flex {
+    padding-top: 11px !important;
+    padding-bottom: 0px !important;
+  }
+  
+::ng-deep .account_search .mat-form-field-label-wrapper {
+  top: -1.1em !important;
+}
+  
+.master_heading {
+  background-color: #006476;
+  color: white;
+  position: sticky;
+  top: -1px;
+  z-index: 1;
+  // div {
+  //   position: sticky;
+  //   top: -1px;
+  //   z-index: 1;
+  // }
+}
+
+.master_heading div:first-child{
+  padding-left: 0 !important;
+}

@@ -1,0 +1,472 @@
+<div fxLayout="row" class="user-form mt-2 mb-5" fxLayoutAlign="center center" fxLayoutWrap fxLayoutGap="10px">
+    <div fxFlex="80" class="bg-white">
+      <form [formGroup]="formGroup" autocomplete="off">
+          <div class="user-form  admin-form2">
+              <div fxLayoutGap="10px">
+                <mat-card fxLayoutGap="10px">
+                  <div style="text-align:center;" class="profile-heading">
+                    <h4 class="masters-pharma-head">Firm  Registration </h4>
+                  </div>
+
+
+                  <!-- <p class="profile-heading">Basic Information</p> -->
+
+                  
+                <p class="profile-heading">Firm Information</p>
+
+                <mat-form-field  appearance="outline">
+                    <mat-label>Firm Group</mat-label>
+                    <mat-select formControlName="firmGroupId" required appMatSelect>
+                      <mat-option value="">--Select--</mat-option>
+                      <mat-option *ngFor="let firm of firmGroup" [value]="firm.firmGroupId">{{firm.firmGroupName}}-({{firm.firmGroupAlias}})
+                      </mat-option>
+                    </mat-select>
+                    <mat-error class="error-msg">
+                      <span *ngIf="formGroup.get('firmGroupId').hasError('required')"> firm Group is Required...!</span>
+                    </mat-error>
+                  </mat-form-field>
+
+                <mat-form-field  appearance="outline">
+                  <mat-label>Firm Type</mat-label>
+                  <mat-select formControlName="firmTypeId" required appMatSelect>
+                    <mat-option value="">--Select--</mat-option>
+                    <mat-option *ngFor="let firm of firmTypes" [value]="firm.firmTypeId" (click)="getFirmDetails(firm.id)">{{firm.firmType}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error class="error-msg">
+                    <span *ngIf="formGroup.get('firmTypeId').hasError('required')"> Firm Type is Required...!</span>
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Firm Mode</mat-label>
+                  <mat-select id="transactionMode"   appMatSelect formControlName="firmMode" (selectionChange)="firmModechange($event)" required>
+                    <mat-option *ngFor="let data of FirmModeData" [value]="data.code">
+                      {{ data.name }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error class="error-msg">
+                    <span *ngIf="formGroup.get('firmMode').hasError('required')">Firm Mode is Required...!</span>
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" *ngIf="showfirm">
+                    <mat-label>Firm</mat-label>
+                    <mat-select  appMatSelect formControlName="firmMainId" required>
+                    <mat-option [value]="">--Select--</mat-option>
+                      <mat-option *ngFor="let data of firmdata" [value]="data.firmId">
+                        {{ data.firmName}}-({{data.firmAlias}})
+                      </mat-option>
+                    </mat-select>
+                    <mat-error class="error-msg">
+                      <span *ngIf="formGroup.get('firmMainId').hasError('required')">Firm is Required...!</span>
+                    </mat-error>
+                  </mat-form-field>
+
+
+                <mat-form-field class="firm-name" appearance="outline">
+                  <mat-label>Firm Name</mat-label>
+                  <input matInput formControlName="firmName" maxlength="50" required>
+                  <mat-error class="error-msg">
+                    <span *ngIf="formGroup.get('firmName').hasError('required')"> Firm Name is Required...!</span>
+                    <span *ngIf=" formGroup.get('firmName').hasError('maxlength')">Maxmium 50
+                      characters...!</span>
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Alias </mat-label>
+                  <input matInput formControlName="firmAlias"   (focusout)="FirmAliasExisting()" required>
+                  <mat-error class="error-msg">
+                    <span *ngIf="formGroup.get('firmAlias').hasError('required')"> Alias is Required...!</span>
+                    <span *ngIf="formGroup.get('firmAlias').hasError('incorrect')"> Firm Alias Alredy Taken...!</span>
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="e_mat_date">
+                  <mat-label>fin. Start Date</mat-label>
+                  <input matInput appDateMask   [matDatepicker]="validUpto" required  formControlName="finStartDate">
+                  <mat-datepicker-toggle matSuffix [for]="validUpto"></mat-datepicker-toggle>
+                  <mat-datepicker #validUpto></mat-datepicker>
+                  <mat-error class="error-msg">
+                    <span *ngIf="formGroup.get('finStartDate').hasError('required')"> fin. Start Date is Required...!</span>
+                  </mat-error>
+                </mat-form-field>
+                <!-- [min]="today"  -->
+                <mat-form-field appearance="outline" class="e_mat_date">
+                  <mat-label>fin. End Date</mat-label>
+                  <input matInput appDateMask   [matDatepicker]="validUpto1" required  formControlName="finEndDate">
+                  <mat-datepicker-toggle matSuffix [for]="validUpto1"></mat-datepicker-toggle>
+                  <mat-datepicker #validUpto1></mat-datepicker>
+                  <mat-error class="error-msg">
+                    <span *ngIf="formGroup.get('finEndDate').hasError('required')"> fin. End Date is Required...!</span>
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>State </mat-label>
+                  <mat-select formControlName="stateId" placeholder="--Select--"  #stateTab  appMatSelect  required (selectionChange)="statechange()" #singleSelect>
+                    <mat-option>
+                      <ngx-mat-select-search  placeholderLabel="Find States..."  (keydown)="StateTab($event)"
+                      noEntriesFoundLabel="'no matching States found'" [formControl]="stateMultiFilterCtrl"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let state of filteredStatesMulti | async"  [value]="state.stateId">
+                      {{state.stateName}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error class="error-msg">
+                    <span *ngIf="formGroup.get('stateId').hasError('required')"> State is Required...!</span>
+                  </mat-error>
+                </mat-form-field>
+
+                <!-- <mat-form-field appearance="outline">
+                  <mat-label>District</mat-label>
+              <input matInput #districtfocus (focusin)="DistrictList = []" formControlName="distId" #districtautoCompleteInput  
+                (input)="getDistricts($event.target.value)" [matAutocomplete]="autoCompletedistrict" required (keydown)="districtTab($event)">
+              <mat-autocomplete class="pincode-list" autoActiveFirstOption #autoCompletedistrict="matAutocomplete"
+                [displayWith]="DistrictMapper">
+                <div *ngIf="showdistrict &&  DistrictList?.length > 0">
+                  <div fxLayout="row" fxLayout.xs="column" class="autocomplete-heading" fxLayoutWrap
+                    fxLayoutGap="10px">
+                    <div fxFlex="100">    District Name            </div>
+                  </div>
+                  <mat-option *ngFor="let code of  DistrictList" class="reg-option-text" (onSelectionChange)="clickdist()"  [value]="code.districtId"
+                     >
+                    <div fxLayout="row" fxLayout.xs="column"
+                      fxLayoutWrap fxLayoutGap="10px">
+                      <div fxFlex="100" class="border-Pincode">{{ code?.districtName }} </div>
+                    </div>
+                  </mat-option>
+                </div>
+              </mat-autocomplete>
+              <mat-error class="error-msg">
+                <span *ngIf="formGroup.get('distId').hasError('required')">District  Required...! </span>
+                <span *ngIf="formGroup.get('distId').hasError('incorrect')">Please Enter Valid District Name...!</span>
+              </mat-error>
+            </mat-form-field> 
+
+
+            <mat-form-field appearance="outline">
+              <mat-label>City</mat-label>
+          <input matInput #citiesfocus (focusin)="cityList = []" formControlName="cityId" #citiesautoCompleteInput  
+            (input)="getCities($event.target.value)" [matAutocomplete]="autoCompletecities" required (keydown)="cityTab($event)">
+          <mat-autocomplete class="pincode-list" autoActiveFirstOption #autoCompletecities="matAutocomplete"
+            [displayWith]="CitiesMapper">
+            <div *ngIf="showcity &&  cityList?.length > 0">
+              <div fxLayout="row" fxLayout.xs="column" class="autocomplete-heading" fxLayoutWrap
+                fxLayoutGap="10px">
+                <div fxFlex="100">    City Name            </div>
+              </div>
+              <mat-option *ngFor="let code of  cityList" class="reg-option-text" (onSelectionChange)="clickcity(code.cityId)"  [value]="code.cityId"
+                 >
+                <div fxLayout="row" fxLayout.xs="column"
+                  fxLayoutWrap fxLayoutGap="10px">
+                  <div fxFlex="100" class="border-Pincode">{{ code?.cityName }} </div>
+                </div>
+              </mat-option>
+            </div>
+          </mat-autocomplete>
+          <mat-error class="error-msg">
+            <span *ngIf="formGroup.get('cityId').hasError('required')">City  Required...! </span>
+            <span *ngIf="formGroup.get('cityId').hasError('incorrect')">Please Enter Valid City Name...!</span>
+          </mat-error>
+        </mat-form-field> 
+         -->
+
+
+
+                <app-autocomplete class="company-city" [definition]="districtAutoCompleteDef" [control]="formGroup.get('distId')"
+                [optionsTableDefinition]="distOptsTable" #distAutoComplete ></app-autocomplete>
+
+                <app-autocomplete class="company-city" [definition]="cityAutoCompleteDef" [control]="formGroup.get('cityId')"
+                [optionsTableDefinition]="cityOptsTable" #cityAutoComplete2  ></app-autocomplete>
+                
+
+                <mat-form-field appearance="outline">
+                  <mat-label>PIN Code </mat-label>
+                  <mat-select formControlName="cityPinId" #pinfocus  #pincodeTab placeholder="--Select--" appMatSelect required  #singleSelect>
+                    <mat-option>
+                      <ngx-mat-select-search  (keydown)="PincodeTab($event)"  placeholderLabel="Find Pin Codes..."
+                      noEntriesFoundLabel="'no matching Pin Codes found'" [formControl]="cityPinIdMultiFilterCtrl"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let state of filteredcityPinMulti | async"  [value]="state.cityPincode">
+                      {{state.cityPincode}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error class="error-msg">
+                    <span *ngIf="formGroup.get('cityPinId').hasError('required')"> cityPinId is Required...!</span>
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Address 1 </mat-label>
+                  <input matInput formControlName="address1" required>
+                  <mat-error class="error-msg">
+                    <span *ngIf="formGroup.get('address1').hasError('required')"> Address1 is Required...!</span>
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Address 2 </mat-label>
+                  <input matInput formControlName="address2">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Address 3 </mat-label>
+                  <input matInput formControlName="address3">
+                </mat-form-field>
+
+                   
+                <mat-form-field appearance="outline">
+                  <mat-label> Phone </mat-label>
+                  <input matInput formControlName="phone" maxlength="10" minlength="10">
+                  <mat-error class="error-msg">
+                    <span *ngIf="formGroup.get('phone').hasError('minlength')"> Please enter 10
+                      digits..!</span>
+                    <span *ngIf="formGroup.get('phone').hasError('maxlength')"> Please enter 10
+                      digits..!</span>
+                    <span *ngIf="formGroup.get('phone').hasError('pattern')">Must start with
+                      6,7,8,9...!</span>
+                  </mat-error>
+                 
+                </mat-form-field>
+
+<!-- 
+                <mat-form-field appearance="outline">
+                  <mat-label>Contact Persion </mat-label>
+                  <input matInput formControlName="persion" required>
+                  <mat-error class="error-msg">
+                    <span *ngIf="formGroup.get('persion').hasError('required')"> Please enter  Contact Persion..!</span>
+                  </mat-error>
+                </mat-form-field>  -->
+
+           
+                <!-- <p class="profile-heading">User Information</p> -->
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Email </mat-label>
+                  <input matInput formControlName="email" required>
+                  <mat-error class="error-msg">
+                    <span *ngIf="formGroup.get('email').hasError('required')"> Please enter  Email Address..!</span>
+                    <span *ngIf="formGroup.get('email').hasError('pattern')">Please provide a valid email address</span>
+                  </mat-error>
+                </mat-form-field>  
+
+                <mat-form-field appearance="outline" >
+                  <mat-label>Mobile 1 </mat-label>
+                  <input matInput formControlName="mobile1" required onkeypress='return event.charCode >= 48 && event.charCode <= 57' minlength="10" maxlength="10">
+                  <mat-hint class="error-msg" align="end">{{formGroup?.get('mobile1')?.value?.length || 0}}/10</mat-hint>
+                  <mat-error class="error-msg">
+                    <span *ngIf="formGroup.get('mobile1').hasError('required')"> Please enter Mobile
+                      Number..!</span>
+                    <span *ngIf="formGroup.get('mobile1').hasError('minlength')"> Please enter 10
+                      digits..!</span>
+                    <span *ngIf="formGroup.get('mobile1').hasError('maxlength')"> Please enter 10
+                      digits..!</span>
+                    <span *ngIf="formGroup.get('mobile1').hasError('pattern')">Must start with
+                      6,7,8,9...!</span>
+                  </mat-error>
+                </mat-form-field>
+
+                
+                <mat-form-field appearance="outline">
+                  <mat-label>Mobile 2 </mat-label>
+                  <input matInput formControlName="mobile2" onkeypress='return event.charCode >= 48 && event.charCode <= 57' minlength="10" maxlength="10">
+                  <mat-hint class="error-msg" align="end">{{formGroup?.get('mobile2')?.value?.length || 0}}/10</mat-hint>
+                  <mat-error class="error-msg">
+                    <span *ngIf="formGroup.get('mobile2').hasError('minlength')"> Please enter 10
+                      digits..!</span>
+                    <span *ngIf="formGroup.get('mobile2').hasError('maxlength')"> Please enter 11
+                      digits..!</span>
+                    <span *ngIf="formGroup.get('mobile2').hasError('pattern')">Must start with
+                      6,7,8,9...!</span>
+                  </mat-error>
+                </mat-form-field>
+
+                <!-- <mat-form-field appearance="outline">
+                  <mat-label>User Name </mat-label>
+                  <input matInput [formControl]="firmUserName" required >
+                  <mat-error class="error-msg">
+                    <span *ngIf="firmUserName.hasError('required')"> Please enter User Name..!</span>
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Password</mat-label>
+                  <input matInput [formControl]="password"  [type]="hide ? 'password' : 'text'" type="password" minlength="8" maxlength="14" required>
+                  <mat-icon class="pointer" matSuffix (click)="hide = !hide">
+                    {{hide? 'visibility_off' : 'visibility'}}</mat-icon>
+               <mat-error class="error-msg">
+                 <span *ngIf="password.hasError('required')">Password Required...! </span>
+                 <span *ngIf="password.hasError('minlength')">Minimum 8 characters is
+                   Required...! </span>
+                 <span *ngIf="password.hasError('maxlength')">Maximum 14 characters Only...!
+                 </span>
+                 <span *ngIf="password.hasError('pattern')"> Sample pattern... <b> Some@123</b> </span>
+               </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Conform Password</mat-label>
+                  <input matInput [formControl]="firmUserPassword"  [type]="hide1 ? 'password' : 'text'"  required (input)="changeconformpassword($event)" minlength="8" maxlength="14">
+                  <mat-icon class="pointer" matSuffix (click)="hide1 = !hide1">
+                    {{hide1? 'visibility_off' : 'visibility'}}</mat-icon>
+                  <mat-error class="error-msg">
+                    <span *ngIf="firmUserPassword.hasError('required')"> Please enter Conform Password..!</span>
+                    <span *ngIf="firmUserPassword.hasError('incorrect')"> Password Mismatch...!</span>
+                    
+                  </mat-error>
+                  
+                </mat-form-field> -->
+  
+
+                <p class="profile-heading">Bank Information</p>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Bank 1 </mat-label>
+                  <mat-select formControlName="bankId1" appMatSelect placeholder="--Select--"  #bank1Tab  (selectionChange)="changebank($event,1)" #singleSelect>
+                    <mat-option>
+                      <ngx-mat-select-search placeholderLabel="Find Bank..."  (keydown)="Bank1Tab($event)"
+                      noEntriesFoundLabel="'no matching Bank found'"  [formControl]="bankMultiFilterCtrl1"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option [value]=0>--Select--</mat-option>
+                    <mat-option *ngFor="let bank of filteredBanksMulti1 | async"  [value]="bank.bankId">
+                      {{bank.bankName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Bank IFSC1</mat-label>
+                  <mat-select formControlName="bankIFSC1"  #bankifsc1Tab  appMatSelect placeholder="--Select--"   #singleSelect>
+                    <mat-option>
+                      <ngx-mat-select-search placeholderLabel="Find IFSC..."  (keydown)="Bankifsc1Tab($event)"
+                      noEntriesFoundLabel="'no matching IFSC found'" [formControl]="bankIFSC1MultiFilterCtrl"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option value=''>--Select--</mat-option>
+                    <mat-option *ngFor="let bank of filteredbankIFSC1Multi | async"  [value]="bank.ifscCode">
+                      {{bank.ifscCode}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Bank Account No 1 </mat-label>
+                  <input matInput   formControlName="bankAcNo1" >
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Bank 2 </mat-label>
+                  <mat-select formControlName="bankId2"  appMatSelect placeholder="--Select--" #bank2Tab  (selectionChange)="changebank($event,2)" #singleSelect>
+                    <mat-option>
+                      <ngx-mat-select-search placeholderLabel="Find Bank..."      (keydown)="Bank2Tab($event)"
+                      noEntriesFoundLabel="'no matching Bank found'" [formControl]="bankMultiFilterCtrl2"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option [value]=0>--Select--</mat-option>
+                    <mat-option *ngFor="let bank of filteredBanksMulti2 | async" [value]="bank.bankId">
+                      {{bank.bankName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Bank IFSC2</mat-label>
+                  <mat-select formControlName="bankIFSC2" #bankifsc2Tab appMatSelect placeholder="--Select--"  #singleSelect>
+                    <mat-option>
+                      <ngx-mat-select-search placeholderLabel="Find IFSC..."  (keydown)="Bankifsc2Tab($event)"
+                      noEntriesFoundLabel="'no matching IFSC found'" [formControl]="bankIFSC2MultiFilterCtrl"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option value=''>--Select--</mat-option>
+                    <mat-option *ngFor="let bank of filteredbankIFSC2Multi | async"  [value]="bank.ifscCode">
+                      {{bank.ifscCode}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline">
+                  <mat-label>Bank Account No 2 </mat-label>
+                  <input matInput  formControlName="bankAcNo2" >
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline">
+                  <mat-label>Bank 3 </mat-label>
+                  <mat-select formControlName="bankId3" appMatSelect #bank3Tab placeholder="--Select--" (selectionChange)="changebank($event,3)" #singleSelect>
+                    <mat-option>
+                      <ngx-mat-select-search placeholderLabel="Find Bank..."  (keydown)="Bank3Tab($event)"
+                      noEntriesFoundLabel="'no matching Bank found'" [formControl]="bankMultiFilterCtrl3"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option [value]=0>--Select--</mat-option>
+                    <mat-option *ngFor="let bank of filteredBanksMulti3 | async" [value]="bank.bankId">
+                      {{bank.bankName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Bank IFSC3</mat-label>
+                  <mat-select formControlName="bankIFSC3" appMatSelect #bankifsc3Tab   placeholder="--Select--"  #singleSelect>
+                    <mat-option>
+                      <ngx-mat-select-search placeholderLabel="Find IFSC..."   (keydown)="Bankifsc3Tab($event)"
+                      noEntriesFoundLabel="'no matching IFSC found'" [formControl]="bankIFSC3MultiFilterCtrl"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option value=''>--Select--</mat-option>
+                    <mat-option *ngFor="let bank of filteredbankIFSC3Multi | async"  [value]="bank.ifscCode">
+                      {{bank.ifscCode}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Bank Account No 3 </mat-label>
+                  <input matInput  formControlName="bankAcNo3" >
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline">
+                  <mat-label>Bank 4 </mat-label>
+                  <mat-select formControlName="bankId4"  #bank4Tab appMatSelect placeholder="--Select--" (selectionChange)="changebank($event,4)" #singleSelect>
+                    <mat-option>
+                      <ngx-mat-select-search placeholderLabel="Find Bank..."  (keydown)="Bank4Tab($event)"
+                      noEntriesFoundLabel="'no matching Bank found'" [formControl]="bankMultiFilterCtrl4"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option [value]=0>--Select--</mat-option>
+                    <mat-option *ngFor="let bank of filteredBanksMulti4 | async" [value]="bank.bankId">
+                      {{bank.bankName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Bank IFSC4</mat-label>
+                  <mat-select formControlName="bankIFSC4" appMatSelect #bankifsc4Tab placeholder="--Select--"  #singleSelect>
+                    <mat-option>
+                      <ngx-mat-select-search placeholderLabel="Find IFSC..."  (keydown)="Bankifsc4Tab($event)"
+                      noEntriesFoundLabel="'no matching IFSC found'" [formControl]="bankIFSC4MultiFilterCtrl"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option value=''>--Select--</mat-option>
+                    <mat-option *ngFor="let bank of filteredbankIFSC4Multi | async"  [value]="bank.ifscCode">
+                      {{bank.ifscCode}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Bank Account No 4 </mat-label>
+                  <input matInput  formControlName="bankAcNo4" >
+                </mat-form-field>
+
+
+                <div class="text-right">
+                  <button mat-button (click)="savefirm(formGroup.value,'next')" class="m-3" [disabled]="!formGroup.valid" mat-raised-button color="primary">Save & Next</button>
+                  <button mat-button (click)="savefirm(formGroup.value,'')" class="m-3"  mat-raised-button color="primary">Save</button>
+                  <button mat-raised-button (click)="resetform()" type="button">Reset</button>
+                </div>
+
+              </mat-card>
+              </div> 
+          </div>
+      </form>
+
+    </div>
+  </div>
+

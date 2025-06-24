@@ -1,0 +1,72 @@
+<div class="m-5 button-icons">
+
+    <div class="row mx-0 mt-3" style="column-gap: 20px;">
+
+        <button class="btn btn-info p-4 col-md-2 mb-2" *ngFor="let item of menuArray" (click)="trans(item?.menuPath)">
+
+            <div *ngIf="item.menuName !== '' ">
+                <div *ngIf="item?.menuName == 'Purchase Orders' "><i class="mt-1 fa fa-truck"></i></div>
+
+                <div *ngIf="item?.menuName == 'Purchases' ">
+                    <div><i class="fas fa-arrow-down"></i></div>
+                    <i class="mt-1 fa fa-cart-plus"></i>
+                </div>
+
+                <div *ngIf="item?.menuName == 'Purchase Returns' ">
+                    <div><i class="fas fa-arrow-up"></i></div>
+                    <i class="mt-1 fa fa-cart-plus"></i>
+                </div>
+
+                <div *ngIf="item?.menuName == 'Internal Stock Adjustments Plus' "><i class="mt-1 fa fa-cogs"></i></div>
+
+                <div *ngIf="item?.menuName == 'Other Purchases' "><i class="mt-1 fa fa-plus-circle"></i></div>
+
+                <div *ngIf="item?.menuName == 'Supplier Issued Credit Notes' || item?.menuName == 'Supplier Rate Difference Credit Notes' "
+                    class="d-flex justify-content-center">
+                    <span class="d-block font-weight-bold" style="margin: 2px 5px 0 -1px;">+</span>
+                    <i class="mt-1 fa fa-rupee-sign"></i>
+                </div>
+
+                <div *ngIf="item?.menuName == 'Supplier Issued Debit Notes' || item?.menuName == 'Supplier Rate Difference Debit Notes' "
+                    class="d-flex justify-content-center">
+                    <span class="d-block font-weight-bold" style="margin: 2px 5px 0 -1px;">-</span>
+                    <i class="mt-1 fa fa-rupee-sign"></i>
+                </div>
+
+                <div class="text-center" style="white-space: normal">{{item?.menuName}} </div>
+            </div>
+        </button>
+
+
+        <!-- <button class="btn btn-info p-4 col-md-2 mb-2">
+        <div>
+            <div><i class="fas fa-arrow-down"></i></div>
+            <i class="mt-1 fa fa-cart-plus"></i>
+        </div>
+        <div class="text-center" style="white-space: normal">Purchase <br> Register</div>
+    </button>
+
+
+    <button class="btn btn-info p-4 col-md-2 mb-2">
+        <div>
+            <div><i class="fas fa-arrow-up"></i></div>
+            <i class="mt-1 fa fa-cart-plus"></i>
+        </div>
+        <div class="text-center" style="white-space: normal"> Purchase Return <br> Register</div>
+    </button>
+
+
+    <button class="btn btn-info p-4 col-md-2 mb-2">
+        <div><i class="mt-1 fa fa-cogs"></i></div>
+        <div class="text-center" style="white-space: normal">Internal Stock <br> Adjustment Register</div>
+    </button>
+
+
+    <button class="btn btn-info p-4 col-md-2 mb-2">
+        <div><i class="mt-1 fa fa-plus-circle"></i></div>
+        <div class="text-center" style="white-space: normal">Other Purchases <br> Register</div>
+    </button> -->
+
+    </div>
+
+</div>

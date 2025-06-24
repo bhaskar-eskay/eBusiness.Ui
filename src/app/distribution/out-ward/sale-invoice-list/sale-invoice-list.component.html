@@ -1,0 +1,117 @@
+<div class="p-3">
+
+  <div fxLayout="row" fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column" fxLayoutWrap
+    fxLayoutGap="10px" class="d_md_flex">
+    <div fxFlex="80" fxFlex.xl="55" fxFlex.sm="57" fxFlex.md="46">
+      <h4 class="outward-pharma-head">Sales Invoice(SAL) List</h4>
+    </div>
+    <div fxFlex="50" fxFlex.xl="50" fxFlex.sm="50" fxFlex.md="50" class="master-btn text-right">
+      <button mat-raised-button color="primary" (click)="clikRegisters()">Sale Register</button>&nbsp;
+
+      <button mat-raised-button color="primary" (click)="addInvoice()">Add Sale</button> &nbsp;
+
+      <!-- <button mat-raised-button [routerLink]="['../salesInvoices']" color="primary">Back</button> -->
+    </div>
+
+  </div>
+
+  <div fxLayout="row" fxLayout.xs="column" class="mt-2" fxLayoutWrap>
+    <div fxFlex="100" class="invList-form">
+      <form [formGroup]="saleHeadListFormGroup" fxLayoutGap="5px">
+
+        <!-- <mat-form-field appearance="outline">
+          <mat-label>From Date</mat-label>
+          <input matInput formControlName="fromDate">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>To Date</mat-label>
+          <input matInput formControlName="toDate">
+        </mat-form-field> -->
+        <mat-form-field appearance="outline" class="e_mat_date w_116">
+          <mat-label>From Date</mat-label>
+          <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" formControlName="fromDate" >
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="e_mat_date w_116">
+          <mat-label>To Date</mat-label>
+          <input matInput [matDatepicker]="picker1" [min]="minDate" [max]="maxDate" formControlName="toDate" >
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w_224">
+          <mat-label>Inv.No</mat-label>
+          <input matInput formControlName="invNo">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w_224">
+          <mat-label>Customer Name</mat-label>
+          <input matInput formControlName="accName">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w_116">
+          <mat-label>Sh.Name</mat-label>
+          <input matInput formControlName="accShName">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w_224">
+          <mat-label>City Name</mat-label>
+          <input matInput formControlName="cityId">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w_224">
+          <mat-label>GSTIN</mat-label>
+          <input matInput formControlName="accGSTIn">
+        </mat-form-field>
+
+        <!-- <mat-form-field appearance="outline">
+          <mat-label>Inv. Date</mat-label>
+          <input matInput formControlName="invDate">
+        </mat-form-field> -->
+        <mat-form-field appearance="outline" class="e_mat_date w_116">
+          <mat-label>Inv. Date</mat-label>
+          <input matInput [matDatepicker]="picker2" formControlName="invDate" #finTranDate>
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w_224">
+          <mat-label>Mode</mat-label>
+          <input matInput formControlName="mode">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w_116">
+          <mat-label>Inv.Value</mat-label>
+          <input matInput formControlName="invValue">
+        </mat-form-field>
+
+
+        <button mat-raised-button class="mat_btn" color="primary" (click)="getsalesDataList()">Search</button> &nbsp;
+        <button mat-raised-button class="mat_btn" (click)="reset()">Reset</button>
+        <button class="mat_btn" type="button" mat-raised-button [routerLink]="['../OutwardTransaction']">Back</button>
+      </form>
+
+
+
+    </div>
+  </div>
+
+
+
+
+  <div class="master-table mt-2" id="table-scroll">
+    <app-alert [id]="'dataTableAlertId'"></app-alert>
+    <app-table [definition]="tableDefinition" [data]="dataList" [tableAlertId]="'dataTableAlertId'"
+      [isDataLoading]="isDataLoading" [disableActions]="disableActions"></app-table>
+  </div>
+
+
+
+
+</div>
+
+<ng-template #deleteSalesHeadTemplate let-salesHead="data">
+  Are you sure to delete <strong></strong> Sales Head?
+</ng-template>

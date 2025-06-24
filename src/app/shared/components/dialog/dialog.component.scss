@@ -1,0 +1,51 @@
+.business-modal {
+    .mat-dialog-title {
+      padding: 5px 16px;
+      background-color: #006476;
+      font-size: 14px;
+      color: #fff;
+      top: 0;
+      position: sticky;
+  
+      .mat-icon {
+        color: #fff;
+        opacity: 0.5;
+        float: right;
+        margin-top: 4px;    
+        font-size: 23px;
+        cursor: pointer;
+      }
+      .mat-icon:hover {
+        opacity: 1;
+      }
+    }
+  
+    .modal-body {
+        padding: 15px 35px;
+        text-align: center;
+        font-size: 17px;
+        
+    }
+    .dialog-footer {
+      position: sticky;
+      bottom: 0;
+        padding: 8px 0;      
+        justify-content: flex-end;     
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -ms-flex-align: center;            
+        border-top: 1px solid rgba(0,0,0,.1);
+    }
+
+
+  }
+
+  @media screen and (max-width:600px) {
+    .business-modal{
+      .modal-body{
+        padding: 11px !important;
+      }
+    }
+  }
+  

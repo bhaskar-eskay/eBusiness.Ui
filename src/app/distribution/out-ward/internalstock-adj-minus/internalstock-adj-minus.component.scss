@@ -1,0 +1,7 @@
+.minus-form mat-form-field {
+    width: 170px;
+}
+
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-suffix .mat-datepicker-toggle-default-icon{
+    width: 1.5em !important;
+}

@@ -1,0 +1,50 @@
+<div class="row mx-0">
+    <div class="col-md-12 px-1">
+        <mat-form-field appearance="fill" class="search-field mat_date account_search w-100">
+            <mat-label>Search</mat-label>
+            <input matInput (input)="filterOptions($event.target.value)" placeholder="Type to search">
+        </mat-form-field>
+
+        <div class="row mt-2">
+            <div class="col-md-8">
+                <div class="mat_main border" style="max-height: 250px;overflow: auto;">
+                    <div fxLayout="row" fxLayout.xs="row" fxLayoutWrap
+                        class="master_heading p-2">
+                        <div [fxFlex]="column.fxFlex" class="pl-2" *ngFor="let column of optionsTableDefinition.columns">
+                            <span class="align-text-top" *ngIf="column.name == 'Select All' && showcheckbox"><mat-checkbox [disabled]="selectAllDisabled" [checked]="selectAllDisabled" (change)="selectAll($event.checked)" class="example-margin">{{column.name}} </mat-checkbox></span>
+                            <span class="align-text-top" *ngIf="column.name != 'Select All' ">{{column.name}}</span> 
+                        </div>
+                    </div>
+
+                    <mat-option class="master-option-text" *ngFor="let item of unselectedList;let i = index" [value]="item">
+                        <div fxLayout="row" fxLayout.xs="row" fxLayoutWrap>
+                            <div [fxFlex]="column.fxFlex1" class="auto-border"
+                                *ngFor="let column of optionsTableDefinition.columns">
+                                <span *ngIf="column.name == 'Select All' "><mat-checkbox (change)="selectedItem($event.checked , i)"  class="example-margin" > </mat-checkbox></span>
+                                <p class="mb-0 mx-1 text-truncate" title="{{column.value(item)}}"
+                                    [innerHTML]="column.value(item)">
+                                </p>
+                            </div>
+                        </div>
+                    </mat-option>
+                </div>
+            </div>
+            <div class="col-md-4 border px-0" style="max-height: 250px;overflow: auto;">
+                <div class="p-2 text-white master_heading" style="background-color: #006476;">Select Accounts
+                    <mat-checkbox [disabled]="unselectAllDisabled" [checked]="unselectAllDisabled" (change)="unselectAll($event.checked)" class="example-margin ml-3"> Un SelectAll</mat-checkbox>
+                </div>
+                <mat-option class="master-option-text" *ngFor="let item of selectedList;let i = index" [value]="item">
+                    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayout.xs="row" fxLayoutWrap>
+                       <div fxFlex="75"> {{item[filterKeys[0]]}}</div>
+                       <div fxFlex="18"> {{item?.account_Sh_Name}}</div>                        
+                        <!-- <button (click)="unselectedItem(i)" style="height: 50px;">
+                            <span class="material-icons">delete</span>
+                          </button> -->
+                        <div fxFlex="6"><img src="../../../../assets/new_delete2.png"   width="25px" alt="Delete" (click)="unselectedItem(i)"></div>
+                    </div>
+                </mat-option>
+            </div> 
+        </div>
+
+    </div>
+</div>

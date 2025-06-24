@@ -1,0 +1,54 @@
+<div class="m-3">
+  <div fxLayout="row" class="md_flex" fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column" fxLayoutWrap
+    fxLayoutGap="10px">
+    <div fxFlex="38" fxFlex.xl="55" fxFlex.sm="50" fxFlex.md="46">
+      <h4 class="masters-pharma-head ">Company Groups</h4>
+    </div>
+    <div fxFlex="20" fxFlex.xl="12" fxFlex.sm="50" fxFlex.md="50" fxLayoutAlign="end end" class="master-btn">
+      <button mat-raised-button color="primary" type="button" *ngIf="!addOrEditFlag" (click)="addOrEdit()">Add Group</button>&nbsp;
+      <button mat-icon-button (click)="clearAddOrEdit()" *ngIf="addOrEditFlag" matTooltip="Close" type="button">
+        <mat-icon>close</mat-icon>
+      </button>
+      <button mat-raised-button type="button" (click)="refresh()" *ngIf="!isDataLoading && !addOrEditFlag">Refresh</button>
+    </div>
+    <div fxFlex="23">      
+    </div>
+  </div>      
+  <div class="mt-2">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+      <div fxFlex="60">
+        <app-alert [id]="formAlertId"></app-alert>
+        <div>
+          <form [formGroup]="formGroup" *ngIf="formGroup && addOrEditFlag" autocomplete="off">
+            <div fxLayoutGap="10px" class="company-form">
+             
+              <mat-form-field appearance="outline">
+                <mat-label>Name</mat-label>
+                <input matInput type="text" formControlName="compGroupName" required autofocus>
+                <mat-error *ngIf="formGroup.get('compGroupName')">
+                  <ng-template [ngIf]="formGroup.get('compGroupName').hasError('required')">
+                    Name is <strong>required</strong>
+                  </ng-template>
+                </mat-error>
+              </mat-form-field>                      
+            
+            </div>
+          </form>
+        </div>
+      <div class="text-right mb-1" *ngIf="formGroup && addOrEditFlag">
+        <button mat-raised-button color="primary" type="button" [disabled]="formGroup.invalid" (click)="save()">{{isUpdate()?'Update':'Add'}}</button> &nbsp;
+        <button mat-raised-button type="button" (click)="clearOrResetForm()">{{isUpdate()?'Reset':'Clear'}}</button>
+      </div>
+          <app-alert [id]="'dataTableAlertId'"></app-alert>
+          <app-table [definition]="tableDefinition" [data]="dataList" [tableAlertId]="'dataTableAlertId'" [isDataLoading]="isDataLoading" [disableActions]="disableActions"></app-table>    
+      </div>    
+        <div fxFlex="40">
+          <div class="master-img" >
+            <img src="assets/images/schedule.jpg" alt="" class="mx-auto d-block img-fluid img-thumbnail">
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    </div>

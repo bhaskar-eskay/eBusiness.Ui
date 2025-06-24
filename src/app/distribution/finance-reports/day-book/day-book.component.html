@@ -1,0 +1,46 @@
+<div class="pharma-finance">
+    <div class="heading-container">
+      <h4 class="pharmacyHeading">Day Book</h4>
+    </div>
+    <br>
+  
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+        <form [formGroup]="dayBookReportFormGroup">
+          <div fxLayout="row wrap" fxLayoutGap="16px" class="CashReceiptControls">
+            <!-- From Date -->
+            <mat-form-field fxFlex="20" appearance="outline">
+                <mat-label>From Date</mat-label>
+                <input matInput [matDatepicker]="fromDatePicker" formControlName="fromDate" [matDatepickerFilter]="dateFilter">
+                <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #fromDatePicker></mat-datepicker>
+              </mat-form-field>
+  
+            <!-- To Date -->
+            <mat-form-field fxFlex="20" appearance="outline">
+                <mat-label>To Date</mat-label>
+                <input matInput [matDatepicker]="toDatePicker" formControlName="toDate" [matDatepickerFilter]="dateFilter">
+                <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #toDatePicker></mat-datepicker>
+            </mat-form-field>
+  
+            <!-- Sort Option -->
+            <mat-form-field fxFlex="20" appearance="outline">
+              <mat-label>DayBook Type</mat-label>
+              <mat-select formControlName="bookType">
+                <mat-option value="twoColumn">Two Column</mat-option>
+                <mat-option value="fourColumn">Four Column</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <!-- Buttons -->
+            <div fxLayout="row wrap" fxLayoutGap="16px" class="button-group">
+              <button type="button" mat-raised-button color="primary" (click)="generateReport()">Generate</button>
+              <button type="button" mat-raised-button color="warn" (click)="resetForm()">Reset</button>
+              <button type="button" mat-raised-button color="primary" class="my-1" (click)="goback()">Back</button>
+            </div>
+          </div>
+        </form>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  

@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic&subset=latin-ext');
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic&amp;subset=latin-ext');
+
+@import '~@angular/material/theming';
+
+
+@include mat-core();
+
+
+$mat-grey-example: (
+
+  contrast: (
+
+  )
+);
+
+
+
+$one-example: (
+  500: #0090a8,
+  contrast: (
+    500: $light-primary-text,
+  )
+);
+
+$two-example: (
+  500: #006476,
+  contrast: (
+    500: $light-primary-text,
+  )
+);
+
+$example-primary: mat-palette($mat-grey-example);
+$example-accent:  mat-palette($one-example, A200, A100, A400);
+$example-warn:    mat-palette($mat-red);
+
+$example-theme: mat-light-theme($example-primary, $example-accent, $example-warn);
+
+@include angular-material-theme($example-theme);
+
+
+
+// theme-2
+$theme-2-primary: mat-palette($one-example);
+$theme-2-accent:  mat-palette($mat-amber, A200, A100, A400);
+$theme-2-warn:    mat-palette($mat-deep-orange);
+
+$theme-2-theme:   mat-dark-theme($theme-2-primary, $theme-2-accent, $theme-2-warn);
+
+.theme-2 {
+  @include angular-material-theme($theme-2-theme);
+}
+
+// theme-3
+$theme-3-primary: mat-palette($two-example);
+$theme-3-accent: mat-palette($mat-brown, 200);
+$theme-3-warn: mat-palette($mat-deep-orange, 200);
+
+$theme-3-theme: mat-light-theme($theme-3-primary, $theme-3-accent, $theme-3-warn);
+
+.theme-3 {
+  @include angular-material-theme($theme-3-theme)
+}
+
+
+// theme-4
+$theme-4-primary: mat-palette($mat-blue);
+$theme-4-accent:  mat-palette($mat-light-blue, A200, A100, A400);
+$theme-4-warn:    mat-palette($mat-deep-orange);
+
+$theme-4-theme:   mat-light-theme($theme-4-primary, $theme-4-accent, $theme-4-warn);
+
+.theme-4 {
+  @include angular-material-theme($theme-4-theme);
+}
+
+
+
+
+
+
+
+
+
+

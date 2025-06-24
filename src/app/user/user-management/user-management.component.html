@@ -1,0 +1,79 @@
+<div class="m-3" *ngIf="!editUserFlag; else addOrEditUserForm">
+  <div fxLayout="row" fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column" fxLayoutWrap
+    fxLayoutGap="10px">
+    <div fxFlex="70" fxFlex.xl="55" fxFlex.sm="57" fxFlex.md="46">
+      <h4 class="masters-pharma-head ">User Management</h4>
+    </div>
+    <div fxFlex="27" fxFlex.xl="12" fxFlex.sm="12" fxFlex.md="20" class="master-btn">
+      <button mat-raised-button color="primary" (click)="addorEditUser()">Add User</button>&nbsp;&nbsp;
+      <button mat-raised-button (click)="doRefresh()">Refresh</button>
+    </div>
+    
+  </div>
+  <div class="mt-4">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+      <div fxFlex="80">
+          <app-alert [id]="tableAlert"></app-alert>
+          <app-table [definition]="tableDefinition" [data]="users" [tableAlertId]="tableAlert" [isDataLoading]="isDataLoading" [disableActions]="disableActions"></app-table>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<ng-template #addOrEditUserForm>
+  
+  <div class="user-form m-2">
+    <h4 class="masters-pharma-head mb-3">{{editUser && editUser.id?'Edit User':'Add User'}}</h4>
+    <app-alert [id]="userDetailsFormAlert"></app-alert>
+  <form [formGroup]="userDetailsForm" *ngIf="userDetailsForm" autocomplete="off">
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px" >
+    <div class="form-group">
+      <mat-form-field appearance="outline">
+        <mat-label>Name:</mat-label>
+        <input matInput type="text" formControlName="userName" required>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field appearance="outline">
+        <mat-label>Full Name:</mat-label>
+        <input matInput type="text" formControlName="fullName" required>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field appearance="outline">
+        <mat-label>Mobile:</mat-label>
+        <input matInput type="text" formControlName="mobile" required>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field appearance="outline">
+        <mat-label>e-Mail:</mat-label>
+        <input matInput type="text" formControlName="email" required>
+      </mat-form-field>
+    </div>
+    <app-autocomplete [definition]="firmAutoCompleteDef" [dataSourceFn]="firmDataSourceFnc" [control]="userDetailsForm.get('firm')"></app-autocomplete>
+  
+    
+    <div class="">
+      <button mat-raised-button color="primary" (click)="updateUser()" type="button">Save</button> &nbsp;
+      <button mat-raised-button (click)="clearOrResetUserDetailsForm()" type="button">{{editUser && editUser.id?'Reset':'Clear'}}</button> &nbsp;
+      <button mat-raised-button (click)="clearEditUserDetailsFlag()" type="button">Close</button>
+    </div>
+  </div>
+  <app-drag-drop-dual-list [availables]="availableRoles" 
+    [selects]="selectedRoles" valueField="id" availableText="Available Roles" selectedText="Assigned Roles"
+    textField="name" (selectsEmitter)="onRolesSelect($event)">
+    </app-drag-drop-dual-list>
+</form>
+</div>
+</ng-template>
+
+<ng-template #rolesTemp let-user="data">
+  <p *ngIf="!user.roles || !user.roles.length">n/a</p>
+  
+    <ul *ngIf="user.roles && user.roles.length">
+      <li *ngFor="let role of user.roles">{{role.name}}</li>
+    </ul>
+
+</ng-template>

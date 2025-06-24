@@ -1,0 +1,31 @@
+<div class="m-3">
+  <div fxLayout="row" class="md_flex" fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column" fxLayoutWrap
+    fxLayoutGap="10px">
+    <div fxFlex="80" fxFlex.xl="80" fxFlex.sm="80" fxFlex.md="80">
+      <h4 class="masters-pharma-head">Products List </h4>
+    </div>
+    <div fxFlex="20" fxFlex.xl="20" fxFlex.sm="20" fxFlex.md="20" class="master-btn text-right">
+      <button mat-raised-button  (click)="addItem()" color="primary">Add
+        Product</button>
+    </div>
+
+  </div>
+  <div class="mt-2">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+      <div fxFlex="100">
+        <div class="master-table" id="table-scroll">
+          <app-alert [id]="'dataTableAlertId'"></app-alert>
+          <app-table [definition]="tableDefinition" [data]="dataList" [tableAlertId]="'dataTableAlertId'"
+            [isDataLoading]="isDataLoading" [disableActions]="disableActions"></app-table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+</div>
+
+<ng-template #deleteCustomProductTemplate let-customProduct="data">
+  Are you sure to delete <strong>{{customProduct.prodName}}</strong> Custom Product?
+</ng-template>

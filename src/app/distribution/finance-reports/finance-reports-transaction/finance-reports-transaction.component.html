@@ -1,0 +1,92 @@
+<div class="m-5 button-icons">
+
+    <div class="row mx-0 mt-3" style="column-gap: 20px;">
+
+        <button class="btn btn-info p-4 col-md-2 mb-2" *ngFor="let item of menuArray" (click)="finance(item?.menuPath)">
+
+            <div *ngIf="item.menuName !== '' ">
+                <div *ngIf="item?.menuName == 'Account Copy'">
+                    <i class="mt-1 fa fa-copy" style="margin-right: 4px;"></i>
+                </div>
+
+                <div *ngIf="item?.menuName == 'Trail Balance' ">
+                    <div><i class="fas fa-balance-scale"></i></div>
+                </div>
+
+                <div *ngIf="item?.menuName == 'Trading Profit & Loss' ">
+                    <div><i class="fas fa-chart-line"></i></div>
+                </div>
+                
+                <div *ngIf="item?.menuName == 'Balance Sheet' ">
+                    <div><i class="fa-solid fa-sheet-plastic"></i></div>
+                </div>
+
+                <div *ngIf="item?.menuName == 'Book' ">
+                    <div><i class="mt-1 fa fa-book" style="margin-right: 4px;"></i></div>
+                </div>
+
+                <div *ngIf="item?.menuName == 'General Ledger' ">
+                    <div><i class="mt-1 fa fa-book-open" style="margin-right: 4px;"></i></div>
+                </div>
+
+                <div *ngIf="item?.menuName == 'Schedule Printing' ">
+                    <div><i class="mt-1 fa-solid fa-calendar-days" style="margin-right: 4px;"></i></div>
+                </div>
+
+                <div *ngIf="item?.menuName == 'Ageing Analysis' ">
+                    <div><i class="mt-1 fa-solid fa-chart-simple" style="margin-right: 4px;"></i></div>
+                </div>
+
+                <div *ngIf="item?.menuName == 'Debitors Outstanding' "
+                    class="d-flex justify-content-center">
+                    <span class="d-block font-weight-bold" style="margin: 2px 5px 0 -1px;">+</span>
+                    <i class="mt-1 fa fa-rupee-sign"></i>
+                </div>
+                
+                <div *ngIf="item?.menuName == 'Creditors OutStanding' "
+                    class="d-flex justify-content-center">
+                    <span class="d-block font-weight-bold" style="margin: 2px 5px 0 -1px;">+</span>
+                    <i class="mt-1 fa fa-rupee-sign"></i>
+                </div>
+                
+                <div *ngIf="item?.menuName == 'Interest Calculation' ">
+                    <div><i class="fa-solid fa-calculator"></i></div>
+                </div>
+
+                <div class="text-center" style="white-space: normal">{{item?.menuName}} </div>
+            </div>
+        </button>
+
+
+        <!-- <button class="btn btn-info p-4 col-md-2 mb-2">
+        <div>
+            <div><i class="fas fa-arrow-down"></i></div>
+            <i class="mt-1 fa fa-cart-plus"></i>
+        </div>
+        <div class="text-center" style="white-space: normal">Purchase <br> Register</div>
+    </button>
+
+
+    <button class="btn btn-info p-4 col-md-2 mb-2">
+        <div>
+            <div><i class="fas fa-arrow-up"></i></div>
+            <i class="mt-1 fa fa-cart-plus"></i>
+        </div>
+        <div class="text-center" style="white-space: normal"> Purchase Return <br> Register</div>
+    </button>
+
+
+    <button class="btn btn-info p-4 col-md-2 mb-2">
+        <div><i class="mt-1 fa fa-cogs"></i></div>
+        <div class="text-center" style="white-space: normal">Internal Stock <br> Adjustment Register</div>
+    </button>
+
+
+    <button class="btn btn-info p-4 col-md-2 mb-2">
+        <div><i class="mt-1 fa fa-plus-circle"></i></div>
+        <div class="text-center" style="white-space: normal">Other Purchases <br> Register</div>
+    </button> -->
+
+    </div>
+
+</div>

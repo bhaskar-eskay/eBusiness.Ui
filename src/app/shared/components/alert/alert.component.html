@@ -1,0 +1,28 @@
+<ng-container *ngFor="let alert of alerts">
+    <mat-card [ngClass]="alert.type+' alert'">
+        <div class="alert-icon">
+            <mat-icon>
+                {{alert.icon}}
+            </mat-icon>
+        </div>
+        <div class="alert-content">
+            <!-- <span class="alert-type">{{alert.name}}</span> -->
+            <span class="alert-message" *ngIf="alert.messages">
+                <ul *ngIf="alert.messages.length>1; else showMessage">
+                    <li *ngFor="let message of alert.messages">{{message}}</li>
+                </ul>
+                <ng-template #showMessage>
+                    {{alert.messages[0]}}
+                </ng-template>
+            </span>
+            <span class="alert-template" *ngIf="content">
+                <ng-container *ngTemplateOutlet="content.templateFunction()"></ng-container>
+            </span>
+        </div>
+        <div class="alert-close">
+            <mat-icon (click)="doCloseAlert(alert)">
+                close
+            </mat-icon>
+        </div>
+    </mat-card>
+</ng-container>

@@ -1,0 +1,48 @@
+.pharmacyHeading {
+    color: #2f8bbd;
+    font-size: 20px;
+    margin-bottom: 0;
+    font-family: monospace !important;
+    font-weight: 700 !important;
+  }
+
+  .pharma-finance .mat-raised-button {
+    border-radius: 30px;
+    min-width: 65px;
+    line-height: 28px;
+    padding: 0 12px;
+  }
+  
+  .CashReceiptControls {
+    height: 300px;
+    width: 100%;
+  }
+  
+  .CashReceiptCard {
+    width: 300px;
+    height: 255px;
+  }
+  .mat-card {
+    transition: box-shadow 280ms cubic-bezier(.4,0,.2,1);
+    display: block;
+    position: relative;
+    padding: 24px;
+    border-radius: 2px;
+  }
+  mat-card:not([class*=mat-elevation-z]) {
+    box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%);
+  }
+  
+  .buttons {
+    width: 960px;
+    margin: 0 auto;}
+    
+        .action_btn {
+    width: 500px;
+    margin: 5px auto;}
+
+
+
+    .finance-button {
+      border-radius: 30px;
+  }

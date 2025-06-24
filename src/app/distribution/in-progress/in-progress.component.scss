@@ -1,0 +1,13 @@
+// @keyframes fade {
+//     0% { opacity: 1; }
+//     50% { opacity: 0.5; }
+//     100% { opacity: 1; }
+//   }
+  
+  .in-progress {
+    // font-size: 24px;
+    filter: brightness(1);
+    font-weight: bold;
+    color: #006476;
+    animation: fade 1.5s infinite;
+  }

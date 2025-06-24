@@ -1,0 +1,16 @@
+Material Icon for Offline
+1.Download icons - https://github.com/google/material-design-icons/releases
+2.Execute - npm install material-design-icons
+3.Add this statement in styles.css - @import '~material-design-icons/iconfont/material-icons.css';
+
+
+Should be followed throughout the application
+-----------------------------------------------
+1.State Input before City Input (as dependency) - Refer Add Manufacturer Screen
+2.City autocomplete should be in same format - Refer Add Manufacturer Screen
+3.Mat-error messages for every mandatory field
+4.When user enter date convert date 25/10/2021 while entering. (appDateMask)
+5.Meaning full message in Error/Warning Alert Component should be displayed on Save/Update/Delete. - Refer Manufacturer Screen
+6.appMatSelect - Refer Add Schedule Screen
+7.nextElementId - Refer Add Schedule Screen
+8.dependency AutoComplete - Refer Add Schedule Screen

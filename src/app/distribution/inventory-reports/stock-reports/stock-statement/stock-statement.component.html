@@ -1,0 +1,130 @@
+
+<div class="pharma-finance">
+    <div class="heading-container">
+      <h4 class="pharmacyHeading" style="text-align: center;">Stock Position</h4>
+<!-- please check stock-position component for stock-statement code componenets are interchanged -->
+    </div>
+    <br>
+  
+    <mat-accordion>
+      <mat-expansion-panel class="pt-3" [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+        <!-- [expanded]="step === 0" -->
+        <form [formGroup]="stockPositionRepost">
+          <div fxLayout="row wrap" fxLayoutGap="16px" class="CashReceiptControls">
+            <!-- <mat-form-field fxFlex="20" appearance="outline">
+                <mat-label>From Date</mat-label>
+                <input matInput [matDatepicker]="fromDatePicker" formControlName="fromDate" [matDatepickerFilter]="dateFilter">
+                <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #fromDatePicker></mat-datepicker>
+                <mat-error class="error-msg">
+                  <span >From Date is Required...!</span>
+                </mat-error>
+              </mat-form-field>
+  
+            <mat-form-field fxFlex="20" appearance="outline">
+                <mat-label>To Date</mat-label>
+                <input matInput [matDatepicker]="toDatePicker" formControlName="toDate" [matDatepickerFilter]="dateFilter">
+                <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #toDatePicker></mat-datepicker>
+                <mat-error class="error-msg">
+                  <span >To Date is Required...!</span>
+                </mat-error>
+            </mat-form-field> -->
+  
+            <mat-form-field fxFlex="20" appearance="outline">
+              <mat-label>Report Option</mat-label>
+              <mat-select formControlName="accopyType" (selectionChange)="typeChange($event.value)">
+                <mat-option value=1>Detailed</mat-option>
+                <mat-option value=2>Product Abstract</mat-option>
+                <mat-option value=3>Company Abstract</mat-option>
+              </mat-select>
+              <mat-error class="error-msg">
+                <span >Type is Required...!</span>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field fxFlex="20" appearance="outline">
+                <mat-label>Include Nill Stocks</mat-label>
+                <mat-select formControlName="accopyType" (selectionChange)="stockOptionChange($event.value)">
+                  <mat-option value=1>Yes</mat-option>
+                  <mat-option value=2>No</mat-option>
+                </mat-select>
+                <!-- <mat-error class="error-msg">
+                  <span >Type is Required...!</span>
+                </mat-error> -->
+              </mat-form-field>
+  
+            <!-- <mat-form-field fxFlex="100" appearance="outline">
+              <mat-label>Company Option</mat-label>
+            
+              <mat-select formControlName="accId" multiple>
+                <div class="search-container">
+                  <mat-form-field appearance="fill" class="search-field">
+                    <mat-label>Search</mat-label>
+                    <input matInput (keyup)="filterOptions($event.target.value)" placeholder="Type to search">
+                  </mat-form-field>
+                </div>
+                <mat-checkbox [checked]="isAllSelected" [indeterminate]="isIndeterminate"
+                  (change)="toggleSelectAll($event.checked)">
+                  Select All
+                </mat-checkbox>
+            
+                <div class="dropdown-table header">
+                  <span>Company Name</span>
+                  <span>Shot Name</span>
+                  <span>Address1</span>
+                  <span>Address1</span>
+                  <span>Group Name</span>
+                </div>
+            
+                <mat-option *ngFor="let option of filteredOptions" [value]="option">
+                  <div class="dropdown-table row">
+                    <span>{{ option.compName }}</span>
+                    <span>{{ option.compShName }}</span>
+                    <span>{{ option.address1 }}</span>
+                    <span>{{ option.address2 }}</span>
+                    <span>{{ option.compGroupName }}</span>
+                  </div>
+                </mat-option>
+              </mat-select>
+              <mat-error class="error-msg">
+                <span >Company option is Required...!</span>
+              </mat-error>
+            </mat-form-field> -->
+            <div fxFlex="100" class="mt-1" >
+              <app-auto-select (outPutEmitter)="receiveData($event)" [optionsTableDefinition]="customAccountsOptsTable" [filterKeys]="filterKeys" [dataSource]="dropdownOptions"></app-auto-select>
+            </div>
+
+       
+  
+            <!-- Buttons -->
+            <div fxLayout="row wrap" fxLayoutGap="16px" class="button-group">
+              <button type="button" mat-raised-button color="primary"  (click)="generateReport()">Get</button>
+              <button type="button" mat-raised-button color="warn" (click)="resetForm()">Reset</button>
+              <button type="button" mat-raised-button color="primary" class="my-1" (click)="goback()">Back</button>
+              <div class="action-icons" *ngIf="isShowExcelpdf">
+                <!-- Excel Export Button -->
+                <button mat-icon-button (click)="exportToExcel(stockPositionRepost.value)">
+                  <img src="assets/new_xl.png" alt="Excel" class="icon-img" />
+                </button>
+                
+          
+                <!-- PDF Export Button -->
+                <button mat-icon-button (click)="exportToPdf()">
+                  <img src="assets/new_pdf.png" alt="PDF" class="icon-img" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+
+  
+<div class="mt-2">
+  <div class="master-table" id="table-scroll" *ngIf="showTable">
+    <!-- <app-alert [id]="'dataTableAlertId'"></app-alert> -->
+    <app-registers-table [dataSource]="dataSource"></app-registers-table>
+  </div>
+</div>

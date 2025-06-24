@@ -1,0 +1,111 @@
+<div class="m-3">
+  <div fxLayout="row" class="md_flex" fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column" fxLayoutWrap
+    fxLayoutGap="10px">
+    <div fxFlex="50" fxFlex.xl="55" fxFlex.sm="57" fxFlex.md="46">
+      <h4 class="masters-pharma-head ">Company</h4>
+    </div>
+    <div fxFlex="50" fxFlex.xl="12" fxFlex.sm="32" fxFlex.md="32" fxLayoutAlign="end end">
+      <button mat-raised-button color="primary" type="button" *ngIf="!addOrEditFlag" (click)="addOrEdit()">Add Company</button>&nbsp;
+      <button mat-icon-button (click)="clearAddOrEdit()" *ngIf="addOrEditFlag" matTooltip="Close" type="button">
+        <mat-icon>close</mat-icon>
+      </button>
+      <button mat-raised-button type="button" (click)="refresh()" *ngIf="!isDataLoading && !addOrEditFlag">Refresh</button>
+    </div>
+    
+  </div>      
+  <div class="mt-2">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+      <div fxFlex="100">
+        <app-alert [id]="formAlertId"></app-alert>
+        <form [formGroup]="formGroup" *ngIf="formGroup && addOrEditFlag" autocomplete="off">
+        <div fxLayoutGap="10px" class="custom-form">
+         
+          <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput type="text" formControlName="compName" required autofocus>
+            <mat-error *ngIf="formGroup.get('compName')">
+              <ng-template [ngIf]="formGroup.get('compName').hasError('required')">
+                Name is <strong>required</strong>
+              </ng-template>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Sh. Name</mat-label>
+            <input matInput type="text" maxlength="6" formControlName="compShName" required>
+            <mat-error *ngIf="formGroup.get('compShName')">
+              <ng-template [ngIf]="formGroup.get('compShName').hasError('required')">
+                comp Sh Name is <strong>required</strong>
+              </ng-template>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Address1</mat-label>
+            <input matInput type="text" formControlName="address1">
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Address2</mat-label>
+            <input matInput type="text" formControlName="address2">
+          </mat-form-field>
+          <!-- <app-autocomplete class="company-city" [definition]="cityAutoCompleteDef" [control]="formGroup.get('city')" [optionsTableDefinition]="cityOptsTable"></app-autocomplete> -->
+          <mat-form-field appearance="outline">
+            <mat-label>State </mat-label>
+            <mat-select [formControl]="stateId" placeholder="--Select--"  #stateTab  appMatSelect  required (selectionChange)="statechange()" #singleSelect>
+              <mat-option>
+                <ngx-mat-select-search  placeholderLabel="Find States..."  (keydown)="StateTab($event)"
+                noEntriesFoundLabel="'no matching States found'" [formControl]="stateMultiFilterCtrl"></ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let state of filteredStatesMulti | async"  [value]="state.stateId">
+                {{state.stateName}}
+              </mat-option>
+            </mat-select>
+            <mat-error class="error-msg">
+              <span *ngIf="stateId.hasError('required')"> State is Required...!</span>
+            </mat-error>
+          </mat-form-field>
+
+          
+          <!-- <div fxFlex="30"> -->
+            <app-autocomplete [definition]="districtAutoCompleteDef" [control]="distId"
+                    [optionsTableDefinition]="districtOptsTable"></app-autocomplete>
+          <!-- </div> -->
+
+          <!-- <div fxFlex="30"> -->
+            <app-autocomplete [definition]="cityAutoCompleteDef" [control]="formGroup.get('cityId')"
+                    [optionsTableDefinition]="cityOptsTable"></app-autocomplete>
+          <!-- </div> -->
+          
+          <!-- <app-autocomplete [definition]="groupsAutoCompleteDef" [control]="formGroup.get('companyGroups')"></app-autocomplete> -->
+          <mat-form-field appearance="outline">
+            <mat-label>Company Group </mat-label>
+            <mat-select formControlName="compGroupId" placeholder="--Select--"  #groupTab  appMatSelect  required  #singleSelect>
+              <mat-option>
+                <ngx-mat-select-search  placeholderLabel="Find Groups..."  (keydown)="GroupTab($event)"
+                noEntriesFoundLabel="'no matching States found'" [formControl]="groupMultiFilterCtrl"></ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let state of filteredgroupMulti | async"  [value]="state.compGroupId">
+                {{state.compGroupName}}
+              </mat-option>
+            </mat-select>
+            <mat-error class="error-msg">
+              <span *ngIf="formGroup.get('compGroupId').hasError('required')"> compGroup is Required...!</span>
+            </mat-error>
+          </mat-form-field>                      
+        
+        </div>
+      </form>
+      <div class="text-right mb-1" *ngIf="formGroup && addOrEditFlag">
+        <button mat-raised-button color="primary" type="button" [disabled]="formGroup.invalid" (click)="save()">{{isUpdate()?'Update':'Add'}}</button> &nbsp;
+        <button mat-raised-button type="button" (click)="clearOrResetForm()">{{isUpdate()?'Reset':'Clear'}}</button>
+      </div>
+          <app-alert [id]="'dataTableAlertId'"></app-alert>
+          <app-table [definition]="tableDefinition" [data]="dataList" [tableAlertId]="'dataTableAlertId'" [isDataLoading]="isDataLoading" [disableActions]="disableActions"></app-table>    
+      </div>    
+   </div>
+  </div>
+    
+    
+    </div>
+
+    <ng-template #deleteCompanyTemplate let-company="data">
+      Are you sure to delete <strong>{{company.name}}</strong> Company?
+    </ng-template>

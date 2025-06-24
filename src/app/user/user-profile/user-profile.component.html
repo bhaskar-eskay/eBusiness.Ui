@@ -1,0 +1,262 @@
+<mat-card class="profile-card mt-2 user-form">
+  <!-- <h6 fxLayoutAlign="center center"> Profile Information</h6> -->
+  <app-alert [id]="loadingAlertId" [content]="loadingAlertContent"></app-alert>
+  <form [formGroup]="userProfileForm" *ngIf="userProfileForm">
+    <mat-horizontal-stepper *ngIf="userDetails">
+      <ng-template matStepperIcon="number" let-index="index">
+        <ng-container *ngTemplateOutlet="userProfileStepperIcons; context:{index: index}"></ng-container>
+      </ng-template>
+      <ng-template matStepperIcon="edit" let-index="index">
+        <ng-container *ngTemplateOutlet="userProfileStepperIcons; context:{index: index}"></ng-container>
+      </ng-template>
+      <ng-template matStepperIcon="done" let-index="index">
+        <ng-container *ngTemplateOutlet="userProfileStepperIcons; context:{index: index}"></ng-container>
+      </ng-template>
+
+      <mat-step label="User" formGroupName="userDetailsForm">
+        <div class="step-content">
+          <app-alert [id]="alertId"></app-alert>
+          <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+
+            <div fxFlex="30">
+              <div class="form-group">
+                <mat-label>User Name:</mat-label> &nbsp;
+                <mat-label>{{userDetails.userName}}</mat-label>
+              </div>
+              <div class="form-group">
+                <mat-label> Roles:</mat-label> &nbsp;
+                <mat-icon [popover]="rolesPopoverTemplate" placement="right" triggers="mouseenter:mouseleave" class='role-popover'>info
+                </mat-icon>
+              </div>
+            </div>
+
+            <div fxFlex="30">
+              <div class="form-group">
+                <mat-form-field appearance="outline">
+                  <mat-label>Name:</mat-label>
+                  <input matInput type="text" formControlName="fullName" required>
+                </mat-form-field>
+              </div>
+              <div class="form-group">
+                <mat-form-field appearance="outline">
+                  <mat-label>Email:</mat-label>
+                  <input matInput type="text" formControlName="email" required>
+                </mat-form-field>
+              </div>
+              <div class="form-group">
+                <mat-form-field appearance="outline">
+                  <mat-label>Phone:</mat-label>
+                  <input matInput type="text" formControlName="mobile" required>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr class="line-separator">
+        <div class="stepper-buttons">
+          <button mat-raised-button color="warn" *ngIf="hasEditAccess" (click)="resetUserDetailsForm()">Reset</button> &nbsp;
+          <button mat-raised-button color="primary" *ngIf="hasEditAccess" (click)="doUpdateUserProfile()" [disabled]="!userProfileForm.valid">Update</button> &nbsp;
+          <button mat-stroked-button color="primary" matStepperNext>Next</button> 
+        </div>
+      </mat-step>
+
+      <!-- Firm Details Start -->
+      <mat-step label="Firm">
+        <ng-container *ngTemplateOutlet="firmDetailsTemplate;context:{data:userDetails.firm}">
+        </ng-container>
+        <hr class="line-separator">
+        <div class="stepper-buttons">
+          <button mat-stroked-button color="warn" matStepperPrevious>Back</button> &nbsp;
+          <button mat-stroked-button color="primary" matStepperNext>Next</button> &nbsp;
+        </div>
+      </mat-step>
+      
+        <!-- Firm LTOs Start -->
+      <mat-step label="License-Tax-Others">
+        <ng-container *ngTemplateOutlet="firmLTOsTemplate;context:{data:userDetails.firm}">
+        </ng-container>
+        <hr class="line-separator">
+        <div class="stepper-buttons">
+          <button mat-stroked-button color="warn" matStepperPrevious>Back</button> &nbsp;
+          <button mat-stroked-button color="primary" matStepperNext *ngIf="firmHasBranches">Next</button> &nbsp;
+        </div>
+      </mat-step>
+
+      <!-- Firm Branches Start -->
+      <mat-step label="Branches" *ngIf="firmHasBranches">
+        <div class="step-content">
+          <app-table [definition]="firmBranchesTableDef" [data]="firmBranches"></app-table>
+        </div>
+        <hr class="line-separator">
+        <div class="stepper-buttons">
+          <button mat-stroked-button color="warn" matStepperPrevious>Back</button> &nbsp;
+        </div>
+      </mat-step>
+      
+     
+    </mat-horizontal-stepper>
+  </form>
+</mat-card>
+<ng-template #userProfileStepperIcons let-index="index">
+  <mat-icon *ngIf="index===0">perm_identity</mat-icon>
+  <mat-icon *ngIf="index===1">domain</mat-icon>
+  <mat-icon *ngIf="index===2">account_balance</mat-icon>
+  <mat-icon *ngIf="index===3">device_hub</mat-icon>
+</ng-template>
+
+<ng-template #rolesPopoverTemplate>
+  <ul>
+    <li *ngFor="let role of userDetails.roles">{{role.name}}</li>
+  </ul>
+</ng-template>
+
+<ng-template #profileLoadingAlertTemplate>
+  Please wait while loading profile data 
+  <!--<img src="../../../assets/loader.gif"/>-->
+</ng-template>
+
+
+<ng-template #firmDetailsTemplate let-firm="data">
+  <div class="step-content">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+      <div fxFlex="30">
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>UID:</mat-label>
+            <input matInput type="text" [value]="firm.uid" disabled>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>Name:</mat-label>
+            <input matInput type="text" [value]="firm.name" disabled>
+          </mat-form-field>
+        </div>
+        <div *ngIf="firm.alias">
+          <mat-form-field appearance="outline">
+            <mat-label>Short Name:</mat-label>
+            <input matInput type="text" [value]="firm.alias" disabled>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>Category:</mat-label>
+            <input matInput type="text" [value]="firm.type.category.name" disabled>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>Type:</mat-label>
+            <input matInput type="text" [value]="firm.type.name" disabled>
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxFlex="30">
+        <div *ngIf="firm.email">
+          <mat-form-field appearance="outline">
+            <mat-label>email:</mat-label>
+            <input matInput type="text" [value]="firm.email" disabled>
+          </mat-form-field>
+        </div>
+        <div *ngIf="firm.phone">
+          <mat-form-field appearance="outline">
+            <mat-label>Phone:</mat-label>
+            <input matInput type="text" [value]="firm.phone" disabled>
+          </mat-form-field>
+        </div>
+        <div *ngIf="firm.mobile1">
+          <mat-form-field appearance="outline">
+            <mat-label>Mobile:</mat-label>
+            <input matInput type="text" [value]="firm.mobile1" disabled>
+          </mat-form-field>
+        </div>
+        <div *ngIf="firm.mobile2">
+          <mat-form-field appearance="outline">
+            <mat-label>Mobile 2:</mat-label>
+            <input matInput type="text" [value]="firm.mobile2" disabled>
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxFlex="30">
+        <div *ngIf="firm.addressLine1">
+          <mat-form-field appearance="outline">
+            <mat-label>Address Line:</mat-label>
+            <input matInput type="text" [value]="firm.addressLine1" disabled>
+          </mat-form-field>
+        </div>
+        <div *ngIf="firm.addressLine2">
+          <mat-form-field appearance="outline">
+            <mat-label>Address Line 2:</mat-label>
+            <input matInput type="text" [value]="firm.addressLine2" disabled>
+          </mat-form-field>
+        </div>
+        <div *ngIf="firm.addressLine3">
+          <mat-form-field appearance="outline">
+            <mat-label>Address Line 3:</mat-label>
+            <input matInput type="text" [value]="firm.addressLine3" disabled>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>City:</mat-label>
+            <input matInput type="text" [value]="firm.city.name" disabled>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>District:</mat-label>
+            <input matInput type="text" [value]="firm.city.district.name" disabled>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>State:</mat-label>
+            <input matInput type="text" [value]="firm.city.district.state.name" disabled>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>Country:</mat-label>
+            <input matInput type="text" [value]="firm.city.district.state.country.name" disabled>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #firmLTOsTemplate let-firm="data">
+  <div class="step-content">
+    <div class="mt-3" *ngFor="let firmLto of firm.ltos; index as index">
+      <div class="license-div">
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+          <div>
+            <mat-form-field appearance="outline">
+              <mat-label>Type:</mat-label>
+              <input matInput type="text" [value]="firmLto.prefix.lto.type.name" disabled>
+            </mat-form-field>
+          </div> 
+          <div>
+            <mat-form-field appearance="outline">
+              <mat-label>Name:</mat-label>
+              <input matInput type="text" [value]="firmLto.prefix.lto.name" disabled>
+            </mat-form-field>
+          </div> 
+          <div>
+            <mat-form-field appearance="outline">
+              <mat-label>Prefix:</mat-label>
+              <input matInput type="text" [value]="firmLto.prefix.name" disabled>
+            </mat-form-field>
+          </div>  
+          <div>
+              <mat-form-field appearance="outline">
+                <mat-label>LTO Number:</mat-label>
+                <input matInput type="text" [value]="firmLto.ltoNo" disabled>
+              </mat-form-field>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

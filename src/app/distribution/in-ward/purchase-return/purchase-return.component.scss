@@ -1,0 +1,80 @@
+
+
+
+@import '../../../../assets/styles/mixin.scss';
+
+::ng-deep .user-form {
+    @include user-form;
+
+    // .return-form mat-form-field{
+    //     width: 200px;
+    // }
+    .return-form-modal{
+        .mat-form-field {
+            width: 32%;
+        }
+    }
+  }
+
+  // ::ng-deep .invoice-form mat-form-field{
+  //   width: 200px;
+  //   margin: 5px 0;
+  // }
+
+  @media screen and (max-width: 600px) {
+    .form_height{
+        max-height: 400px;
+        overflow: auto;
+    }
+    .fieldCntrl mat-form-field{
+      width: 100% !important;
+    }
+  }
+
+  @media screen and (max-width: 1500px) {
+    
+    .mbl_margin{
+        margin-bottom: 50px;;
+    }
+  }
+
+  // @media screen and (min-width:610px) and (max-width:1010px) {
+  //   .tab_width{
+  //     width: 60% !important;
+  //   }
+  //   .tab_width2 {
+  //     max-width: 28% !important;
+  //   }
+  //   .tab_center{
+  //       display: flex;
+  //       place-items: anchor-center;
+  //   }
+  // }  
+
+  ::ng-deep .return_mat mat-form-field{
+    width: 100%;
+  }
+
+
+  
+
+@media screen and(min-width: 960px) and (max-width:1280px) {
+    .md_flex {
+      display: flex;
+    }
+
+    .tab_width_md {
+        max-width: 30% !important;
+    }
+  }
+
+
+  @media screen and (min-width:610px) and (max-width:1010px) {
+    .tab_width{
+      width: 100% !important;
+    }
+  
+    .pur-values-form{
+      place-items: center;
+    }
+  }

@@ -1,0 +1,67 @@
+<div class="m-3">
+  <div fxLayout="row" class="md_flex" fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayoutWrap
+    fxLayoutGap="10px">
+    <div fxFlex="70" fxFlex.xl="70" fxFlex.sm="70" fxFlex.md="70">
+      <h4 class="masters-pharma-head">Accounts </h4>
+    </div>
+    <div fxFlex="30" fxFlex.xl="30"  fxFlex.sm="30" fxFlex.md="30" class="master-btn text-right">
+      <button mat-raised-button color="primary" id="addAccount" (click)="onAddAccount({type:'add', data: {}})" >Add Account</button>
+    </div>     
+  </div>
+
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap class="mt-2">     
+      <div fxFlex="100" class="account-form">
+        <form  [formGroup]="customerAccHeadFormGroup" fxLayoutGap="10px">
+        <mat-form-field appearance="outline">
+          <mat-label>Account Name</mat-label>
+          <input matInput formControlName="accountName">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Sh. Name</mat-label>
+          <input matInput formControlName="shName">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Town</mat-label>
+          <input matInput formControlName="areaName">
+        </mat-form-field>
+
+
+        <mat-form-field appearance="outline">
+          <mat-label>Mobile Number</mat-label>
+          <input matInput formControlName="mobileNum">
+        </mat-form-field>
+
+
+        <mat-form-field appearance="outline">
+          <mat-label>GSTIN</mat-label>
+          <input matInput appGstFormat maxlength="15" formControlName="gstIn">
+        </mat-form-field>
+
+        <!-- <mat-form-field appearance="outline">
+          <mat-label>Schedule Name</mat-label>
+          <input matInput formControlName="scheduleName">
+        </mat-form-field> -->
+
+        <mat-form-field appearance="outline">
+          <mat-label>Sub-Schedule Name</mat-label>
+          <input matInput formControlName="subScheduleName">
+        </mat-form-field>
+
+        <div class="float-right mb-2">
+          <button mat-raised-button color="primary" (click)="onSaveCustomerAccount()" >Search</button> &nbsp;
+          <button mat-raised-button (click)="onResetForm()" >Reset</button>
+        </div>
+      </form>
+      </div>
+
+  </div>
+
+  <div class="master-table" id="table-scroll">
+    <app-alert [id]="'customAccListTableId'"></app-alert>
+    <app-table [definition]="tableDefinition" [data]="dataList" [tableAlertId]="'customAccListTableId'"
+      [isDataLoading]="isDataLoading" [disableActions]="disableActions"></app-table>    
+
+    </div>
+</div>

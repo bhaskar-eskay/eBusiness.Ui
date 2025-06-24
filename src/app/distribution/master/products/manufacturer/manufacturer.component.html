@@ -1,0 +1,84 @@
+<div class="m-3">
+  <div fxLayout="row"  fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column" fxLayoutWrap
+    fxLayoutGap="10px" class="md_flex">
+    <div fxFlex="38" fxFlex.xl="55" fxFlex.sm="40" fxFlex.md="30">
+      <h4 class="masters-pharma-head">Manufacturers </h4>
+    </div>
+    <div fxFlex="20" fxFlex.xl="20" fxFlex.sm="40" fxFlex.md="35" class="master-btn">
+      <button mat-raised-button color="primary" type="button" *ngIf="!addOrEditFlag" (click)="addOrEdit()">Add Manufacturer</button>&nbsp;
+      <button mat-icon-button (click)="clearAddOrEdit()" *ngIf="addOrEditFlag" matTooltip="Close" type="button">
+        <mat-icon>close</mat-icon>
+      </button>
+      <button mat-raised-button type="button" (click)="refresh()" *ngIf="!isDataLoading && !addOrEditFlag">Refresh</button>
+    </div>
+    <div fxFlex="23">      
+    </div>
+  </div>
+      
+  <div class="mt-2">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+      <div fxFlex="60">
+        <app-alert [id]="formAlertId"></app-alert>
+        <form [formGroup]="formGroup" *ngIf="formGroup && addOrEditFlag" autocomplete="off">
+        <div fxLayoutGap="20px" class="manufacture-form">
+         
+          <mat-form-field appearance="outline" class="my-3">
+            <mat-label>Manufacturer Name</mat-label>
+            <input matInput type="text" formControlName="mfgName" required autofocus>
+            <mat-error *ngIf="formGroup.get('mfgName')">
+              <ng-template [ngIf]="formGroup.get('mfgName').hasError('required')">
+                Manufacturer Name is <strong>required</strong>
+              </ng-template>
+            </mat-error>
+            </mat-form-field>
+          
+            <!-- <app-autocomplete [definition]="stateAutoCompleteDef" [control]="formGroup.get('state')" [optionsTableDefinition]="stateOptsTable" nextElementId="addManCityId" [dependent]="cityAutoComplete"></app-autocomplete>
+            <app-autocomplete [definition]="cityAutoCompleteDef" id="addManCityId" #cityAutoComplete [control]="formGroup.get('city')" [optionsTableDefinition]="cityOptsTable" nextElementId="addUpdtManBtnId"></app-autocomplete> -->
+      
+            <mat-form-field appearance="outline" class="my-1">
+              <mat-label>State </mat-label>
+              <mat-select [formControl]="stateId" placeholder="--Select--"  #stateTab  appMatSelect  required (selectionChange)="statechange()" #singleSelect>
+                <mat-option>
+                  <ngx-mat-select-search  placeholderLabel="Find States..."  (keydown)="StateTab($event)"
+                  noEntriesFoundLabel="'no matching States found'" [formControl]="stateMultiFilterCtrl"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let state of filteredStatesMulti | async"  [value]="state.stateId">
+                  {{state.stateName}}
+                </mat-option>
+              </mat-select>
+              <mat-error class="error-msg">
+                <span *ngIf="stateId.hasError('required')"> State is Required...!</span>
+              </mat-error>
+            </mat-form-field>
+
+            <div class="my-1 d-inline">
+              <app-autocomplete [definition]="districtAutoCompleteDef" [control]="distId"
+            [optionsTableDefinition]="districtOptsTable"></app-autocomplete>
+            </div>
+
+            <div class="my-1 d-inline">
+              <app-autocomplete [definition]="cityAutoCompleteDef" [control]="cityId"
+          [optionsTableDefinition]="cityOptsTable"></app-autocomplete>
+            </div>      
+        
+        </div>
+      </form>
+        
+      <div class="text-right mb-1" *ngIf="formGroup && addOrEditFlag">
+        <button mat-raised-button color="primary" type="button" id="addUpdtManBtnId" [disabled]="formGroup.invalid" (click)="save()">{{isUpdate()?'Update':'Add'}}</button> &nbsp;
+        <button mat-raised-button type="button" (click)="clearOrResetForm()">{{isUpdate()?'Reset':'Clear'}}</button>
+      </div>
+
+          <app-alert [id]="'dataTableAlertId'"></app-alert>
+          <app-table [definition]="tableDefinition" [data]="dataList" [tableAlertId]="'dataTableAlertId'" [isDataLoading]="isDataLoading" [disableActions]="disableActions"></app-table>    
+      </div>      
+      <div fxFlex="40">
+        <div class="master-img" >
+          <img src="assets/images/schedule.jpg" alt="" class="mx-auto d-block img-fluid img-thumbnail">
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  </div>

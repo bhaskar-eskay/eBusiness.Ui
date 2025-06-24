@@ -1,0 +1,164 @@
+<div class="m-3">
+  <div fxLayout="row"  fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column" fxLayoutWrap
+    fxLayoutGap="10px">
+    <div fxFlex="50" fxFlex.xl="55" fxFlex.sm="57" fxFlex.md="46">
+      <h4 class="masters-pharma-head">Tax Stakes</h4>
+    </div>
+    <!-- <div fxFlex="50" fxFlex.xl="12" fxFlex.sm="12" fxFlex.md="20" fxLayoutAlign="end end">
+      <button mat-raised-button color="primary" type="button" *ngIf="!addOrEditFlag" (click)="addOrEdit()">Add Stake</button>&nbsp;
+      <button mat-icon-button (click)="clearAddOrEdit()" *ngIf="addOrEditFlag" matTooltip="Close" type="button">
+        <mat-icon>close</mat-icon>
+      </button>
+      <button mat-raised-button type="button" (click)="refresh()" *ngIf="!isDataLoading && !addOrEditFlag">Refresh</button>
+    </div> -->
+  </div>
+      
+  <div class="mt-2">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+      <div fxFlex="100">
+        <app-alert [id]="formAlertId"></app-alert>
+      <form [formGroup]="formGroup" *ngIf="formGroup && addOrEditFlag" autocomplete="off">
+        <div fxLayoutGap="10px" class="tax-stake-form">
+          <app-autocomplete [definition]="typeAutoCompleteDef" [control]="formGroup.get('type')"></app-autocomplete>
+          <app-autocomplete [definition]="slabAutoCompleteDef" [dataSourceFn]="slabsDataSourceFnc" [control]="formGroup.get('formGroup').get('slab')"></app-autocomplete>
+          <app-autocomplete [definition]="categoryAutoCompleteDef" [dataSourceFn]="categoryDataSourceFnc" [control]="formGroup.get('formGroup').get('category')"></app-autocomplete>
+          <mat-form-field formGroupName="formGroup" appearance="outline">
+            <mat-label>Active Date</mat-label>
+            <input matInput [matDatepicker]="activeDate" [min]="minDate" (focus)="activeDate.open()" formControlName="activeDate" required>
+            <mat-datepicker-toggle matSuffix [for]="activeDate"></mat-datepicker-toggle>
+            <mat-datepicker #activeDate></mat-datepicker>
+            <mat-error *ngIf="subFormGroup.get('activeDate')">
+              <ng-template [ngIf]="subFormGroup.get('activeDate').hasError('required')">
+                Active Date is <strong>required</strong>
+              </ng-template>
+              <ng-template [ngIf]="subFormGroup.get('activeDate').hasError('matDatepickerMin')">
+                Active Date is <strong>not valid</strong>
+              </ng-template>
+            </mat-error>
+          </mat-form-field>
+
+          <div class="float-right">
+            <button mat-raised-button color="primary" type="button" [disabled]="formGroup.invalid" (click)="doesSelectedSlabHasStake?showStakePercentDialog():save()">{{doesSelectedSlabHasStake?'Add Stake Percents':'Save'}}</button> &nbsp;
+            <button mat-raised-button type="button" (click)="clearOrResetForm()">Clear</button>
+          </div>
+        </div>
+      </form>
+          <app-alert [id]="'dataTableAlertId'"></app-alert>
+          <app-table [definition]="tableDefinition" [data]="dataList" [tableAlertId]="'dataTableAlertId'" [isDataLoading]="isDataLoading" [disableActions]="disableActions"></app-table>    
+      </div>      
+    </div>
+  </div>
+  
+  
+  </div>
+
+  <ng-template #stakePercentTemplate let-hideButtons="hideButtons">
+    <app-alert [id]="stakePercentFormAlertId"></app-alert>
+    <div class="mt-3" *ngFor="let stakePercent of formArray.controls; index as index">
+      <div [formGroup]="stakePercent" class="license-div">
+        <div fxLayout="row" fxLayout.xs="column"  fxLayoutWrap fxLayoutGap="10px">
+     
+           <div fxFlex="75" fxLayoutGap="10px">   
+           
+              <mat-form-field>
+                <mat-label>Name</mat-label>
+                <input matInput type="text" formControlName="name" required autofocus>
+                <mat-error *ngIf="stakePercent.get('name')">
+                  <ng-template [ngIf]="stakePercent.get('name').hasError('required')">
+                    Name is <strong>required</strong>
+                  </ng-template>
+                </mat-error>
+              </mat-form-field>           
+          
+              <mat-form-field>
+                <mat-label>Percent</mat-label>
+                <input matInput type="text" formControlName="percent" required (keyup)="checkPercent()">
+                <mat-error *ngIf="stakePercent.get('percent')">
+                  <ng-template [ngIf]="stakePercent.get('percent').hasError('required')">
+                    Percent is <strong>required</strong>
+                  </ng-template>
+                  <ng-template [ngIf]="stakePercent.get('percent').hasError('exceed')">
+                    Percent <strong>cannot exceed 100%</strong>
+                  </ng-template>
+                </mat-error>
+              </mat-form-field>            
+         
+              <mat-form-field>
+                <mat-label>Contribution</mat-label>
+                <input matInput type="text" formControlName="contribution">
+              </mat-form-field>
+            </div>
+
+          <div fxFlex="15">
+            <ng-template [ngIf]="!hideButtons">
+              <span *ngIf="index !==0">
+                    <button mat-icon-button color="warn" aria-label="" (click)="doDeleteStakePercent(index)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+              </span>
+              <span *ngIf="index === formArray.controls.length-1">
+                <button mat-icon-button color="primary" aria-label="" [disabled]="formArray.invalid || totalPercent>100 || totalPercent===100" (click)="doAddStakePercent()">
+                  <mat-icon>add</mat-icon>
+                </button>
+              </span>
+            </ng-template>
+          </div>
+        
+
+       
+        </div>
+
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #stakePercentButtonTemplate>
+    <button mat-raised-button color="primary" type="button" [disabled]="formArray.invalid || totalPercent<100 || totalPercent>100" (click)="save()">Save</button>
+  </ng-template>
+
+
+  <ng-template #stakeTerminationTemplate>
+    <form [formGroup]="formGroup">
+    <div fxLayoutGap="20px">
+      
+      <app-autocomplete [definition]="typeAutoCompleteDef" [control]="formGroup.get('type')"></app-autocomplete>
+      <app-autocomplete [definition]="slabAutoCompleteDef" [dataSourceFn]="slabsDataSourceFnc" [control]="formGroup.get('formGroup').get('slab')"></app-autocomplete>
+      <app-autocomplete [definition]="categoryAutoCompleteDef" [dataSourceFn]="categoryDataSourceFnc" [control]="formGroup.get('formGroup').get('category')"></app-autocomplete>
+      
+      
+      <mat-form-field formGroupName="formGroup">
+        <mat-label>Active Date</mat-label>
+        <input matInput [matDatepicker]="activeDate" formControlName="activeDate">
+        <mat-datepicker-toggle matSuffix [for]="activeDate"></mat-datepicker-toggle>
+        <mat-datepicker #activeDate></mat-datepicker>
+        <mat-error *ngIf="subFormGroup.get('activeDate')">
+          <ng-template [ngIf]="subFormGroup.get('activeDate').hasError('required')">
+            Active Date is <strong>required</strong>
+          </ng-template>
+          <ng-template [ngIf]="subFormGroup.get('activeDate').hasError('matDatepickerMin')">
+            Active Date is <strong>not valid</strong>
+          </ng-template>
+        </mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field formGroupName="formGroup">
+        <mat-label>Termination Date</mat-label>
+        <input matInput autofocus [matDatepicker]="terminationDate" [min]="minDate" (focus)="terminationDate.open()" formControlName="terminationDate" required>
+        <mat-datepicker-toggle matSuffix [for]="terminationDate"></mat-datepicker-toggle>
+        <mat-datepicker #terminationDate></mat-datepicker>
+        <mat-error *ngIf="subFormGroup.get('terminationDate')">
+          <ng-template [ngIf]="subFormGroup.get('terminationDate').hasError('required')">
+            Termination Date is <strong>required</strong>
+          </ng-template>
+          <ng-template [ngIf]="subFormGroup.get('terminationDate').hasError('matDatepickerMin')">
+            Termination Date is <strong>not valid</strong>
+          </ng-template>
+        </mat-error>
+      </mat-form-field>
+    
+      <ng-container *ngTemplateOutlet="stakePercentTemplate; context:{hideButtons: true}"></ng-container>
+    </div>
+  </form>
+    
+  </ng-template>

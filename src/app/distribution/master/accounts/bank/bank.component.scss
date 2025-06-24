@@ -1,0 +1,17 @@
+
+@import '../../../../../assets/styles/mixin.scss';
+
+::ng-deep .bank-form{
+    @include user-form;
+}
+
+.bank-table th{
+    position: sticky;
+    top: -1px;
+}
+
+@media screen and (max-width: 1200px) {
+    .bank-form{
+        margin-bottom: 30px;
+    }
+}

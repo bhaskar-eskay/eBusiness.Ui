@@ -1,0 +1,81 @@
+@import '../../../../assets/styles/mixin.scss';
+
+.pharmacyHeading {
+  color: #2f8bbd;
+  font-size: 20px;
+  margin-bottom: 0;
+  font-family: monospace !important;
+  font-weight: 700 !important;
+}
+
+.pharma-finance .mat-raised-button {
+  border-radius: 30px;
+  min-width: 65px;
+  line-height: 28px;
+  padding: 0 12px;
+}
+
+.CashReceiptControls {
+  height: 300px;
+  width: 100%;
+}
+
+// .CashReceiptCard {
+//   width: 300px;
+//   height: 255px;
+//   margin-top: 15px;
+// }
+.CashReceiptCard {
+  width: 100%; /* Take full width of the container */
+  max-width: 900px; /* Limit the maximum width for better readability */
+  margin: 15px auto; /* Center the card and add space above */
+  padding: 16px; /* Add internal spacing */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for a modern look */
+  border-radius: 8px; /* Optional: Rounded corners */
+  background-color: #ffffff; /* Optional: Card background */
+}
+
+
+
+.innerCard {
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 20%;
+}
+
+.finance-button {
+  min-width: 90px; /* Ensure buttons have consistent width */
+  margin: 0; /* Remove default margins if any */
+}
+
+
+::ng-deep .user-card {
+  @include user-form;
+
+  .mat-form-field {
+    width: 100%;
+  }
+}
+.full-height {
+  height: 100%; /* Ensure full height for the expansion panel */
+}
+
+.table-container {
+  position: relative;
+}
+
+.action-icons {
+  display: flex;
+  justify-content: flex-end; /* Align icons to the right */
+  gap: 16px; /* Space between buttons */
+  margin-bottom: 8px; /* Space below the buttons */
+}
+
+.icon-img {
+  width: 37px;
+  height: 38px;
+  -o-object-fit: contain;
+  object-fit: contain;
+  margin: 3px;
+}
+

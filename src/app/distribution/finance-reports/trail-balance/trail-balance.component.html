@@ -1,0 +1,43 @@
+<div class="pharma-finance">
+    <div class="heading-container">
+        <h4 class="pharmacyHeading">Trail Balance</h4>
+    </div>
+    <br>
+
+    <mat-accordion>
+        <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+            <form [formGroup]="dayBookReportFormGroup">
+                <div fxLayout="row wrap" fxLayoutGap="16px" class="CashReceiptControls">
+                    <mat-form-field fxFlex="20" appearance="outline">
+                        <mat-label>T.B. Type</mat-label>
+                        <mat-select formControlName="tbType">
+                            <mat-option value="Main">Main Schedule</mat-option>
+                            <mat-option value="Sub">Sub Schedule</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <!-- Report Type -->
+                    <mat-form-field fxFlex="20" appearance="outline">
+                        <mat-label>Report Type</mat-label>
+                        <mat-select formControlName="reportType" (selectionChange)="reporttype()">
+                            <mat-option value="datewise">DateWise</mat-option>
+                            <mat-option value="opening">Opening</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                      <!-- Report Date -->
+                    <mat-form-field  *ngIf="showReportdate" fxFlex="20" appearance="outline" >
+                        <mat-label>Report Date</mat-label>
+                        <input matInput [matDatepicker]="reportDatePicker" formControlName="reportDate" [matDatepickerFilter]="dateFilter">
+                        <mat-datepicker-toggle matSuffix [for]="reportDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #reportDatePicker></mat-datepicker>
+                    </mat-form-field>
+                    <!-- Buttons -->
+                    <div fxLayout="row wrap" fxLayoutGap="16px" class="button-group">
+                        <button type="button" mat-raised-button color="primary" (click)="generateReport()">Generate</button>
+                        <button type="button" mat-raised-button color="warn" (click)="resetForm()">Reset</button>
+                        <button type="button" mat-raised-button color="primary" class="my-1" (click)="goback()">Back</button>
+                    </div>
+                </div>
+            </form>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>

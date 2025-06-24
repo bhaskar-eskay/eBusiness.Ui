@@ -1,0 +1,98 @@
+@import '../../../../../assets/styles/mixin.scss';
+
+.account-head {
+  background: #ececec;
+  padding: 10px 25px;
+  font-weight: 700;
+  margin: 11px 0;
+}
+
+.account-main-head {
+  color: #2f8bbd;
+  font-size: 20px;
+  margin-bottom: 0;
+  font-family: monospace;
+  font-weight: 700;
+}
+
+
+.autocomplete-heading {
+  background-color: #2f8bbd;
+  padding-left: 10px;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  z-index: 1000;
+  color: #fff;
+  padding: 0px 15px;
+}
+
+.user-form .mat-form-field {
+  font-size: 14px;
+  height: 59px;
+}
+
+::ng-deep .user-form {
+  @include user-form;
+}
+
+::ng-deep .user-form {
+  @include mat-tab;
+}
+
+
+.reg-form mat-form-field:not(.w_120) {
+  width: 100% !important;
+}
+
+.border-Pincode {
+  border-left: 1px solid #dee2e6 !important;
+  padding-left: 6px;
+}
+
+.pincode-list{
+  width: 501.972px;
+  pointer-events: auto;
+  top: 268.194px;
+  left: 312.726px;
+}
+
+.text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.auto-border {
+  border-right: #b0b2b3 solid 1px;
+  margin-right: 5px;
+
+}
+.mat_hover:hover{
+  background-color:rgb(169, 169, 240);
+  }
+
+::ng-deep .account_mat .mat-form-field  {
+  width: 100% !important;
+}
+
+
+::ng-deep .product_mat{
+  min-width: 500px !important;
+}
+
+.w_120{
+  width: 120px !important;
+}
+
+@media screen and (max-width:600px) {
+  .mbl_98{
+    max-width: 98% !important;
+  }
+  .mlb_block td{
+    display: block !important;
+  }
+  .w_120{
+    width: 100% !important;
+  }
+}

@@ -1,0 +1,50 @@
+
+@import '../../../../assets/styles/mixin.scss';
+
+.pharmacyHeading {
+  color: #2f8bbd;
+  font-size: 20px;
+  margin-bottom: 0;
+  font-family: monospace !important;
+  font-weight: 700 !important;
+}
+
+.pharma-finance .mat-raised-button {
+  border-radius: 30px;
+  min-width: 65px;
+  line-height: 28px;
+  padding: 0 12px;
+}
+
+.CashReceiptControls {
+  height: 300px;
+  width: 100%;
+}
+
+.CashReceiptCard {
+  width: 300px;
+  height: 255px;
+}
+
+// .mat-expansion-panel-body {
+//   padding: 10px 12px 12px !important;
+// }
+
+// .mat-expansion-panel-content.mat-expanded {
+//     overflow: visible;
+// }
+.innerCard{
+    flex: 1 1 100%;
+    box-sizing: border-box;
+    max-width: 20%;
+}
+
+
+
+::ng-deep .user-card{
+    @include user-form;
+
+    .mat-form-field{
+        width: 100%;
+    }
+}

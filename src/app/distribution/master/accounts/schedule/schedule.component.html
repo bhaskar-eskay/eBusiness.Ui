@@ -1,0 +1,131 @@
+<div class="m-3">
+
+
+  <div fxLayout="row" fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column" fxLayoutWrap
+    fxLayoutGap="10px">
+    <div fxFlex="70" fxFlex.xl="70" fxFlex.sm="70" fxFlex.md="70">
+      <h4 class="masters-pharma-head">Schedule </h4>
+    </div>
+    <div fxFlex="30" fxFlex.xl="30" fxFlex.sm="30" fxFlex.md="30" class="master-btn text-right">
+      <button mat-raised-button color="primary" type="button" *ngIf="!addOrEditFlag" (click)="addOrEdit()">Add
+        Schedule</button>&nbsp;
+      <button mat-icon-button (click)="clearAddOrEdit()" *ngIf="addOrEditFlag" matTooltip="Close" type="button">
+        <mat-icon>close</mat-icon>
+      </button>
+      <button mat-raised-button type="button" (click)="refresh()"
+        *ngIf="!isDataLoading && !addOrEditFlag">Refresh</button>
+    </div>
+    
+  </div>
+
+
+  <div class="mt-2">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+      <div fxFlex="100" class="sch-form">
+        <div fxLayout="row" fxLayout.xs="column">
+        <div fxFlex="86">
+        <form [formGroup]="formGroup" *ngIf="formGroup && addOrEditFlag" fxLayoutGap="10px">
+          <mat-form-field appearance="outline">
+            <mat-label>Schedule Name</mat-label>
+            <input matInput formControlName="schName" required>
+            <mat-error>scheduleName Required!</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Schedule Mode</mat-label>
+            <mat-select formControlName="schMode" required appMatSelect  nextElementId="!schGroup?'schGroupId':'mainSchGroupId'" (selectionChange)="sehtypechange($event)">
+              <mat-option  *ngFor="let data of scheduledType" [value]="data.code" >{{data.name}}</mat-option>
+            </mat-select>
+            <mat-error>Schedule Mode Required!</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" *ngIf="!schGroup">
+            <mat-label>Schedule Group</mat-label>
+            <mat-select formControlName="schGroup" required appMatSelect id="schGroupId"  nextElementId="hasRegInfoId" >
+              <mat-option  *ngFor="let data of schedulegroup" [value]="data.name" >{{data.name}}</mat-option>
+            </mat-select>
+            <!-- <mat-error>Schedule Group Required!</mat-error> -->
+            <mat-error class="error-msg">
+              <span *ngIf="formGroup.get('schGroup').hasError('required')">Schedule Group Required...!</span>
+            </mat-error>
+          </mat-form-field>
+
+          <!-- <app-autocomplete [definition]="schModeAutoCompleteDef" [control]="formGroup.get('schMode')" [nextElementId]="!schGroup?'schGroupId':'mainSchGroupId'"></app-autocomplete> -->
+          <!-- <app-autocomplete *ngIf="!schGroup" id="schGroupId" nextElementId="hasRegInfoId" [definition]="schGroupAutoCompleteDef" [control]="formGroup.get('schGroup')"></app-autocomplete> -->
+          <!-- <app-autocomplete *ngIf="schGroup" id="mainSchGroupId" nextElementId="hasRegInfoId" [definition]="mainSchAutoCompleteDef"  [control]="formGroup.get('mainSchId')"></app-autocomplete> -->
+         
+          <mat-form-field appearance="outline" *ngIf="schGroup">
+            <mat-label>Main Schedule </mat-label>
+            <mat-select formControlName="mainSchId"  appMatSelect placeholder="--Select--" required #mschTab #mschfocus   #singleSelect>
+              <mat-option>
+                <ngx-mat-select-search placeholderLabel="Find Prod Type..."  (keydown)="MschTab($event)"
+                noEntriesFoundLabel="'no matching Product Type found'"  [formControl]="mschTabMultiFilterCtrl"></ngx-mat-select-search>
+              </mat-option>
+              <!-- <mat-option [value]=0>--Select--</mat-option> -->
+              <mat-option *ngFor="let bank of filteredmschMulti | async"  [value]="bank.schId">
+                {{bank.schName}}
+              </mat-option>
+            </mat-select>
+
+            <mat-error class="error-msg">
+              <span *ngIf="formGroup.get('mainSchId').hasError('required')"> Main Schedule is Required...!</span>
+            </mat-error>
+          </mat-form-field>
+         
+         
+          <mat-form-field appearance="outline">
+            <mat-label>Has Reg Info</mat-label>
+            <mat-select formControlName="hasRegInfo" required appMatSelect id="hasRegInfoId" nextElementId="hasAddInfoId">
+              <mat-option [value]="1">Yes</mat-option>
+              <mat-option [value]="0">No</mat-option>
+            </mat-select>
+            <mat-error>Has Reg Info Required!</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Has Address Info</mat-label>
+            <mat-select formControlName="hasAddressInfo" required appMatSelect id="hasAddInfoId" nextElementId="hasOtherInfo">
+              <mat-option [value]="1">Yes</mat-option>
+              <mat-option [value]="0">No</mat-option>
+            </mat-select>
+            <mat-error>Has Address Info Required!</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Has Other Info</mat-label>
+            <mat-select formControlName="hasOtherInfo" required appMatSelect id="hasOtherInfo" nextElementId="schSubmitBtnId">
+              <mat-option [value]="1">Yes</mat-option>
+              <mat-option [value]="0">No</mat-option>
+            </mat-select>
+            <mat-error>Has Other Info Required!</mat-error>
+          </mat-form-field>
+          
+        </form>
+        </div>
+
+        <div fxFlex="14" class="mb-2" *ngIf="formGroup && addOrEditFlag">
+          <button mat-raised-button type="button" color="primary" class="mat_btn" [disabled]="formGroup.invalid" id="schSubmitBtnId"
+            (click)="save()">{{isUpdate()?'Update':'Add'}}</button> &nbsp;
+          <button mat-raised-button class="mat_btn" type="button" (click)="clearOrResetForm()">{{isUpdate()?'Reset':'Clear'}}</button>
+        </div>
+
+        </div>
+
+
+
+          <app-alert [id]="'companygroupTableId'"></app-alert>
+          <app-table [definition]="tableDefinition" [data]="dataList" [tableAlertId]="'companygroupTableId'" [disableActions]="disableActions" [isDataLoading]="isDataLoading" >
+          </app-table>
+
+
+
+
+
+      </div>
+
+     
+    </div>
+  </div>
+
+
+</div>

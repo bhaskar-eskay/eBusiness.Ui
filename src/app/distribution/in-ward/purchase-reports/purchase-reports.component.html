@@ -1,0 +1,84 @@
+<div class="ml-3 mr-3 mb-3">
+    <div fxLayout="row" fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column" fxLayoutWrap
+      fxLayoutGap="10px">
+      <div fxFlex="40">
+        <h4 class="pharmacyHeading">Purchase Reports</h4>
+      </div>
+    </div>
+  </div>
+  
+
+<mat-card>
+      <div fxFlex="100" fxlayout="row" fxlayout.xs="column" fxLayoutGap="60px"  class="buttons">
+
+        <div class="action_btn">
+            <button type="button" mat-raised-button color="primary" class="finance-button"  >Pdf</button>&nbsp;
+          <button type="button" mat-raised-button color="primary" class="finance-button"  >Excel</button>&nbsp;
+         
+    
+          </div>
+  
+        <mat-form-field appearance="fill">
+          <mat-label>From Date</mat-label>
+          <input matInput [matDatepicker]="picker"  #finTranDate>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="fill">
+            <mat-label>To Date</mat-label>
+            <input matInput [matDatepicker]="picker1"  #finTranDate>
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+    
+          <mat-form-field appearance="outline">
+            <mat-label>Date Option</mat-label>
+            <mat-select id="transactionMode"   appMatSelect  required>
+              <mat-option >
+              </mat-option>
+            </mat-select>
+            <mat-error class="error-msg">
+              <span >Date option is Required...!</span>
+            </mat-error>
+          </mat-form-field>
+
+
+      <mat-form-field appearance="outline">
+        <mat-label>Report Options</mat-label>
+        <mat-select id="transactionMode1"   appMatSelect  required>
+          <mat-option >
+            
+          </mat-option>
+        </mat-select>
+        <mat-error class="error-msg">
+          <span >Report options are Required...!</span>
+        </mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field appearance="outline">
+        <mat-label>Want Taxwise Details</mat-label>
+        <mat-select id="transactionMode1"   appMatSelect  required>
+          <mat-option >
+            
+          </mat-option>
+        </mat-select>
+        <mat-error class="error-msg">
+          <span >taxwise Details are Required...!</span>
+        </mat-error>
+      </mat-form-field>
+
+      </div>
+      
+   
+      
+  </mat-card>
+  
+
+
+
+
+   <!-- <bold-reportdesigner id="designer" [serviceUrl] = "serviceUrl" style="position: absolute;height: 550px; width: 1250px;">
+  </bold-reportdesigner> -->

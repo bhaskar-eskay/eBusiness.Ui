@@ -1,0 +1,99 @@
+<div class="m-3">
+  <div fxLayout="row" fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column" fxLayoutWrap
+    fxLayoutGap="10px" class="md_flex">
+    <div fxFlex="45" fxFlex.xl="55" fxFlex.sm="37" fxFlex.md="46">
+      <h5 class="inward-pharma-head">Purchase (PUR) List </h5>
+    </div>
+    <div fxFlex="50" fxFlex.xl="50" fxFlex.sm="52" fxFlex.md="50"  class="master-btn text-right">
+      <!-- <button mat-raised-button  [routerLink]="['../purchases']">Back</button> -->
+
+      <div >
+        <button mat-raised-button color="primary" class="my-1" (click)="clikRegisters()">Purchase Register</button>&nbsp;
+        <button mat-raised-button color="primary" class="my-1" (click)="addInvoice()">Add Purchase</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- <div class="user-form"> -->
+    <!-- <div fxFlex="100" class="puchase-form"> -->
+      <div fxLayout="row" fxLayout.md="column" fxLayoutWrap class="user-form mt-2">
+      <form [formGroup]="purchaseListForm" autocomplete="off" fxLayoutGap="10px">
+
+        <!-- <mat-form-field appearance="outline">
+          <mat-label>From Date</mat-label>
+          <input matInput formControlName="fromDate">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>To Date</mat-label>
+          <input matInput formControlName="toDate">
+        </mat-form-field> -->
+        <mat-form-field appearance="outline"class="e_mat_date mbl_w_85 w_116">
+          <mat-label>From Date</mat-label>
+          <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" formControlName="fromDate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline"class="e_mat_date mbl_w_85 w_116">
+          <mat-label>To Date</mat-label>
+          <input matInput [matDatepicker]="picker1" [min]="minDate" [max]="maxDate" formControlName="toDate" >
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline"class="mbl_w_85 w_116">
+          <mat-label>Inv.No</mat-label>
+          <!-- <mat-label>PUR No</mat-label> -->
+          <input matInput formControlName="invNo">
+        </mat-form-field>
+        <mat-form-field appearance="outline"class="mbl_w_85 w_224">
+          <mat-label>Supplier Name</mat-label>
+          <input matInput formControlName="accName">
+        </mat-form-field>
+        <mat-form-field appearance="outline"class="mbl_w_85 w_116">
+          <mat-label>Sh.Name</mat-label>
+          <input matInput formControlName="accShName">
+        </mat-form-field>
+        <mat-form-field appearance="outline"class="mbl_w_85 w_224">
+          <mat-label>City Name</mat-label>
+          <input matInput formControlName="cityId">
+        </mat-form-field>
+        <mat-form-field appearance="outline"class="mbl_w_85 w_224">
+          <mat-label>GSTIN</mat-label>
+          <input matInput formControlName="accGSTIn">
+        </mat-form-field>
+        <mat-form-field appearance="outline"class="e_mat_date mbl_w_85 w_116">
+          <mat-label>INV. Date</mat-label>
+          <input matInput [matDatepicker]="picker2" formControlName="invDate" #finTranDate>
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline"class="mbl_w_85 w_224">
+          <mat-label>Mode</mat-label>
+          <input matInput formControlName="mode">
+        </mat-form-field>
+        <mat-form-field appearance="outline"class="mbl_w_85 w_116">
+          <mat-label>Inv.Value</mat-label>
+          <input matInput formControlName="invValue">
+        </mat-form-field>
+
+        <button class="mr-0 pl_btn" mat-raised-button color="primary" (click)="getPurchaseList()">Search</button> &nbsp;
+  <button type="button" mat-raised-button class="pl_btn" (click)="reset()">Reset</button>
+  <button type="button" mat-raised-button class="pl_btn" [routerLink]="['../InwardTransaction']">Back</button>
+
+      </form>
+      </div>
+    <!-- </div> -->
+  <!-- </div> -->
+
+  <div class="mt-2">
+    <div class="master-table" id="table-scroll">
+      <app-alert [id]="'dataTableAlertId'"></app-alert>
+      <app-table [definition]="tableDefinition" [data]="dataList" [tableAlertId]="'dataTableAlertId'"
+        [isDataLoading]="isDataLoading" [disableActions]="disableActions"></app-table>
+    </div>
+  </div>
+</div>
+
+<ng-template #deletePurchaseHeadTemplate let-purchaseHead="data">
+  Are you sure to delete <strong></strong> Purchase Head?
+</ng-template>

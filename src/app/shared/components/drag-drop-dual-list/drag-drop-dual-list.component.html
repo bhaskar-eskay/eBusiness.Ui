@@ -1,0 +1,94 @@
+<div class="listboxform-wrap" [formGroup]="listBoxForm">
+
+
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+    <div fxFlex="33">
+      <div class="dualListLeft">
+        <div class="primary-container drag-drop-container">
+          <label class="listbox-title">{{availableText}}</label>
+          <!-- <input type="text"  
+                  class="form-control vertical-spacing-5" 
+                  placeholder="{{availableFilterPlaceholder}}"     
+                  formControlName="availableSearchInput" 
+                  #availableSearchInput /> -->
+          <div cdkDropList #availablesContainer="cdkDropList" 
+               [cdkDropListData] ="availables" 
+               [cdkDropListConnectedTo] ="[selectsContainer]"
+               (cdkDropListDropped)="drop($event,availablesKey)" 
+               class="drag-drop-list">
+               <ng-template [ngIf]="nestedView">
+                <ng-container *ngTemplateOutlet="nestedTemplate; context:{items: availables,container: [selectsContainer],actionIcon:'add',idDataKey:availablesKey}"></ng-container>
+              </ng-template>
+              <ng-template [ngIf]="!nestedView">
+                <div class="drag-drop-box" 
+                *ngFor="let item of availables; let index=index" cdkDrag>
+                <span class="label">
+                  {{getText(item)}}
+                </span>
+                <mat-icon (click)="add(index)">add</mat-icon>
+                </div>
+               </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div fxFlex="33">
+      <div class="dualListRight">
+        <div class="primary-container drag-drop-container">
+          <label class="listbox-title">{{selectedText}}</label>
+          <!-- <input type="text" 
+                class="form-control vertical-spacing-5" 
+                placeholder="{{selectedFilterPlaceholder}}"
+                formControlName="selectedSearchInput" 
+                #selectedSearchInput /> -->
+            <div cdkDropList #selectsContainer="cdkDropList" 
+                [cdkDropListData] ="nestedView?availables:selects" 
+                [cdkDropListConnectedTo]="[availablesContainer]"
+                (cdkDropListDropped)="drop($event,selectsKey)" 
+                class="drag-drop-list">
+                <ng-template [ngIf]="nestedView">
+                  <ng-container *ngTemplateOutlet="nestedTemplate; context:{items: availables,container: [availablesContainer],actionIcon:'close', idDataKey:selectsKey}"></ng-container>
+                </ng-template>
+                <ng-template [ngIf]="!nestedView">     
+                <div class="drag-drop-box"    
+                    *ngFor="let item of selects; let index=index" cdkDrag>
+                    <span class="label">
+                      {{getText(item)}}
+                    </span>
+                <mat-icon (click)="remove(index)">close</mat-icon>
+                </div>
+              </ng-template>
+            </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+   
+  
+
+  </div>
+
+  <ng-template #nestedTemplate let-items="items" let-container="container" let-actionIcon="actionIcon" let-isSubItem="isSubItem" let-idDataKey="idDataKey">
+    <div cdkDropList  [cdkDropListConnectedTo]="container" [cdkDropListData] ="items">
+      <ng-container *ngFor="let item of items">
+        <div cdkDrag [cdkDragData]="item" class="multi-level drag-drop-box" *ngIf="isDisplayItem(item,idDataKey)">
+          <span class="label">
+            <mat-icon *ngIf="item[nestedField]" (click)="item[idDataKey]=item[idDataKey]?!item[idDataKey]:true">
+              {{item.idDataKey?'arrow_drop_down':'arrow_right'}}
+            </mat-icon>
+            <mat-icon *ngIf="!item[nestedField] && isSubItem">
+              keyboard_arrow_right
+            </mat-icon>
+            {{item.name}}
+          </span>
+          <mat-icon (click)="updateNestedItem(idDataKey===selectsKey?availablesKey:selectsKey,item)">{{actionIcon}}</mat-icon>
+          <ng-template [ngIf]="nestedField && item[nestedField] && item[idDataKey]">
+            <ng-container *ngTemplateOutlet="nestedTemplate; context:{items: item[nestedField],container: container, actionIcon:actionIcon,isSubItem:true,idDataKey:idDataKey}"></ng-container>
+          </ng-template> 
+        </div>
+      </ng-container>
+    </div>
+    
+</ng-template>

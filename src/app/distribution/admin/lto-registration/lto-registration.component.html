@@ -1,0 +1,122 @@
+<div fxLayout="row" class="user-form mt-2" fxLayoutAlign="center center" fxLayoutWrap fxLayoutGap="10px">
+    <div fxFlex="80" fxFlex.xs="90"  fxFlex.sm="90" fxFlex.md="90" class="bg-white">
+      <div  class="row mx-0 px-3 mt-2">
+        <div class="user-form admin-form col-md-3 col px-0">
+          <mat-form-field appearance="outline">
+            <mat-label>Firm</mat-label>
+            <mat-select  appMatSelect [formControl]="firmId" (selectionChange)="changefirm($event.value)"  required>
+            <mat-option value="">--Select--</mat-option>
+              <mat-option *ngFor="let data of firmdata" [value]="data.firmId">
+                {{ data.firmName}}-({{data.firmAlias}})
+              </mat-option>
+            </mat-select>
+            <mat-error class="error-msg">
+              <span *ngIf="firmId.hasError('required')">Firm is Required...!</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+       
+
+        <div class="profile-heading text-center col col-md-6">
+          <h4 class="masters-pharma-head">LTO  Registration </h4>
+        </div>
+      </div>
+      
+    
+      <form [formGroup]="formltoGroup" autocomplete="off">
+          <div class="user-form admin-form px-3" >
+              <!-- <div class="p-2 reg-form"  [formGroup]="formltoGroup"> -->
+                  <div class=" mb-0">
+                    <div *ngFor="let form of formltoGroup.get('firmLtos').controls; let i = index" formArrayName="firmLtos">
+                      <div class="row mx-0 mt-2" [formGroupName]="i">
+                        <div class="px-1 col-md-4 col-lg-2 col">
+                          <mat-form-field  appearance="outline" *ngIf="!form.get('firmLtoId').value">
+                            <mat-label>LTO Type</mat-label>
+                            <mat-select formControlName="ltoType" id="{{form.ltoType}}" required appMatSelect (selectionChange)="loadLTOS($event.value,i,form)">
+                              <mat-option value="">--Select--</mat-option>
+                              <mat-option *ngFor="let firm of getLTOtypeData" [value]="firm.ltoTypeId" >{{firm.ltoType}}
+                              </mat-option>
+                            </mat-select>
+                            <mat-error class="error-msg">
+                              <span *ngIf="form.get('ltoType').hasError('required') && form.get('ltoType').touched && form.get('ltoType').invalid"> LTO Type is Required...!</span>
+                            </mat-error>
+                          </mat-form-field>
+                          <div *ngIf="form.get('firmLtoId').value">{{form.get('ltoTypeName').value}}</div>
+                        </div>
+                         <div class="px-1 col-md-4 col-lg-2 col">
+                          <mat-form-field  appearance="outline" *ngIf="!form.get('firmLtoId').value">
+                            <mat-label>LTO Name</mat-label>
+                            <mat-select formControlName="ltos"  id="{{form.ltos}}" required appMatSelect (selectionChange)="loadLTOPrefix($event.value,i,form)">
+                              <mat-option value="">--Select--</mat-option>
+                              <mat-option *ngFor="let firm of getLTOSData[i]" [value]="firm.ltoId" >{{firm.ltoName}}
+                              </mat-option>
+                            </mat-select>
+                            <mat-error class="error-msg">
+                              <span *ngIf="form.get('ltos').hasError('required') && form.get('ltos').touched && form.get('ltos').invalid"> LTOS Name is Required...!</span>
+                            </mat-error>
+                          </mat-form-field>
+                          <div *ngIf="form.get('firmLtoId').value">{{form.get('ltoName').value}}</div>
+                        </div>
+                        <div class="px-1 col-md-4 col-lg-2 col">
+                          <mat-form-field  appearance="outline" *ngIf="!form.get('firmLtoId').value">
+                            <mat-label>LTO Prefix</mat-label>
+                            <mat-select formControlName="ltoPrefixId" id="{{form.ltoPrefixId}}" required appMatSelect (selectionChange)="changeLTOPrefix($event.value,i,form)">
+                              <mat-option value="">--Select--</mat-option>
+                              <mat-option *ngFor="let firm of getLTOPrefix[i]" [value]="firm.ltoPrefixId" >{{firm.ltoPrefix}}
+                              </mat-option>
+                            </mat-select>
+                            <mat-error class="error-msg">
+                              <span *ngIf="form.get('ltoPrefixId').hasError('required') && form.get('ltoPrefixId').touched && form.get('ltoPrefixId').invalid"> LTOS Prefix is Required...!</span>
+                            </mat-error>
+                          </mat-form-field>
+                          <div *ngIf="form.get('firmLtoId').value">{{form.get('ltoPrefix').value}}</div>
+                        </div>
+                        <div class="px-1 col-md-4 col-lg-2 col">
+                         
+                          <mat-form-field appearance="outline">
+                            <mat-label>LTO Number</mat-label>
+                            <input matInput formControlName="ltoNo" maxlength="30"   id="{{form.ltoNo}}" required onkeypress='return event.charCode >= 48 && event.charCode <= 57 || 
+                            event.charCode >= 65 && event.charCode <= 90 || event.charCode >= 97 && event.charCode <= 122'
+                             >
+                              <mat-error class="error-msg">
+                              <span *ngIf="form.get('ltoNo').hasError('required') && form.get('ltoNo').touched && form.get('ltoNo').invalid"> LTOS Prefix is Required...!</span>
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+                        <div class="px-1 col-md-4 col-lg-2 col">
+
+                          <mat-form-field appearance="outline" class="e_mat_date">
+                            <mat-label>LTO Valid Upto</mat-label>
+                            <input matInput appDateMask  [min]="today"  [matDatepicker]="validUpto"  formControlName="validUpto">
+                            <mat-datepicker-toggle matSuffix [for]="validUpto"></mat-datepicker-toggle>
+                            <mat-datepicker #validUpto></mat-datepicker>
+                          </mat-form-field>
+                          <!-- (selectedChanged)="getinvdate($event)" -->
+                        </div> 
+                        <div class="px-1 col-md-4 col-lg-2 col">
+                          <div class="text-right" *ngIf="formltoGroup?.get('firmLtos')?.controls?.length -1 != i && form.get('firmLtoId').value == 0">
+                            <button mat-button (click)="deleteLtoTypes(i)"  mat-raised-button color="primary">Delete</button>
+                            <!-- (click)="complete()" (click)="save()" -->
+                          </div>
+
+
+                          <div class="text-right" *ngIf="formltoGroup?.get('firmLtos')?.controls?.length -1 == i">
+                            <button mat-button (click)="addLtoTypes(i)" [disabled] ="!formltoGroup?.get('firmLtos')?.valid" mat-raised-button color="primary">Add</button> &nbsp;
+                            <button mat-raised-button (click)="resetLtoTypes(i)" >Reset</button>
+                            <!-- (click)="complete()" (click)="save()" -->
+                          </div>
+                        </div>
+                       
+                      </div>
+                    </div>
+                  </div>
+                <div class="my-1">
+                  <button mat-raised-button color="primary" [disabled]="!(formltoGroup?.get('firmLtos')?.valid && (firmId.valid || firmid))" (click)="finalsave(formltoGroup.value)"> Save </button> &nbsp;
+                <!-- <button mat-raised-button   (click)="resetfirm()"> Reset </button> -->
+                </div>
+                
+              <!-- </div>     -->
+        </div>
+      </form>
+    </div>
+  </div>

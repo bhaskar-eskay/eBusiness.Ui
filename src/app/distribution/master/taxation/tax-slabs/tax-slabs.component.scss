@@ -1,0 +1,6 @@
+@import '../../../../../assets/styles/mixin.scss';
+
+
+::ng-deep .slab-form {
+    @include user-form;
+  }

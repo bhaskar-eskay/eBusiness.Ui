@@ -1,0 +1,192 @@
+<div class="dash_bgColor">
+  <img src="../assets/new_eb_logo_bg.png" style="position: absolute;top: 60px;left: 40px;right: 0;bottom: 0;width: 100%;height: 100%;z-index: 0;" alt="">
+    <!-- style="position: absolute;top: 140px;left: 70px;right: 0;bottom: 0;width: 72%;height: 72%;z-index: 0;" alt=""> -->
+  <h4 class="text-info text-center font-weight-bold"> Pharma Dashboard</h4>
+
+  <div class="p-3 main">
+
+
+    <div class="row d_tabs">
+
+      <div class="col-xl-3 col-md-6 my-1">
+        <div class="card  e_bg">
+          <div class="card-header text-center m-1 p-1 rounded bg-white" style="color: #006476;font-weight: bold;">
+            Transactions 
+            <span class="float-right" (click)="showHide('showorhide','m1')"><i id="showorhide" class="fa-solid fa-eye-slash"></i></span>
+          </div>
+          <div class="card-body p-2 justify-content-between align-items-start">
+            <div class="text-value row mx-0">
+              <div class="col-md-7 px-1 col-7">
+                <a (click)="todays('purchases')" class=" pointer" title="Click here for Purchases">Todays Purchases</a>
+                <span class="float-right">: </span>
+              </div>
+              <div class="float-right col col-md-5 px-1"> <i class=" fa fa-rupee-sign"></i> <span class="m1"> xxxxxxxxxx</span> </div>
+            </div>
+            <div class="text-value row mx-0">
+              <div class="col-md-7 px-1 col-7">
+                <a (click)="todays('sales')" class=" pointer" title="Click here for Sales">Todays Sales</a> <span
+                  class="float-right">: </span>
+              </div>
+              <div class="float-right col col-md-5 px-1"> <i class=" fa fa-rupee-sign"></i> <span class="m1"> xxxxxxxxxx</span> </div>
+            </div>
+            <div class="text-value row mx-0">
+              <div class="col-md-7 px-1 col-7">
+                <a (click)="todays('Sreturns')" class=" pointer" title="Click here for S.Returns">Todays S.Returns</a>
+                <span class="float-right">: </span>
+              </div>
+              <div class="float-right col col-md-5 px-1"> <i class=" fa fa-rupee-sign"></i> <span class="m1"> xxxxxxxxxx</span> </div>
+            </div>
+            <div class="text-value row mx-0 d-none">
+              <div class="col-md-7 px-1 col-7">
+                <a (click)="todays('Preturns')" class=" pointer" title="Click here for P.Returns">Todays P.Returns</a>
+                <span class="float-right">: </span>
+              </div>
+              <div class="float-right col col-md-5 px-1"> <i class=" fa fa-rupee-sign"></i> <span>14,58,323.84</span> </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-md-6 my-1">
+        <div class="card  e_bg h-100">
+          <div class="card-header text-center m-1 p-1 rounded bg-white" style="color: #006476;font-weight: bold;">
+            Outstanding
+            <span class="float-right" (click)="showHide('showorhide2','m2')"><i id="showorhide2" class="fa-solid fa-eye-slash"></i></span>
+          </div>
+          <div class="card-body p-2 justify-content-between align-items-start">
+            <div class="h-100">
+              <div class="text-value row mx-0">
+                <div class="col-md-7 px-1 col-7">
+                  <a class=" pointer" title="Click here for Creditors Outstaning">Creditors Outstaning </a>
+                  <span class="float-right">: </span>
+                </div>
+                <div class="float-right col col-md-5 px-1"> <i class=" fa fa-rupee-sign"></i> <span class="m2"> xxxxxxxxxx</span>
+                </div>
+              </div>
+              <div class="text-value row mx-0">
+                <div class="col-md-7 px-1 col-7">
+                  <a class=" pointer" title="Click here for Debitors Outstaning">Debtors Outstaning </a>
+                  <span class="float-right">: </span>
+                </div>
+                <div class="float-right col col-md-5 px-1"> <i class=" fa fa-rupee-sign"></i> <span class="m2"> xxxxxxxxxx</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-md-6 my-1">
+        <div class="card  e_bg">
+          <div class="card-header text-center m-1 p-1 rounded bg-white" style="color: #006476;font-weight: bold;">
+            Collections
+            <span class="float-right" (click)="showHide('showorhide3','m3')"><i id="showorhide3" class="fa-solid fa-eye-slash"></i></span>
+          </div>
+          <div class="card-body p-2 justify-content-between align-items-start">
+            <div class="text-value row mx-0">
+              <div class="col-md-7 px-1 col-7">
+                <a class="">Today's Collection </a>
+                <span class="float-right">: </span>
+              </div>
+              <div class="float-right col col-md-5 px-1"> <i class=" fa fa-rupee-sign"></i> <span class="m3"> xxxxxxxxxx</span> </div>
+            </div>
+            <div class="text-value row mx-0">
+              <div class="col-md-7 px-1 col-7">
+                <a (click)="todays('cashR')" class=" pointer" title="Click here for Cash Receipts">Cash Receipts </a>
+                <span class="float-right">: </span>
+              </div>
+              <div class="float-right col col-md-5 px-1"> <i class=" fa fa-rupee-sign"></i> <span class="m3"> xxxxxxxxxx</span> </div>
+            </div>
+            <div class="text-value row mx-0">
+              <div class="col-md-7 px-1 col-7">
+                <a (click)="todays('bankR')" class=" pointer" title="Click here for Bank Receipts">Bank Receipts </a>
+                <span class="float-right">: </span>
+              </div>
+              <div class="float-right col col-md-5 px-1"> <i class=" fa fa-rupee-sign"></i> <span class="m3"> xxxxxxxxxx</span> </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-md-6 my-1">
+        <div class="card  e_bg">
+          <div class="card-header text-center m-1 p-1 rounded bg-white" style="color: #006476;font-weight: bold;">
+            Payments
+            <span class="float-right" (click)="showHide('showorhide4','m4')"><i id="showorhide4" class="fa-solid fa-eye-slash"></i></span>
+          </div>
+          <div class="card-body p-2 justify-content-between align-items-start">
+            <div class="text-value row mx-0">
+              <div class="col-md-7 px-1 col-7">
+                <a class="">Today's Payments</a>
+                <span class="float-right">: </span>
+              </div>
+              <div class="float-right col col-md-5 px-1"> <i class=" fa fa-rupee-sign"></i> <span class="m4"> xxxxxxxxxx</span> </div>
+            </div>
+            <div class="text-value row mx-0">
+              <div class="col-md-7 px-1 col-7">
+                <a (click)="todays('cash')" class=" pointer" title="Click here for Cash Payments">Cash Payments </a>
+                <span class="float-right">: </span>
+              </div>
+              <div class="float-right col col-md-5 px-1"> <i class=" fa fa-rupee-sign"></i> <span class="m4"> xxxxxxxxxx</span> </div>
+            </div>
+            <div class="text-value row mx-0">
+              <div class="col-md-7 px-1 col-7">
+                <a (click)="todays('bank')" class=" pointer" title="Click here for Bank Payments">Bank Payments</a>
+                <span class="float-right">: </span>
+              </div>
+              <div class="float-right col col-md-5 px-1"> <i class=" fa fa-rupee-sign"></i> <span class="m4"> xxxxxxxxxx</span> </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 col-lg-3">
+        <div class="card e_bg shadow mt-3 mb-5">
+          <div class="card-header text-muted bg-white m-1 p-1 text-center rounded">
+            <h5 class="mb-0"> Expiry Stock </h5>
+          </div>
+          <div class="card-body px-1 py-2">
+            <ul class="latest-news pl-2 col-12 px-1 pointer">
+              <li class="btn-danger row mx-0" style="background-color: #ff2136;"
+                (click)="expiryslot(expiryslots?.expirySlot1)">
+                <div class="col-8 pl-0">In {{expiryslots?.expirySlot1}} Days</div>
+                <div class="col-4"><i class=" fa fa-rupee-sign"></i> {{slotValues?.exp_Slot1}}</div>
+              </li>
+              <li class="btn-warning row mx-0" style="background-color: #ffc20c;"
+                (click)="expiryslot(expiryslots?.expirySlot2)">
+                <div class="col-8 pl-0">In {{expiryslots?.expirySlot2}} Days</div>
+                <div class="col-4"><i class=" fa fa-rupee-sign"></i> {{slotValues?.exp_Slot2}}</div>
+              </li>
+              <li class="btn-info row mx-0" style="background-color: #2be2ff;"
+                (click)="expiryslot(expiryslots?.expirySlot3)">
+                <div class="col-8 pl-0">In {{expiryslots?.expirySlot3}} Days</div>
+                <div class="col-4"><i class=" fa fa-rupee-sign"></i> {{slotValues?.exp_Slot3}}</div>
+              </li>
+              <li class="btn-success row mx-0" style="background-color: #05f33b;"
+                (click)="expiryslot(expiryslots?.expirySlot4)">
+                <div class="col-8 pl-0">In {{expiryslots?.expirySlot4}} Days</div>
+                <div class="col-4"><i class=" fa fa-rupee-sign"></i> {{slotValues?.exp_Slot4}}</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- <div fxFlex="30" class="pt-4">
+      <button class="btn btn-info btn-sm" (click)="routeAdmin()"> Admin </button>
+    </div> -->
+      <!-- <div class="col-lg-8">
+      <app-table [definition]="tableDefinition" [data]="dynamicSlot" [isDataLoading]="isDataLoading"></app-table>
+    </div> -->
+    </div>
+
+  </div>
+
+  <ng-template #expirydataTable>
+    <div class="main-table">
+      <app-table [definition]="tableDefinition" [data]="dynamicSlot" [excelData]="exportToExcel"
+        [isDataLoading]="isDataLoading"></app-table>
+    </div>
+  </ng-template>
+
+</div>

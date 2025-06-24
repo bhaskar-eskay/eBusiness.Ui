@@ -1,0 +1,66 @@
+<div class="m-3">
+  <div fxLayout="row" fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column" fxLayoutWrap
+    fxLayoutGap="10px">
+    <div fxFlex="80" fxFlex.xl="55" fxFlex.sm="57" fxFlex.md="46">
+      <h5 class="inward-pharma-head">Purchase Order (PORD) List </h5>
+    </div>
+    <div fxFlex="20" fxFlex.xl="12" fxFlex.sm="12" fxFlex.md="20" class="master-btn text-right" fxLayoutGap="5px">
+      <button mat-raised-button color="primary" [routerLink]="['../InwardTransaction']">Back</button>
+      <button mat-raised-button color="primary" (click)="addInvoice()">Add Purchase Order</button>
+    </div>
+
+  </div>
+
+  <div class="order-form">
+    <div>
+      <form [formGroup]="purchaseheadorderListFormGroup" fxLayoutGap="5px">
+        <mat-form-field appearance="outline" class="e_mat_date w_116">
+          <input matInput [matDatepicker]="picker" placeholder="From Date" formControlName="fromDate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="e_mat_date w_116">
+          <input matInput [matDatepicker]="picker1" placeholder="To Date" formControlName="toDate">
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w_224">
+          <mat-label>PORD No</mat-label>
+          <input matInput formControlName="invNo">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w_224">
+          <mat-label>Supplier Name</mat-label>
+          <input matInput formControlName="accName">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class=" w_116">
+          <mat-label>Sh.Name</mat-label>
+          <input matInput formControlName="accShName">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w_224">
+          <mat-label>City Name</mat-label>
+          <input matInput formControlName="cityId">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w_224">
+          <mat-label>GSTIN</mat-label>
+          <input matInput formControlName="accGSTIn">
+        </mat-form-field>
+
+
+        <button mat-raised-button color="primary" (click)="getpurchaseorderDataList()">Search</button> &nbsp;
+        <button mat-raised-button (click)="reset()">Reset</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="master-table mt-2" id="table-scroll">
+    <app-alert [id]="'dataTableAlertId'"></app-alert>
+    <app-table [definition]="tableDefinition" [data]="dataList" [tableAlertId]="'dataTableAlertId'"
+      [isDataLoading]="isDataLoading" [disableActions]="disableActions"></app-table>
+  </div>
+
+  
+<ng-template #deleteSalesHeadTemplate let-salesHead="data">
+  Are you sure to delete <strong></strong> pur return Head?
+</ng-template>
+
+</div>

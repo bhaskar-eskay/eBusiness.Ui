@@ -1,0 +1,9 @@
+// .retList-form mat-form-field {
+//     width: 120px;
+// }
+
+@media screen and (max-width: 600px) {
+  .retList-form mat-form-field{
+    width: 100% !important;
+  }
+}

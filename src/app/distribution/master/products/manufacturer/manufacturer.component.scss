@@ -1,0 +1,17 @@
+
+@import '../../../../../assets/styles/mixin.scss';
+::ng-deep .manufacture-form {
+    @include user-form;
+  }
+
+  .autocomplete-heading {
+    background-color: #2f8bbd;
+    padding-left: 10px;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    z-index: 1000;
+    color: #fff;
+    padding: 0px 15px;
+  }
+  

@@ -1,0 +1,59 @@
+// @import '.../../../assets/styles/mixin.scss';
+
+@import '../../../../assets/styles/mixin.scss';
+
+::ng-deep {
+  .user-form {
+    @include user-form;  
+
+    .firm-name{
+      width: 65%;
+    } 
+  }
+
+  .reg-form {
+    @include user-form;
+    .mat-form-field {
+      width: 80%;
+    }
+  }
+
+  .profile-heading {
+    font-size: 20px;
+    color: steelblue;
+  }
+
+  .admin-form1 {
+    mat-form-field {
+      width: 23% !important;
+      margin-bottom: 10px;
+    }
+  }
+
+}
+
+
+.autocomplete-heading {
+  background-color: #2f8bbd;
+  padding-left: 10px;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  z-index: 1000;
+  color: #fff;
+  padding: 0px 15px;
+}
+
+
+.border-Pincode {
+  border-left: 1px solid #dee2e6 !important;
+  padding-left: 6px;
+}
+
+
+@media screen and (max-width:768px) {
+  ::ng-deep .admin_form .mat-form-field{
+     width: 44% !important;
+   }
+   
+ }

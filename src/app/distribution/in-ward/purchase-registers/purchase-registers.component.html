@@ -1,0 +1,127 @@
+<div class="ml-3 mr-3 mb-3">
+    <div fxLayout="row" fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column" fxLayoutWrap
+      fxLayoutGap="10px">
+      <div fxFlex="40">
+        <h4 class="pharmacyHeading">Purchase Register</h4>
+      </div>
+    </div>
+  </div>
+  
+
+<mat-card>
+  <form [formGroup]="inwardPurchaseRegisterForm">
+      <div fxFlex="100" fxlayout="row" fxlayout.xs="column" fxLayoutGap="60px"  class="buttons">
+
+        <div class="action_btn" fxLayoutAlign="end">
+          
+          <!-- <button type="button" mat-raised-button color="primary" class="purchase-button"  (click)="Excel()">Excel</button>&nbsp; -->
+          <img 
+          src="assets\new_xl.png" 
+          alt="Excel Button" title="Excel"
+          class="purchase-button" 
+          (click)="Excel()" 
+          style="cursor: pointer;height: 24px;width: 26px"/> &nbsp;&nbsp;
+          <img 
+          src="assets\new_pdf.png" 
+          alt="Pdf Button" title="PDF" 
+          class="purchase-button" 
+          (click)="Excel()" 
+          style="cursor: pointer;height: 24px;width: 26px"/>&nbsp;&nbsp;
+          <img 
+          src="assets\new_print.png" 
+          alt="Print Button" title="Print" 
+          class="purchase-button" 
+          (click)="Excel()" 
+          style="cursor: pointer;height: 24px;width: 26px"/>&nbsp;&nbsp;
+
+          <img 
+          src="assets\new_whatsApp2.png" 
+          alt="WhatsApp Button" title="WhatsApp"
+          class="purchase-button" 
+          (click)="Excel()" 
+          style="cursor: pointer;height: 24px;width: 26px"/>&nbsp;&nbsp;
+          <img 
+          src="assets\new_mail.png" 
+          alt="Mail Button" title="Mail"
+          class="purchase-button" 
+          (click)="Excel()" 
+          style="cursor: pointer;height: 24px;width: 26px"/>&nbsp;&nbsp;
+
+          <!-- <button type="button" mat-raised-button color="primary" class="purchase-button"  >Pdf</button>&nbsp; -->
+          
+        </div>
+    
+        
+          <!-- <div fxFlex="100" class="head-form" fxLayoutGap="5px"> -->
+            <mat-form-field appearance="fill" class="mat_date">
+              <mat-label>From Date</mat-label>
+              <input matInput [matDatepicker]="fromdate" [min]="minDate" [max]="maxDate" formControlName="fromDate">
+              <mat-datepicker-toggle matSuffix [for]="fromdate"></mat-datepicker-toggle>
+              <mat-datepicker #fromdate></mat-datepicker>
+            </mat-form-field>
+    
+    
+            <mat-form-field appearance="fill" class="mat_date">
+                <mat-label>To Date</mat-label>
+                <input matInput [matDatepicker]="todate" [min]="minDate" [max]="maxDate" formControlName="toDate">
+                <mat-datepicker-toggle matSuffix [for]="todate"></mat-datepicker-toggle>
+                <mat-datepicker #todate></mat-datepicker>
+              </mat-form-field>
+        
+              <mat-form-field appearance="outline" *ngIf="showDate">
+                <mat-label>Date Option</mat-label>
+                <mat-select    appMatSelect  required formControlName="dateOption">
+                  <mat-option *ngFor="let opt of dateOptionData" [value]="opt?.id">{{opt?.value}}
+                  </mat-option>
+                </mat-select>
+                <mat-error class="error-msg">
+                  <span >Date option is Required...!</span>
+                </mat-error>
+              </mat-form-field>
+    
+    
+          <mat-form-field appearance="outline">
+            <mat-label>Report Options</mat-label>
+            <mat-select id="transactionMode1"   appMatSelect  required  formControlName="reportType">
+              <mat-option *ngFor="let rprt of reportTypeData" [value]="rprt?.id">
+                {{rprt?.value}}
+              </mat-option>
+            </mat-select>
+            <mat-error class="error-msg">
+              <span >Report options are Required...!</span>
+            </mat-error>
+          </mat-form-field>
+    
+    
+          <!-- <mat-form-field appearance="outline">
+            <mat-label>Want Taxwise Details</mat-label>
+            <mat-select id="transactionMode1"   appMatSelect  required  formControlName="wantTaxWiseDetails">
+              <mat-option  value="1">  Yes  </mat-option>
+              <mat-option value="2">No</mat-option>
+            </mat-select>
+            <mat-error class="error-msg">
+              <span >taxwise Details are Required...!</span>
+            </mat-error>
+          </mat-form-field> -->
+    
+          <!-- </div> -->
+        
+      </div>    
+  </form>  
+
+  <div class="action_btn mt-1" fxLayoutAlign="center">
+    <button type="button" mat-raised-button color="primary" class="purchase-button"  (click)="goback()">Back</button>&nbsp;&nbsp;
+    <button type="button" [disabled]="inwardPurchaseRegisterForm.invalid" mat-raised-button color="primary" class="purchase-button"  (click)="getSearchData()" > Search  </button>&nbsp;
+  </div>
+
+</mat-card>
+
+
+
+<div class="mt-2">
+  <div class="master-table" id="table-scroll" *ngIf="showTable">
+    <!-- <app-alert [id]="'dataTableAlertId'"></app-alert> -->
+    <app-registers-table [dataSource]="dataSource"></app-registers-table>
+  </div>
+</div>
+  

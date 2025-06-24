@@ -1,0 +1,697 @@
+<div class="m-3" style="padding-bottom: 30px;">
+
+
+
+  <div fxLayout="row" fxLayout.sm="row" fxLayout="column" class="md_flex sm_align" fxLayoutAlign.sm="start center"
+    fxLayoutAlign.xs="center center" fxLayoutWrap fxLayoutGap="10px">
+    <div fxFlex="32" fxFlex.xs="92" class="mbl_center"> <!--fxFlex.xl="55" fxFlex.sm="57" fxFlex.md="46">--->
+      <h5 class="inward-pharma-head">Purchase Entry</h5>
+    </div>
+    <div fxFlex="32" fxFlex.xs="92" class="mbl_center">
+      <div *ngIf="head?.inwardHeadNo">
+        <h5 class="pharmacyHeading">PUR.No :&nbsp;&nbsp;<span>{{head?.inwardHeadNo}}</span></h5>
+      </div>
+    </div>
+
+    <div fxFlex="32" fxFlex.xs="92" class="master-btn mbl_center text-right">
+      <!-- fxFlex.xl="12" fxFlex.sm="32" fxFlex.md="20"-->
+      <button type="button" [routerLink]="['../purchases']" class="mb_10" mat-raised-button>List</button> &nbsp;
+
+      <button type="button" mat-raised-button color="primary" [disabled]="!purchaseHeadFormGroup.valid"
+        (click)="showPurchaseDetailTemplate('Add')">Add Item</button>
+      <!-- [disabled]="additemflag === false" -->
+    </div>
+
+  </div>
+
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px" class="user-form mt-3">
+    <form [formGroup]="purchaseHeadFormGroup">
+      <div fxFlex="100" class="head-form" fxLayoutGap="5px">
+
+        <mat-form-field appearance="outline" class="e_mat_date w_116">
+          <mat-label>PUR Date</mat-label>
+          <input matInput [autofocus]="true" [matDatepicker]="purchaseDate" [min]="minDate" [max]="maxDate"
+            (dateChange)="onDateSelected($event)" (focusout)="purdatefocusout()" formControlName="inwardDate">
+          <mat-datepicker-toggle matSuffix [for]="purchaseDate"></mat-datepicker-toggle>
+          <mat-datepicker #purchaseDate></mat-datepicker>
+          <mat-error *ngIf="purchaseHeadFormGroup.get('inwardDate').hasError('Financialyear') "> Date Must be Between
+            Transaction Date {{datepickertran.startdate | date: 'dd-MM-yyyy'}} and
+            {{datepickertran.enddate | date: 'dd-MM-yyyy'}}</mat-error>
+          <mat-error *ngIf="purchaseHeadFormGroup.get('inwardDate').hasError('tranInDate') "> Date Should Be Greater
+            Than
+            {{tranInDate | date: 'dd/MM/yyyy'}}</mat-error>
+        </mat-form-field>
+
+        <app-autocomplete [definition]="customAccountAutoCompleteDef" [control]="accName"
+          [optionsTableDefinition]="customAccountsOptsTable"></app-autocomplete>
+
+
+        <mat-form-field appearance="outline" class="w_116">
+          <mat-label>Sh.Name</mat-label>
+          <input matInput formControlName="accShName">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w_224">
+          <mat-label>GSTIN</mat-label>
+          <input matInput formControlName="accGstIn" maxlength="15">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w_224">
+          <mat-label>Company</mat-label>
+          <mat-select formControlName="compId" appMatSelect placeholder="--Select--" #companyfocus #CompanyTab
+            #singleSelect>
+            <mat-option>
+              <ngx-mat-select-search placeholderLabel="Find Company Type..." (keydown)="companyTab($event)"
+                noEntriesFoundLabel="'no matching Company found'"
+                [formControl]="CompanyTabMultiFilterCtrl"></ngx-mat-select-search>
+            </mat-option>
+
+            <mat-option value='0'>--Select--</mat-option>
+            <mat-option *ngFor="let bank of filteredCompanyMulti | async" [value]="bank.compId">
+              {{bank.compName}}
+            </mat-option>
+          </mat-select>
+
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w_116">
+          <mat-label>Inv.No</mat-label>
+          <input matInput formControlName="invNo" (focusout)="onChangeInvNo($event.target.value)" #invo1 #invnum
+            maxlength="16" required>
+          <mat-error>
+            <span *ngIf="purchaseHeadFormGroup.get('invNo').hasError('required')">Inv.No. Required...! </span>
+
+          </mat-error>
+          <mat-hint align="end">{{invnum.value.length}} / 16</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="e_mat_date sm_mt w_116">
+          <mat-label>Inv.Date</mat-label>
+          <input matInput [max]="purdate" [matDatepicker]="invDate" formControlName="invDate" required>
+          <mat-datepicker-toggle matSuffix [for]="invDate"></mat-datepicker-toggle>
+          <mat-datepicker #invDate></mat-datepicker>
+          <mat-hint>DD-MM-YYYY</mat-hint>
+          <mat-error>
+            <span *ngIf="purchaseHeadFormGroup.get('invDate').hasError('required')">Date Format... <b> dd-MM-yyyy</b>
+              !</span>
+            <span *ngIf="purchaseHeadFormGroup.get('invDate').hasError('notMatched')"> Inv.Date should be <= Pur.Date
+                <b>{{this.PurchaseForm.get('inwardDate').value | date:'dd-MM-yyyy'}}</b> </span>
+            <span
+              *ngIf="purchaseHeadFormGroup.get('invDate').hasError('greaterValue') && (purchaseHeadFormGroup.get('invDate').touched || purchaseHeadFormGroup.get('invDate').dirty)">
+              InvoiceDate should Be <= Purchase Date <b>
+                {{this.purchaseHeadFormGroup.get('inwardDate').value | date:'dd-MM-yyyy'}}</b> </span>
+          </mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="outline" class="w_224">
+          <mat-label>Mode</mat-label>
+          <mat-select formControlName="mode" required appMatSelect>
+            <mat-option *ngFor="let mode of modeData" [value]="mode?.code">{{mode?.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="sm_mt sm_mt_3 w_116">
+          <mat-label>Lr.NO</mat-label>
+          <input matInput formControlName="inwardLrNo" maxlength="15">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="e_mat_date  sm_mt_2 w_116">
+          <mat-label>Lr.Date</mat-label>
+          <input matInput [matDatepicker]="lrDate" formControlName="inwardLrdate"
+            [min]="purchaseHeadFormGroup.get('invDate').value">
+          <mat-datepicker-toggle matSuffix [for]="lrDate"></mat-datepicker-toggle>
+          <mat-datepicker #lrDate></mat-datepicker>
+          <mat-hint>DD-MM-YYYY</mat-hint>
+          <mat-error>
+            <span
+              *ngIf="purchaseHeadFormGroup.controls['inwardLrdate'].errors &&  (purchaseHeadFormGroup.controls['inwardLrdate'].dirty || purchaseHeadFormGroup.controls['inwardLrdate'].touched)">Valid
+              Date Required...!</span>
+          </mat-error>
+        </mat-form-field>
+
+
+        <app-autocomplete [definition]="customTransportAutoCompleteDef" [control]="transportName"
+          [optionsTableDefinition]="customTransportOptsTable"></app-autocomplete>
+
+
+        <mat-form-field appearance="outline" class="sm_mt w_224">
+          <mat-label>Waybill No</mat-label>
+          <input matInput formControlName="inwardWaybillNo" #wbillnum maxlength="15">
+          <mat-hint align="end">{{wbillnum.value.length}} / 25</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="e_mat_date sm_mt_2 sm_mt_3 sm_mt_4 w_116">
+          <mat-label>WayBill Date</mat-label>
+          <input matInput [matDatepicker]="wayBillDate" formControlName="inwardWaybillDate"
+            [min]="purchaseHeadFormGroup.get('invDate').value">
+          <mat-datepicker-toggle matSuffix [for]="wayBillDate"></mat-datepicker-toggle>
+          <mat-datepicker #wayBillDate></mat-datepicker>
+          <mat-hint>DD-MM-YYYY</mat-hint>
+          <mat-error>
+
+            <span
+              *ngIf="purchaseHeadFormGroup.controls['inwardWaybillDate'].errors &&  (purchaseHeadFormGroup.controls['inwardWaybillDate'].dirty || purchaseHeadFormGroup.controls['inwardWaybillDate'].touched)">Valid
+              Date Required...!</span>
+
+          </mat-error>
+
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="mt-2 w_116">
+          <mat-label>No.of Cases</mat-label>
+          <input matInput formControlName="noOfCases" #cases maxlength="4" appOmitSpecialCharacters="integer">
+          <mat-hint align="end">{{cases.value.length}} / 4</mat-hint>
+        </mat-form-field>
+
+
+
+        <button type="button" mat-raised-button color="primary" class="mr-1 mt_1 pe_btn"
+          [disabled]="purchaseHeadFormGroup.invalid"
+          (click)="onSaveOrUpdatePurchaseHead()">{{purchaseHeadBtnText}}</button>
+        <button type="button" (click)="reset()" class="mt_1 pe_btn" mat-raised-button>Reset</button>
+
+      </div>
+    </form>
+  </div>
+
+  <div class="mt-2">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+      <div fxFlex="100">
+        <app-alert [id]="'purchaseEntryList'"></app-alert>
+        <app-table [definition]="tableDefinition" [data]="dataSource" [tableAlertId]="'purchaseEntryList'"
+          [isDataLoading]="isDataLoading" [disableActions]="disableActions"></app-table>
+      </div>
+    </div>
+  </div>
+  <ng-template [ngIf]="displayPreTax">
+    <mat-card class="mt-3 p-2 mb-2">
+      <div fxLayout="row" fxLayout.xs="column" class="mb-1" fxLayout.sm="column" fxLayoutAlign="space-between center"
+        style="font-size: 14px;font-weight: bold;" fxLayoutWrap>
+        <!-- <div fxFlex="100"  fxLayoutGap="20px"> -->
+        <span fxFlex="20" fxFlex.xs="100" fxFlex.sm="100">
+          <span>Grs. Value :&nbsp;</span> {{head.grsValue | number:'1.2-2'}}
+        </span>
+        <span fxFlex="20" fxFlex.xs="100" fxFlex.sm="100">
+          <span>Disc. Value :&nbsp;</span>{{head.discValue | number:'1.2-2'}}
+        </span>
+        <span fxFlex="20" fxFlex.xs="100" fxFlex.sm="100">
+          <span>Second Disc. Value :&nbsp;</span>{{head.disc1Value | number:'1.2-2'}}
+        </span>
+        <span fxFlex="20" fxFlex.xs="100" fxFlex.sm="100">
+          <span>Tax Value :&nbsp;</span>{{head.taxValue | number:'1.2-2'}}
+        </span>
+        <span fxFlex="20" class="text-success" fxFlex.xs="100" fxFlex.sm="100">
+          <span>Inv.Value :&nbsp;</span>{{roundedValue| number:'1.2-2'}}
+        </span>
+        <!-- </div> -->
+      </div>
+      <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" class="sm_align" fxLayout.lg="row"
+        fxLayoutAlign="space-between center" fxLayoutWrap fxLayoutGap="10px">
+        <div fxFlex="60" fxLayout.xs="column" fxLayout.sm="column" fxLayout.md="row" fxLayout.lg="row"
+          fxLayoutGap="20px">
+          <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="100" id="t01">
+            <!-- <h6>As Per Calculation</h6> -->
+            <table class="table table-sm table-bordered">
+              <tr>
+                <th>GST%</th>
+                <th>Taxable </th>
+                <ng-template [ngIf]="hasIGST">
+                  <th>IGST</th>
+                </ng-template>
+                <ng-template [ngIf]="!hasIGST">
+                  <th>CGST</th>
+                  <th>SGST</th>
+                </ng-template>
+              </tr>
+              <tr *ngFor="let pretax of pretaxes">
+                <td>{{pretax.tax | number:'1.2-2'}}</td>
+                <td>{{pretax.preTaxValue | number:'1.2-2'}}</td>
+                <ng-template [ngIf]="hasIGST">
+                  <td> {{pretax?.taxes[0]?.stakeValue | number:'1.2-2'}}</td>
+                </ng-template>
+                <ng-template [ngIf]="!hasIGST">
+                  <td>
+                    {{(pretax?.taxes.length >
+                    0)?(pretax.taxes[0].taxStakeName=='CGST'?pretax.taxes[0].stakeValue:pretax.taxes[1].stakeValue):''}}
+                  </td>
+                  <td>
+                    {{(pretax?.taxes.length >
+                    0)?(pretax.taxes[0].taxStakeName=='SGST'?pretax.taxes[0].stakeValue:pretax.taxes[1].stakeValue):''}}
+                  </td>
+                </ng-template>
+              </tr>
+            </table>
+          </div>
+
+          <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="100" id="t01">
+            <!-- <h6>As per Invoice</h6> -->
+            <table class="table table-sm table-bordered">
+              <thead>
+                <th>GST%</th>
+                <th>Taxable </th>
+                <ng-template [ngIf]="hasIGST">
+                  <th>IGST</th>
+                </ng-template>
+                <ng-template [ngIf]="!hasIGST">
+                  <th>CGST</th>
+                  <th>SGST</th>
+                </ng-template>
+              </thead>
+              <tbody>
+                <tr *ngFor="let pretaxFormGroup of invoiceTax.controls">
+
+                  <td>{{pretaxFormGroup.controls.tax.value | number:'1.2-2'}}</td>
+                  <td [formGroup]="pretaxFormGroup"><input type="text" appCurrencyFormat formControlName="iPreTaxValue"
+                      style="border:0;width: 66px;" (blur)="updateInvValueForFinalSave()"></td>
+                  <ng-template [ngIf]="hasIGST">
+                    <ng-container *ngFor="let taxFormGroup of pretaxFormGroup.controls.taxes.controls">
+                      <td [formGroup]="taxFormGroup"> <input type="text" appCurrencyFormat formControlName="iStakeValue"
+                          style="border:0;width: 66px;" (blur)="updateInvValueForFinalSave()"></td>
+                    </ng-container>
+                  </ng-template>
+                  <ng-template [ngIf]="!hasIGST">
+                    <ng-container *ngFor="let taxFormGroup of pretaxFormGroup.controls.taxes.controls">
+                      <ng-template [ngIf]="taxFormGroup.controls.taxStakeName.value==='CGST'">
+                        <td [formGroup]="taxFormGroup"> <input type="text" appCurrencyFormat
+                            formControlName="iStakeValue" style="border:0;width: 66px;"
+                            (blur)="updateInvValueForFinalSave()"></td>
+                      </ng-template>
+                    </ng-container>
+                    <ng-container *ngFor="let taxFormGroup of pretaxFormGroup.controls.taxes.controls">
+                      <ng-template [ngIf]="taxFormGroup.controls.taxStakeName.value==='SGST'">
+                        <td [formGroup]="taxFormGroup"> <input type="text" appCurrencyFormat
+                            formControlName="iStakeValue" style="border:0;width: 66px;"
+                            (blur)="updateInvValueForFinalSave()"></td>
+                      </ng-template>
+                    </ng-container>
+                  </ng-template>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+
+        </div>
+        <div fxFlex="40" class="user-form" fxFlex.xs="100" fxLayout.xs="column" fxLayoutGap="5px"
+          [formGroup]="headFormGroup">
+          <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="row" fxLayout.md="row" class="adj-form"
+            fxLayoutGap="10px">
+            <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="50">
+              <mat-form-field appearance="outline">
+                <mat-label>Dr. Adj.</mat-label>
+                <input matInput formControlName="otherDed" appCurrencyFormat appOmitSpecialCharacters="integer"
+                  (focusout)="validateFloatKeyPress($event.target)" (input)="djadjInput($event.target.value)"
+                  (blur)="updateInvValueForFinalSave()">
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Cr. Adj.</mat-label>
+                <input matInput formControlName="otherAdd" appCurrencyFormat appOmitSpecialCharacters="integer"
+                  (focusout)="validateFloatKeyPress($event.target)" (input)="cjadjInput($event.target.value)"
+                  (blur)="updateInvValueForFinalSave()">
+              </mat-form-field>
+            </div>
+            <div fxFlex="60" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="47">
+              <app-autocomplete [definition]="customAccountDedAdjAutoCompleteDef"
+                [control]="otherDedAccId"></app-autocomplete>
+
+              <app-autocomplete [definition]="customAccountAddAdjAutoCompleteDef"
+                [control]="otherAddAccId"></app-autocomplete>
+            </div>
+
+
+          </div>
+
+          <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="row" fxLayout.md="row" fxLayoutGap="10px">
+            <!-- <mat-form-field appearance="outline" fxFlex="31">
+              <mat-label>Hamali Value</mat-label>
+              <input matInput formControlName="hamaliValue">
+            </mat-form-field> -->
+            <mat-form-field appearance="outline" fxFlex="48" fxFlex.xs="100" fxFlex.sm="50">
+              <mat-label>Net. Value</mat-label>
+              <input matInput formControlName="netValue">
+            </mat-form-field>
+            <mat-form-field appearance="outline" fxFlex="48" fxFlex.xs="100" fxFlex.sm="50">
+              <mat-label>Inv. Value</mat-label>
+              <input matInput formControlName="invValue" appCurrencyFormat>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="text-right mbl_center mt-3">
+        <button mat-raised-button color="primary" (click)="doFinalSave()">{{finalSavebutton}}</button> &nbsp;
+        <button mat-raised-button (click)="resetFinalSave()">Reset</button>
+      </div>
+
+    </mat-card>
+  </ng-template>
+</div>
+
+<ng-template #purchaseDetailTemplate>
+  <div fxFlex="100" class="user-form" fxLayoutGap="10px">
+    <form [formGroup]="purchaseDetailFormGroup" class="pur-add-form mbl_height">
+      <div fxLayout="row" class="mb-1" fxLayout.xs="column" fxLayout.sm="row" fxLayoutWrap fxLayoutGap="10px">
+        <div fxFlex="24" class="mat_product">
+          <app-autocomplete [definition]="customProductAutoCompleteDef" id="pProductName"
+            [control]="purchaseDetailFormGroup.get('prodId')" [optionsTableDefinition]="customProductOptsTable"
+            [autofocus]="false"></app-autocomplete>
+        </div>
+        <div fxFlex="24">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Sh.Name</mat-label>
+            <input matInput formControlName="prodShName" required>
+            <mat-error>
+              <span *ngIf="purchaseDetailFormGroup.get('prodShName').hasError('required') ">Sh.Name Required...! </span>
+              <!-- <span *ngIf="purchaseDetailFormGroup.get('shortName').hasError('greaterValue2') "> Sh.Name Not Found...!</span> -->
+              <span
+                *ngIf="purchaseDetailFormGroup.get('prodShName').errors && purchaseDetailFormGroup.get('prodShName').hasError('incorrect')">
+                Sh.Name Not Found...!</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxFlex="24">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Product Pack</mat-label>
+            <input matInput formControlName="prodPackName" required>
+
+            <mat-error>
+              <span *ngIf="purchaseDetailFormGroup.get('prodPackName').hasError('required')">Product Pack
+                Required...!</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+      </div>
+      <div fxLayout="row" class="mt-2" fxLayout.xs="column" fxLayout.sm="row" fxLayoutWrap fxLayoutGap="10px">
+
+        <div fxFlex="24">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Batch</mat-label>
+            <input matInput formControlName="batch" maxlength="20" required>
+            <mat-error>
+              <span *ngIf="purchaseDetailFormGroup.get('batch').hasError('required') "> Batch Required...! </span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field class="" appearance="outline" fxFlex="24">
+          <mat-label>Exp.Date</mat-label>
+          <input matInput type="text" formControlName="expdate" maxLength="5" (focusout)="expdate($event.target.value)"
+            appOmitSpecialCharacters="integer" required>
+          <mat-error>
+            <span *ngIf="purchaseDetailFormGroup.get('expdate').hasError('required') "> Exp.Date Required...! </span>
+            <span *ngIf="purchaseDetailFormGroup.get('expdate').hasError('greaterValue') "> Do not enter <b>Previous
+                Date</b>...!</span>
+            <span *ngIf="purchaseDetailFormGroup.get('expdate').hasError('greaterValue1')">Not a Valid Date...!</span>
+            <span *ngIf="purchaseDetailFormGroup.get('expdate').hasError('greater')">Not a Valid Date...!</span>
+          </mat-error>
+        </mat-form-field>
+
+        <div fxFlex="12">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Qty.</mat-label>
+            <input matInput formControlName="invQty" appQntCurrencyFormat maxlength="7"
+              appOmitSpecialCharacters="integer" (input)="qtyvalue('invQty')">
+            <mat-error>
+              <span
+                *ngIf="purchaseDetailFormGroup.get('invQty').errors && purchaseDetailFormGroup.get('invQty').hasError('incorrecterror')">quantity
+                must be greater {{qtyvalue1}}</span>
+              <span *ngIf="purchaseDetailFormGroup.get('invQty').hasError('required') "> Qty. Required...! </span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field class="" appearance="outline" fxFlex="11">
+          <mat-label>Qty.Disc.</mat-label>
+          <input matInput formControlName="invQtyDisc" appQntCurrencyFormat maxlength="7"
+            appOmitSpecialCharacters="integer" (input)="qtyvalue('recdQtyFree')" (focusout)="calculatepsqty()">
+          <mat-error>
+            <span
+              *ngIf="purchaseDetailFormGroup.get('invQtyDisc').errors && itemForm.get('invQtyDisc').hasError('incorrecterror1')">quantity
+              must be greater {{qtyandfree}}</span>
+          </mat-error>
+        </mat-form-field>
+
+        <div fxFlex="24" class="mat_product">
+          <mat-form-field appearance="outline" class="w_224 mt-0">
+            <mat-label>Tran.Qty.Status</mat-label>
+            <mat-select appMatSelect formControlName="inwardTranStatus">
+              <mat-option *ngFor="let tran of inwardTransData" [value]="tran.code">
+                {{tran.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+
+
+      </div>
+      <div fxLayout="row" class="sales-return mt-2 " fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+
+
+        <div fxFlex="24" *ngIf="firmPreferences?.discTypeOption === 3">
+          <!-- <app-autocomplete [definition]="discountType" [control]="purchaseDetailFormGroup.get('purDiscType')">
+          </app-autocomplete> -->
+          <mat-form-field appearance="outline" class="w-100 mt-0">
+            <mat-label>Discount Type</mat-label>
+            <mat-select appMatSelect formControlName="purDiscType">
+              <mat-option *ngFor="let dsc of discDropdown" [value]="dsc.code">
+                {{dsc.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field *ngIf="firmPreferences?.discTypeOption == 1 || firmPreferences?.discTypeOption == 2"
+          appearance="outline" fxFlex="24">
+          <mat-label>Discount Type</mat-label>
+          <input matInput disabled [value]="firmPreferences?.discTypeOption == 1 ? '%': 'Rupee'" maxlength="8" formControlName="purDiscType"
+            appOmitSpecialCharacters="integer">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" fxFlex="24">
+
+          <mat-label>Discount{{ purchaseDetailFormGroup.get('purDiscType')?.value?.name ?
+            ('('+purchaseDetailFormGroup.get('purDiscType')?.value?.name+')'): '' }}</mat-label>
+          <input matInput formControlName="purDisc" maxlength="2" appOmitSpecialCharacters="integer">
+          <mat-error>
+            <span *ngIf="purchaseDetailFormGroup.get('purDisc').hasError('invalidInput')"> Discount cannot be greater
+              Than 100..!
+            </span>
+            <span *ngIf="purchaseDetailFormGroup.get('purDisc').hasError('value')"> Rupee Not Greater Than 6
+              Digits..!</span>
+          </mat-error>
+
+        </mat-form-field>
+
+        <div class="mat_product" fxFlex="24">
+          <mat-form-field appearance="outline" class="w_224 mt-0" *ngIf="firmPreferences?.allowDisc2 != 0 && firmPreferences?.discTypeOption == 3">
+            <mat-label>Discount Type 1</mat-label>
+            <mat-select appMatSelect formControlName="purdiscType1">
+              <mat-option *ngFor="let dsc of discDropdown" [value]="dsc.code">
+                {{dsc.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field *ngIf="(firmPreferences?.discTypeOption == 1 || firmPreferences?.discTypeOption == 2) && firmPreferences?.allowDisc2 != 0"
+            appearance="outline">
+            <mat-label>Discount Type 1</mat-label>
+            <input matInput disabled [value]="firmPreferences?.discTypeOption == 1 ? '%': 'Rupee'" maxlength="8" formControlName="purdiscType1"
+              appOmitSpecialCharacters="integer">
+          </mat-form-field>
+        </div>
+        
+
+        <mat-form-field appearance="outline" *ngIf="firmPreferences?.allowDisc2 != 0" fxFlex="24">
+
+          <mat-label> Special Discount{{ purchaseDetailFormGroup.get('purdiscType1')?.value?.name ?
+            ('('+purchaseDetailFormGroup.get('purdiscType1')?.value?.name+')'): '' }}</mat-label>
+          <input matInput formControlName="purDisc1" maxlength="2" appOmitSpecialCharacters="integer">
+          <mat-error>
+            <span *ngIf="purchaseDetailFormGroup.get('purDisc1').hasError('invalidInput')"> Discount cannot be greater
+              Than 100..!
+            </span>
+            <span *ngIf="purchaseDetailFormGroup.get('purDisc1').hasError('value')"> Rupee Not Greater Than 6
+              Digits..!</span>
+          </mat-error>
+
+        </mat-form-field>
+
+        <div fxFlex="24" *ngIf="firmPreferences?.allowDisc2 == 0">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Inv.Rate</mat-label>
+            <input matInput formControlName="purRate" appCurrencyFormat maxlength="8" appOmitSpecialCharacters="integer"
+              required>
+            <mat-error>
+              <span *ngIf="purchaseDetailFormGroup.get('purRate').hasError('required') ">Inv.Rate required...! </span>
+              <span *ngIf="purchaseDetailFormGroup.get('purRate').hasError('recqq') ">Inv.Rate Required...!</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" fxFlex="24" *ngIf="firmPreferences?.allowDisc2 == 0">
+          <mat-label>Stk.Rate</mat-label>
+          <input matInput maxlength="8" formControlName="stkRate">
+        </mat-form-field>
+
+
+      </div>
+      <div fxLayout="row" class="sales-return mt-2 " fxLayout.sm="row" fxLayout.xs="column" fxLayoutWrap
+        fxLayoutGap="10px">
+
+        <div fxFlex="24" *ngIf="firmPreferences?.allowDisc2 != 0">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Inv.Rate</mat-label>
+            <input matInput formControlName="purRate" appCurrencyFormat maxlength="8" appOmitSpecialCharacters="integer"
+              required>
+            <mat-error>
+              <span *ngIf="purchaseDetailFormGroup.get('purRate').hasError('required') ">Inv.Rate required...! </span>
+              <span *ngIf="purchaseDetailFormGroup.get('purRate').hasError('recqq') ">Inv.Rate Required...!</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" fxFlex="24" *ngIf="firmPreferences?.allowDisc2 != 0">
+          <mat-label>Stk.Rate</mat-label>
+          <input matInput maxlength="8" formControlName="stkRate">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" fxFlex="24">
+          <mat-label>Sale Rate</mat-label>
+          <input matInput formControlName="saleRate" maxlength="10" appCurrencyFormat appOmitSpecialCharacters="integer"
+            required>
+          <mat-error>
+            <span *ngIf="purchaseDetailFormGroup.get('saleRate').hasError('required') "> Sale Rate Required...! </span>
+            <span *ngIf="purchaseDetailFormGroup.get('saleRate').hasError('greatersalerate')"> Sale Rate Must be Greater
+              Than
+              Inv.Rate...! </span>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" fxFlex="24">
+          <mat-label>MRP</mat-label>
+          <input matInput formControlName="mrp" (focusout)="getmrpvalid()" appOmitSpecialCharacters="integer"
+            maxlength="8" required appCurrencyFormat>
+          <mat-error>
+            <span *ngIf="purchaseDetailFormGroup.get('mrp').hasError('required')"> MRP Required...! </span>
+            <span *ngIf="purchaseDetailFormGroup.get('mrp').hasError('greaterValue')"> MRP Must be Greater Than Retail
+              Rate...!
+            </span>
+            <span *ngIf="purchaseDetailFormGroup.get('mrp').hasError('greaterValue1')"> MRP Must be Greater Than or
+              Equal To Sale Rate...!
+            </span>
+            <span *ngIf="purchaseDetailFormGroup.get('mrp').hasError('value')">Enter Valid Number...! </span>
+          </mat-error>
+        </mat-form-field>
+
+
+        <div fxFlex="24" class="mat_product" *ngIf="firmPreferences?.allowDisc2 == 0">
+
+          <mat-form-field appearance="outline" class="w_224 mt-0">
+            <mat-label>ManufactureName</mat-label>
+            <mat-select appMatSelect formControlName="mfgId">
+              <mat-option *ngFor="let mfg of manifactureData" [value]="mfg.mfgId">
+                {{mfg.mfgName}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+        </div>
+
+        <mat-form-field appearance="outline" fxFlex="25" *ngIf="firmPreferences?.allowDisc2 == 0">
+          <mat-label>HSN Code</mat-label>
+          <input matInput formControlName="hsncode" maxlength="8" appOmitSpecialCharacters="noSpecialChars">
+          <mat-error>
+            <span *ngIf="purchaseDetailFormGroup.get('hsncode').hasError('required') "> HSN Code Required...! </span>
+          </mat-error>
+        </mat-form-field>
+
+
+      </div>
+      <div fxLayout="row" class="sales-return mt-2 " fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+
+        <div fxFlex="24" class="mat_product" *ngIf="firmPreferences?.allowDisc2 != 0">
+          <mat-form-field appearance="outline" class="w_224 mt-0">
+            <mat-label>ManufactureName</mat-label>
+            <mat-select appMatSelect formControlName="mfgId">
+              <mat-option *ngFor="let mfg of manifactureData" [value]="mfg.mfgId">
+                {{mfg.mfgName}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+        </div>
+
+        <mat-form-field appearance="outline" fxFlex="24" *ngIf="firmPreferences?.allowDisc2 != 0">
+          <mat-label>HSN Code</mat-label>
+          <input matInput formControlName="hsncode" maxlength="8" appOmitSpecialCharacters="noSpecialChars">
+          <mat-error>
+            <span *ngIf="purchaseDetailFormGroup.get('hsncode').hasError('required') "> HSN Code Required...! </span>
+          </mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="outline" fxFlex="24">
+          <mat-label>Tax(%)</mat-label>
+          <input matInput formControlName="tax">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" [fxFlex]="firmPreferences?.allowDisc2 != 0 ? '11' : '25' ">
+          <mat-label>Sch.Qty.</mat-label>
+          <input matInput formControlName="psQty" (input)="schQty()" maxlength="7">
+        </mat-form-field>
+
+
+        <mat-form-field appearance="outline" [fxFlex]="firmPreferences?.allowDisc2 != 0 ? '11' : '25' ">
+          <mat-label>Sch.Qty.Disc.</mat-label>
+          <input matInput formControlName="psQtyDisc" maxlength="7">
+        </mat-form-field>
+
+
+      </div>
+
+    </form>
+  </div>
+
+</ng-template>
+
+<ng-template #purchaseDetailButtonTemplate>
+  <button type="button" mat-raised-button color="primary" [disabled]="!purchaseDetailFormGroup.valid"
+    (click)="onSaveOrUpdatePurchaseDetail(true)">{{detailburron}}</button>&nbsp;
+
+  <button type="button" mat-raised-button color="primary" [disabled]="!purchaseDetailFormGroup.valid"
+    (click)="onSaveOrUpdatePurchaseDetail(false)">{{detailsave}}</button>&nbsp;
+
+  <button type="button" mat-raised-button class="btn btn-primary" (click)="resetDialog()">Reset</button>
+</ng-template>
+
+<ng-template #deletePurchaseHeadTemplate let-purchaseHead="data">
+  Are you sure to delete <strong></strong>?
+</ng-template>
+
+
+
+<ng-template #purhistory>
+  <app-table [definition]="historytableDefinition" [data]="historydataSource" [tableAlertId]="'purchaseEntryList'"
+    [disableActions]="disableActions"></app-table>
+</ng-template>
+
+<div class="modal" id="deletePopup" style="display: flex;background: rgba(0, 0, 0, 0.32);">
+  <div class="modal-dialog modal-dialog-centered" style="min-width: 30%;">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color: #006476;padding: 8px 16px;">
+        <p class="modal-title" style="font-size: 16px;color: #fff;">Delete Company Group</p>
+        <button class="close text-white" data-dismiss="modal"
+          style="opacity: 1 !important;outline: none;">&times;</button>
+      </div>
+      <div class="modal-body" style="font-size: 15px;">
+        Are you sure you want to delete this item?
+      </div>
+      <div class="modal-footer modal-footer p-1 border-0 pb-2 pr-2">
+        <button type="button" mat-raised-button (click)="deleteItem()">Yes</button>
+        <button type="button" mat-raised-button (click)="closePopup()">No</button>
+      </div>
+    </div>
+  </div>
+</div>

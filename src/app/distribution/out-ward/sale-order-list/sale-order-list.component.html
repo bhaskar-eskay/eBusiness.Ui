@@ -1,0 +1,71 @@
+
+<div class="m-3">
+
+
+
+    <div fxLayout="row" fxLayoutAlign.sm="start center" fxLayoutAlign.xs="center center" fxLayout.xs="column" fxLayoutWrap
+    fxLayoutGap="10px">
+    <div fxFlex="80" fxFlex.xl="55" fxFlex.sm="57" fxFlex.md="46">
+      <h4 class="outward-pharma-head">Sales Order (SORD) List</h4>
+    </div>
+    <div fxFlex="20" fxFlex.xl="12" fxFlex.sm="12" fxFlex.md="20" class="master-btn text-right" fxLayoutGap="5px">
+      <button mat-raised-button [routerLink]="['../OutwardTransaction']" color="primary">Back</button>
+      <button mat-raised-button [routerLink]="['../saleOrderEntry']" color="primary">Add SaleOrder</button>
+    </div>
+    
+    </div>
+    
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="10px">
+        <div fxFlex="100" class="orderlist-form">
+          <form  [formGroup]="SaleOrderListHeadFormGroup" fxLayoutGap="5px">
+          <mat-form-field appearance="outline" class="e_mat_date w_116" style="margin: 5px;">
+            <mat-label>From Date</mat-label>
+          <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" formControlName="fromDate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="e_mat_date w_116" style="margin: 5px;">
+            <mat-label>To Date</mat-label>
+          <input matInput [matDatepicker]="picker1" [min]="minDate" [max]="maxDate" formControlName="toDate">
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w_224" style="margin: 5px;">
+            <mat-label>SORD No</mat-label>
+            <input matInput formControlName="sretNo">
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w_224" style="margin: 5px;">
+            <mat-label>Customer  Name</mat-label>
+            <input matInput  formControlName="custmorName">
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w_116" style="margin: 5px;">
+            <mat-label>Sh.Name</mat-label>
+            <input matInput formContromName="shName">
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w_224" style="margin: 5px;">
+            <mat-label>City Name</mat-label>
+            <input matInput formContromName="cityName">
+          </mat-form-field>  
+          <mat-form-field appearance="outline" class="w_224" style="margin: 5px;">
+            <mat-label>GSTIN</mat-label>
+            <input matInput formContromName="gstin">
+          </mat-form-field>       
+        
+          <button mat-raised-button color="primary" (click)="getList()" >Search</button> 
+          <button mat-raised-button (click)="resetForm()">Reset</button>       
+        </form>
+        </div>
+        </div>
+
+
+    
+  <div class="mt-2">
+    <div class="master-table" id="table-scroll">
+      <app-alert [id]="'dataTableAlertId'"></app-alert>
+      <app-table [definition]="tableDefinition" [data]="dataList" [tableAlertId]="'dataTableAlertId'"
+        [isDataLoading]="isDataLoading" [disableActions]="disableActions"></app-table>
+    </div>
+  </div>
+    
+   
+    </div>

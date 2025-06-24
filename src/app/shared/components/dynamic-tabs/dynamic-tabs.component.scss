@@ -1,0 +1,42 @@
+.nav-tabs {
+    /* color: white; */
+    border-bottom: 1px solid #ddd;
+    background: linear-gradient(#3397cc 0%, #479fcf 100%);
+    height: 41px;
+    font-size: 15px;
+    padding: 4px 16px;
+
+    z-index: 30;
+    flex: 0 0 auto;    
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    margin-bottom: 0px;
+  }
+
+  .active {
+      background-color: #e7e7e7  !important;
+  }
+  .nav-tabs li {
+    opacity: 1;
+    background: #d5e4ed;
+    border: 1px solid #d5e4ed;
+    height: 33px;
+    padding: 3px 10px;
+    font-family: verdana;
+    min-width: 60px;
+    cursor: pointer;
+    border-radius: 0px 0px 5px 5px;
+    margin-left: 3px;
+  }
+
+ .tab-close {
+    color: gray;    
+    cursor: pointer;   
+    text-align: right;    
+  } 
+  .tab-close a:hover {
+    color: red;    
+    
+  } 
